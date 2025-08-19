@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f8f8f8;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 600;
+        font-size: 1.8rem;
+      }
+
+      /* --- Container --- */
+      .admin-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      /* --- Action buttons (Add / Edit) --- */
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+      .actions a {
+        text-decoration: none;
+        background: #6c63ff;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background 0.3s;
+      }
+      .actions a:hover {
+        background: #5750d8;
+      }
+
+      form {
+        display: grid;
+        gap: 20px;
+      }
+
+      label {
+        font-weight: 500;
+        margin-bottom: 6px;
+        display: inline-block;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: border 0.3s;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: #6c63ff;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      /* --- Checkbox group --- */
+      .options-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .options-group label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 6px 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+      }
+      .options-group input {
+        display: none;
+      }
+      .options-group input:checked + span {
+        color: #fff;
+        background: #6c63ff;
+        border-radius: 14px;
+        padding: 2px 8px;
+      }
+
+      /* --- Image preview --- */
+      .preview {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .preview img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      /* --- Submit button --- */
+      button {
+        background: #6c63ff;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #5750d8;
+      }
+
+      @media (max-width: 768px) {
+        .admin-container {
+          margin: 20px;
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-container">
+      <h2>E-Store Admin Panel</h2>
+
+      <!-- Add/Edit Actions -->
+      <div class="actions">
+        <!-- <a href="add-product.html">➕ Add Product</a> -->
+        <a href="edit-product.html">✏️ Edit Product</a>
+      </div>
+
+      <form id="productForm">
+        <!-- Name -->
+        <div>
+          <label>Product Name</label>
+          <input type="text" required />
+        </div>
+
+        <!-- Main Image -->
+        <div>
+          <label>Main Image</label>
+          <input type="file" id="mainImage" accept="image/*" />
+          <div id="mainPreview" class="preview"></div>
+        </div>
+
+        <!-- Angles -->
+        <div>
+          <label>Other Angles</label>
+          <input type="file" id="angles" accept="image/*" multiple />
+          <div id="anglesPreview" class="preview"></div>
+        </div>
+
+        <!-- Sizes -->
+        <div>
+          <label>Sizes</label>
+          <div class="options-group">
+            <label><input type="checkbox" checked /><span>S</span></label>
+            <label><input type="checkbox" /><span>M</span></label>
+            <label><input type="checkbox" /><span>L</span></label>
+            <label><input type="checkbox" /><span>XL</span></label>
+          </div>
+        </div>
+
+        <!-- Colours -->
+        <div>
+          <label>Colours</label>
+          <div class="options-group">
+            <label><input type="checkbox" checked /><span>Red</span></label>
+            <label><input type="checkbox" /><span>Blue</span></label>
+            <label><input type="checkbox" /><span>Black</span></label>
+            <label><input type="checkbox" /><span>Green</span></label>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label>Price ($)</label>
+          <input type="number" min="0" step="0.01" required />
+        </div>
+
+        <!-- Quantity -->
+        <div>
+          <label>Quantity</label>
+          <input type="number" min="1" required />
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label>Description</label>
+          <textarea placeholder="Enter product description..."></textarea>
+        </div>
+
+        <button type="submit">Save Product</button>
+      </form>
+    </div>
+
+    <script>
+      // --- Image preview with size check (5MB limit) ---
+      function previewImages(input, previewContainerId) {
+        const previewContainer = document.getElementById(previewContainerId);
+        previewContainer.innerHTML = "";
+        Array.from(input.files).forEach((file) => {
+          if (file.size > 5 * 1024 * 1024) {
+            alert(file.name + " is larger than 5MB and will not be uploaded.");
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            previewContainer.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      document
+        .getElementById("mainImage")
+        .addEventListener("change", function () {
+          previewImages(this, "mainPreview");
+        });
+
+      document.getElementById("angles").addEventListener("change", function () {
+        previewImages(this, "anglesPreview");
+      });
+    </script>
+  </body>
+</html>
