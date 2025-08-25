@@ -24,6 +24,7 @@
         color: #333;
         background-color: #f5f7fb;
         line-height: 1.6;
+        font-size: 16px; /* Restored original font size */
       }
 
       .container {
@@ -323,7 +324,6 @@
       }
 
       .btn {
-        flex: 1;
         padding: 16px 28px;
         font-size: 16px;
         font-weight: 500;
@@ -340,6 +340,7 @@
       .btn-primary {
         background: #4a6fa5;
         color: white;
+        flex: 1;
       }
 
       .btn-primary:hover {
@@ -351,12 +352,38 @@
       .btn-secondary {
         background: #f8f9fa;
         color: #555;
+        flex: 1;
       }
 
       .btn-secondary:hover {
         background: #e9ecef;
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .btn-danger {
+        background: #ff4d4f;
+        color: white;
+        flex: 1;
+      }
+
+      .btn-danger:hover {
+        background: #ff7875;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 77, 79, 0.3);
+      }
+
+      .btn-back {
+        background: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+      }
+
+      .btn-back:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
       }
 
       /* Output Container */
@@ -418,6 +445,31 @@
         font-style: italic;
         text-align: center;
         padding: 20px;
+      }
+
+      /* Success Message */
+      .success-message {
+        background: #f6ffed;
+        border: 1px solid #b7eb8f;
+        border-radius: 5px;
+        padding: 16px;
+        margin-bottom: 20px;
+        color: #52c41a;
+        display: none;
+      }
+
+      .success-message.show {
+        display: block;
+        animation: fadeIn 0.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
 
       /* Responsive Design */
@@ -514,7 +566,7 @@
         <div class="logo">ADMIN PANEL</div>
         <div class="nav-links">
           <a href="#" class="active">Add Product</a>
-          <a href="./admin-edit.html">View All Products</a>
+          <a href="#">View All Products</a>
         </div>
       </div>
     </header>
@@ -529,6 +581,10 @@
 
     <!-- Main Content -->
     <div class="container">
+      <button class="btn btn-back" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+
       <div class="form-container">
         <!-- Left Column -->
         <div class="form-side">
