@@ -33,12 +33,63 @@ const getSingleProduct = async (req, res) => {
 // Update product
 const updateProduct = async (req, res) => {
   try {
-    const product = await ProductService.updateProduct(req.params.id, req.body);
+    // Parse array fields from comma-separated strings to arrays
+    const updates = { ...req.body };
+
+    if (updates.sizes && typeof updates.sizes === "string") {
+      updates.sizes = updates.sizes.split(",");
+    }
+
+    if (updates.colors && typeof updates.colors === "string") {
+      updates.colors = updates.colors.split(",");
+    }
+
+    // Handle file uploads if they exist
+    if (req.files) {
+      // Process main image
+      if (req.files.mainImage && req.files.mainImage[0]) {
+        const mainImageUrl = await ProductService.uploadImage(
+          req.files.mainImage[0],
+          req.files.mainImage[0].originalname,
+          "products" // Use the same folder as create
+        );
+        updates.main_image_url = mainImageUrl;
+      }
+
+      // Process other images
+      if (req.files.otherImages && req.files.otherImages.length > 0) {
+        const otherImageUrls = [];
+        for (const file of req.files.otherImages) {
+          const imageUrl = await ProductService.uploadImage(
+            file,
+            file.originalname,
+            "products" // Use the same folder as create
+          );
+          otherImageUrls.push(imageUrl);
+        }
+        updates.other_images_urls = otherImageUrls;
+      }
+    }
+
+    const product = await ProductService.updateProduct(req.params.id, updates);
     res.status(200).json(product);
   } catch (error) {
+    console.error("Error updating product:", error);
     res.status(500).json({ error: error.message });
   }
 };
+
+// Update product
+// const updateProduct = async (req, res) => {
+//   try {
+//     console.log(req.body);
+
+//     const product = await ProductService.updateProduct(req.params.id, req.body);
+//     res.status(200).json(product);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 // Delete product
 const deleteProduct = async (req, res) => {

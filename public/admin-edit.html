@@ -66,6 +66,7 @@
         transition: opacity 0.3s;
         padding: 8px 15px;
         border-radius: 5px;
+        font-size: 14px;
       }
 
       .nav-links a.active {
@@ -116,6 +117,9 @@
 
       .full-width {
         grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
       }
 
       .form-group {
@@ -261,6 +265,7 @@
 
       .options-group label:hover {
         background: #e9ecef;
+        transform: translateY(-2px);
       }
 
       .options-group input[type="checkbox"] {
@@ -288,6 +293,7 @@
 
       .category-option:hover {
         background: #e9ecef;
+        transform: translateY(-2px);
       }
 
       .category-option input[type="radio"] {
@@ -389,7 +395,6 @@
 
       /* Output Container */
       .output-container {
-        margin-top: 40px;
         padding: 30px;
         background: #f8f9fa;
         border-radius: 10px;
@@ -462,6 +467,32 @@
       .success-message.show {
         display: block;
         animation: fadeIn 0.5s;
+      }
+
+      /* Loading Spinner */
+      .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #4a6fa5;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
       @keyframes fadeIn {
@@ -543,6 +574,17 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        font-size: 14px;
+        color: #ccc;
+      }
+
+      .footer-contact a {
+        color: #ccc;
+        text-decoration: none;
+      }
+
+      .footer-contact a:hover {
+        color: #4a6fa5;
       }
 
       .footer-contact i {
@@ -559,6 +601,149 @@
         color: #999;
         font-size: 14px;
       }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal {
+        background-color: white;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+        overflow: hidden;
+      }
+
+      .modal-overlay.active .modal {
+        transform: translateY(0);
+      }
+
+      .modal-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .modal-header h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 22px;
+        color: #333;
+        margin: 0;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #999;
+        transition: color 0.3s;
+      }
+
+      .modal-close:hover {
+        color: #ff4d4f;
+      }
+
+      .modal-body {
+        padding: 25px;
+      }
+
+      .modal-footer {
+        padding: 20px 25px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+      }
+
+      .modal-message {
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .modal-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+
+      .modal-icon.success {
+        color: #52c41a;
+      }
+
+      .modal-icon.error {
+        color: #ff4d4f;
+      }
+
+      .modal-icon.warning {
+        color: #faad14;
+      }
+
+      .modal-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 0;
+      }
+
+      .modal-btn {
+        padding: 12px 24px;
+        border-radius: 5px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .modal-btn-primary {
+        background: #4a6fa5;
+        color: white;
+      }
+
+      .modal-btn-primary:hover {
+        background: #3c5a8a;
+      }
+
+      .modal-btn-danger {
+        background: #ff4d4f;
+        color: white;
+      }
+
+      .modal-btn-danger:hover {
+        background: #ff7875;
+      }
+
+      .modal-btn-secondary {
+        background: #f8f9fa;
+        color: #555;
+      }
+
+      .modal-btn-secondary:hover {
+        background: #e9ecef;
+      }
     </style>
   </head>
   <body>
@@ -567,9 +752,9 @@
       <div class="container header-container">
         <div class="logo">ADMIN PANEL</div>
         <div class="nav-links">
-          <a href="#">Add Product</a>
+          <a href="./admin.html">Add Product</a>
           <a href="#" class="active">Edit Product</a>
-          <a href="#">View All Products</a>
+          <a href="admin-products.html">View All Products</a>
         </div>
       </div>
     </header>
@@ -589,6 +774,24 @@
       </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="modalTitle">Confirm Deletion</h2>
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="modalContent">
+            <!-- Content will be dynamically updated -->
+          </div>
+        </div>
+        <div class="modal-footer" id="modalFooter">
+          <!-- Buttons will be dynamically updated -->
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div class="container">
       <!-- Back Button -->
@@ -596,7 +799,12 @@
         <i class="fas fa-arrow-left"></i> Back to Previous Page
       </button>
 
-      <div class="form-container">
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+
+      <div id="formContainer" class="form-container" style="display: none">
         <!-- Left Column -->
         <div class="form-side">
           <div class="form-group">
@@ -606,7 +814,6 @@
               id="productName"
               class="form-control"
               placeholder="Enter product name"
-              value="Classic White Sneakers"
             />
           </div>
 
@@ -618,12 +825,7 @@
                 <span>Women</span>
               </label>
               <label class="category-option">
-                <input
-                  type="radio"
-                  name="productCategory"
-                  value="men"
-                  checked
-                />
+                <input type="radio" name="productCategory" value="men" />
                 <span>Men</span>
               </label>
               <label class="category-option">
@@ -642,7 +844,6 @@
               placeholder="0.00"
               step="0.01"
               min="0"
-              value="89.99"
             />
           </div>
 
@@ -654,7 +855,6 @@
               class="form-control"
               placeholder="0"
               min="0"
-              value="45"
             />
           </div>
 
@@ -665,9 +865,7 @@
               class="form-control"
               rows="4"
               placeholder="Enter product description"
-            >
-Premium quality white sneakers made from genuine leather with comfortable insoles. Perfect for casual wear and light activities.</textarea
-            >
+            ></textarea>
           </div>
         </div>
 
@@ -682,15 +880,7 @@ Premium quality white sneakers made from genuine leather with comfortable insole
               <input type="file" id="productMainImage" accept="image/*" />
             </div>
             <div id="mainImagePreview" class="preview">
-              <div class="preview-item">
-                <img
-                  src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                  alt="Current main image"
-                />
-                <span class="remove" onclick="removeImage(this, 'main')"
-                  >×</span
-                >
-              </div>
+              <!-- Will be populated with current main image -->
             </div>
           </div>
 
@@ -709,70 +899,24 @@ Premium quality white sneakers made from genuine leather with comfortable insole
             </div>
             <div class="file-limit">Maximum 3 images allowed</div>
             <div id="anglesPreview" class="preview">
-              <div class="preview-item">
-                <img
-                  src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                  alt="Angle 1"
-                />
-                <span class="remove" onclick="removeImage(this, 'other')"
-                  >×</span
-                >
-              </div>
-              <div class="preview-item">
-                <img
-                  src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHNob2VzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                  alt="Angle 2"
-                />
-                <span class="remove" onclick="removeImage(this, 'other')"
-                  >×</span
-                >
-              </div>
+              <!-- Will be populated with other images -->
             </div>
           </div>
 
           <div class="form-group">
             <label>Sizes</label>
             <div id="productSizes" class="options-group">
-              <label><input type="checkbox" checked /><span>S</span></label>
-              <label><input type="checkbox" checked /><span>M</span></label>
-              <label><input type="checkbox" checked /><span>L</span></label>
-              <label><input type="checkbox" /><span>XL</span></label>
+              <label><input type="checkbox" value="S" /><span>S</span></label>
+              <label><input type="checkbox" value="M" /><span>M</span></label>
+              <label><input type="checkbox" value="L" /><span>L</span></label>
+              <label><input type="checkbox" value="XL" /><span>XL</span></label>
             </div>
           </div>
 
           <div class="form-group">
             <label>Colors</label>
-            <div class="color-options">
-              <div
-                class="color-option selected"
-                style="background-color: #ff0000"
-                data-color="Red"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #00ff00"
-                data-color="Green"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #0000ff"
-                data-color="Blue"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #ffff00"
-                data-color="Yellow"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #000000"
-                data-color="Black"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #ffffff; border: 1px solid #ccc"
-                data-color="White"
-              ></div>
+            <div id="colorOptions" class="color-options">
+              <!-- Will be populated with color options -->
             </div>
           </div>
         </div>
@@ -790,14 +934,14 @@ Premium quality white sneakers made from genuine leather with comfortable insole
               <i class="fas fa-trash"></i> Delete Product
             </button>
           </div>
-        </div>
 
-        <div class="output-container full-width">
-          <h2>Updated Data</h2>
-          <div id="output" class="output-content">
-            <p class="no-data">
-              Updated data will appear here after submission
-            </p>
+          <div class="output-container">
+            <h2>Updated Data</h2>
+            <div id="output" class="output-content">
+              <p class="no-data">
+                Updated data will appear here after submission
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -843,7 +987,194 @@ Premium quality white sneakers made from genuine leather with comfortable insole
     </footer>
 
     <script>
+      // Backend URL
+      const baseUrl = "http://localhost:3000/admin-api";
+      const productId = localStorage.getItem("ProductId");
+
+      // Available color options with their hex codes
+      const colorOptionsData = [
+        { name: "Red", hex: "#ff0000" },
+        { name: "Green", hex: "#00ff00" },
+        { name: "Blue", hex: "#0000ff" },
+        { name: "Yellow", hex: "#ffff00" },
+        { name: "Black", hex: "#000000" },
+        { name: "White", hex: "#ffffff" },
+      ];
+
+      // Store the original product data for reset functionality
+      let originalProductData = null;
+      // Store the current state of other images (original + newly uploaded)
+      let currentOtherImages = [];
+
+      // Modal elements
+      const deleteModal = document.getElementById("deleteModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalContent = document.getElementById("modalContent");
+      const modalFooter = document.getElementById("modalFooter");
+      const closeModalBtn = document.getElementById("closeModal");
+
+      // Function to show modal
+      function showModal() {
+        deleteModal.classList.add("active");
+      }
+
+      // Function to hide modal
+      function hideModal() {
+        deleteModal.classList.remove("active");
+      }
+
+      // Close modal when clicking on close button or outside the modal
+      closeModalBtn.addEventListener("click", hideModal);
+      deleteModal.addEventListener("click", function (e) {
+        if (e.target === deleteModal) {
+          hideModal();
+        }
+      });
+
+      // Function to show confirmation dialog
+      function showDeleteConfirmation() {
+        modalTitle.textContent = "Confirm Deletion";
+        modalContent.innerHTML = `
+          <div class="modal-message">
+            <div class="modal-icon warning">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3>Are you sure?</h3>
+            <p>You are about to delete this product. This action cannot be undone.</p>
+          </div>
+        `;
+
+        modalFooter.innerHTML = `
+          <button class="modal-btn modal-btn-secondary" id="cancelDelete">Cancel</button>
+          <button class="modal-btn modal-btn-danger" id="confirmDelete">Yes, Delete Product</button>
+        `;
+
+        document
+          .getElementById("cancelDelete")
+          .addEventListener("click", hideModal);
+        document
+          .getElementById("confirmDelete")
+          .addEventListener("click", startDeleteProcess);
+
+        showModal();
+      }
+
+      // Function to show loading state in modal
+      function showDeleteLoading() {
+        modalTitle.textContent = "Deleting Product";
+        modalContent.innerHTML = `
+          <div class="modal-spinner">
+            <div class="spinner"></div>
+          </div>
+          <p style="text-align: center;">Deleting product, please wait...</p>
+        `;
+        modalFooter.innerHTML = "";
+        showModal();
+      }
+
+      // Function to show result
+      function showDeleteResult(success, message) {
+        modalTitle.textContent = success ? "Success" : "Error";
+        modalContent.innerHTML = `
+          <div class="modal-message">
+            <div class="modal-icon ${success ? "success" : "error"}">
+              <i class="fas ${
+                success ? "fa-check-circle" : "fa-exclamation-circle"
+              }"></i>
+            </div>
+            <h3>${success ? "Product Deleted" : "Deletion Failed"}</h3>
+            <p>${message}</p>
+          </div>
+        `;
+
+        if (success) {
+          modalFooter.innerHTML = `
+            <button class="modal-btn modal-btn-primary" id="successOk">OK</button>
+          `;
+          document
+            .getElementById("successOk")
+            .addEventListener("click", function () {
+              hideModal();
+              // Redirect to add product page
+              window.location.href = "./admin.html";
+            });
+        } else {
+          modalFooter.innerHTML = `
+            <button class="modal-btn modal-btn-secondary" id="errorOk">OK</button>
+          `;
+          document
+            .getElementById("errorOk")
+            .addEventListener("click", hideModal);
+        }
+
+        showModal();
+      }
+
+      // Function to start the deletion process
+      function startDeleteProcess() {
+        showDeleteLoading();
+
+        fetch(`${baseUrl}/products/${productId}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            // Check if the response is OK (status in the range 200-299)
+            if (response.ok) {
+              return response.json();
+            } else {
+              // If the response is not OK, throw an error
+              throw new Error("Server returned an error");
+            }
+          })
+          .then((result) => {
+            // Check if the response contains the success message
+            if (result.message && result.message.includes("successfully")) {
+              showDeleteResult(true, "Product has been successfully deleted.");
+            } else {
+              showDeleteResult(
+                false,
+                result.error || "Failed to delete product. Please try again."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Delete error:", error);
+            showDeleteResult(
+              false,
+              "Network error. Please check your connection and try again."
+            );
+          });
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const formContainer = document.getElementById("formContainer");
+
+        // Show loading spinner initially
+        loadingSpinner.style.display = "flex";
+        formContainer.style.display = "none";
+
+        // Fetch product data from the API
+        fetch(`${baseUrl}/products/${productId}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch product data");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            originalProductData = data;
+            currentOtherImages = [...data.other_images_urls];
+            populateForm(data);
+            loadingSpinner.style.display = "none";
+            formContainer.style.display = "grid";
+          })
+          .catch((error) => {
+            console.error("Error fetching product data:", error);
+            loadingSpinner.style.display = "none";
+            alert("Failed to load product data. Please try again.");
+          });
+
         // Get all form elements
         const productName = document.getElementById("productName");
         const productPrice = document.getElementById("productPrice");
@@ -860,7 +1191,7 @@ Premium quality white sneakers made from genuine leather with comfortable insole
         const sizeCheckboxes = document.querySelectorAll(
           '#productSizes input[type="checkbox"]'
         );
-        const colorOptions = document.querySelectorAll(".color-option");
+        const colorOptionsContainer = document.getElementById("colorOptions");
         const updateBtn = document.getElementById("updateBtn");
         const resetBtn = document.getElementById("resetBtn");
         const deleteBtn = document.getElementById("deleteBtn");
@@ -868,106 +1199,139 @@ Premium quality white sneakers made from genuine leather with comfortable insole
         const successMessage = document.getElementById("successMessage");
 
         // Store selected colors
-        let selectedColors = ["Red"];
+        let selectedColors = [];
 
-        // Handle main image selection and preview
-        mainImageInput.addEventListener("change", function () {
+        // Function to populate the form with product data
+        function populateForm(productData) {
+          // Set basic form values
+          productName.value = productData.product_name;
+          productPrice.value = productData.price;
+          productQuantity.value = productData.quantity;
+          productDescription.value = productData.description;
+
+          // Set category
+          document.querySelector(
+            `input[name="productCategory"][value="${productData.category}"]`
+          ).checked = true;
+
+          // Set sizes
+          sizeCheckboxes.forEach((checkbox) => {
+            checkbox.checked = productData.sizes.includes(checkbox.value);
+          });
+
+          // Clear existing color options before adding new ones
+          colorOptionsContainer.innerHTML = "";
+          selectedColors = [];
+
+          // Create color options
+          colorOptionsData.forEach((color) => {
+            const colorOption = document.createElement("div");
+            colorOption.className = "color-option";
+            if (productData.colors.includes(color.name)) {
+              colorOption.classList.add("selected");
+              selectedColors.push(color.name);
+            }
+            colorOption.style.backgroundColor = color.hex;
+            colorOption.setAttribute("data-color", color.name);
+
+            // Add border for white color to make it visible
+            if (color.name === "White") {
+              colorOption.style.border = "1px solid #ccc";
+            }
+
+            colorOption.addEventListener("click", function () {
+              const colorName = this.getAttribute("data-color");
+
+              if (this.classList.contains("selected")) {
+                this.classList.remove("selected");
+                selectedColors = selectedColors.filter((c) => c !== colorName);
+              } else {
+                this.classList.add("selected");
+                selectedColors.push(colorName);
+              }
+            });
+
+            colorOptionsContainer.appendChild(colorOption);
+          });
+
+          // Set main image preview
+          mainImagePreview.innerHTML = "";
+          const mainPreviewItem = document.createElement("div");
+          mainPreviewItem.className = "preview-item";
+          mainPreviewItem.innerHTML = `
+            <img src="${productData.main_image_url}" alt="Main Image" />
+            <span class="remove" onclick="removeMainImage(this)">×</span>
+          `;
+          mainImagePreview.appendChild(mainPreviewItem);
+
+          // Set other images preview
+          updateOtherImagesPreview();
+        }
+
+        // Function to update other images preview
+        function updateOtherImagesPreview() {
+          otherImagesPreview.innerHTML = "";
+          currentOtherImages.forEach((imageUrl, index) => {
+            const previewItem = document.createElement("div");
+            previewItem.className = "preview-item";
+            previewItem.innerHTML = `
+              <img src="${imageUrl}" alt="Product angle ${index + 1}" />
+              <span class="remove" onclick="removeOtherImage(this, ${index})">×</span>
+            `;
+            otherImagesPreview.appendChild(previewItem);
+          });
+        }
+
+        // Function to remove main image
+        window.removeMainImage = function (element) {
+          mainImagePreview.innerHTML = "";
+        };
+
+        // Function to remove other image
+        window.removeOtherImage = function (element, index) {
+          currentOtherImages.splice(index, 1);
+          updateOtherImagesPreview();
+        };
+
+        // Handle main image upload
+        mainImageInput.addEventListener("change", function (e) {
           if (this.files && this.files[0]) {
-            const file = this.files[0];
             const reader = new FileReader();
-
             reader.onload = function (e) {
-              // Clear existing preview
               mainImagePreview.innerHTML = "";
-
               const previewItem = document.createElement("div");
               previewItem.className = "preview-item";
-
-              const img = document.createElement("img");
-              img.src = e.target.result;
-              img.alt = file.name;
-
-              const removeBtn = document.createElement("span");
-              removeBtn.className = "remove";
-              removeBtn.innerHTML = "×";
-              removeBtn.onclick = function () {
-                previewItem.remove();
-                mainImageInput.value = "";
-              };
-
-              previewItem.appendChild(img);
-              previewItem.appendChild(removeBtn);
+              previewItem.innerHTML = `
+                <img src="${e.target.result}" alt="Main Image Preview" />
+                <span class="remove" onclick="removeMainImage(this)">×</span>
+              `;
               mainImagePreview.appendChild(previewItem);
             };
-
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(this.files[0]);
           }
         });
 
-        // Handle other images selection and preview with 3 file limit
-        otherImagesInput.addEventListener("change", function () {
-          // Check if more than 3 files are selected
-          if (this.files.length > 3) {
-            // Keep only the first 3 files
-            const dataTransfer = new DataTransfer();
-            for (let i = 0; i < 3; i++) {
-              dataTransfer.items.add(this.files[i]);
-            }
-            this.files = dataTransfer.files;
-          }
+        // Handle other images upload
+        otherImagesInput.addEventListener("change", function (e) {
+          if (this.files) {
+            const files = Array.from(this.files);
 
-          if (this.files && this.files.length > 0) {
-            for (let i = 0; i < this.files.length; i++) {
-              const file = this.files[i];
+            // Limit to 3 images total
+            if (currentOtherImages.length + files.length > 3) {
+              alert("You can only upload up to 3 additional images.");
+              this.value = "";
+              return;
+            }
+
+            files.forEach((file) => {
               const reader = new FileReader();
-
               reader.onload = function (e) {
-                const previewItem = document.createElement("div");
-                previewItem.className = "preview-item";
-
-                const img = document.createElement("img");
-                img.src = e.target.result;
-                img.alt = file.name;
-
-                const removeBtn = document.createElement("span");
-                removeBtn.className = "remove";
-                removeBtn.innerHTML = "×";
-                removeBtn.onclick = function () {
-                  previewItem.remove();
-
-                  // Create a new FileList without the removed file
-                  const dataTransfer = new DataTransfer();
-                  for (let j = 0; j < otherImagesInput.files.length; j++) {
-                    if (j !== i) {
-                      dataTransfer.items.add(otherImagesInput.files[j]);
-                    }
-                  }
-                  otherImagesInput.files = dataTransfer.files;
-                };
-
-                previewItem.appendChild(img);
-                previewItem.appendChild(removeBtn);
-                otherImagesPreview.appendChild(previewItem);
+                currentOtherImages.push(e.target.result);
+                updateOtherImagesPreview();
               };
-
               reader.readAsDataURL(file);
-            }
+            });
           }
-        });
-
-        // Handle color selection
-        colorOptions.forEach((option) => {
-          option.addEventListener("click", function () {
-            const color = this.getAttribute("data-color");
-
-            if (this.classList.contains("selected")) {
-              this.classList.remove("selected");
-              selectedColors = selectedColors.filter((c) => c !== color);
-            } else {
-              this.classList.add("selected");
-              selectedColors.push(color);
-            }
-          });
         });
 
         // Handle form submission
@@ -981,175 +1345,115 @@ Premium quality white sneakers made from genuine leather with comfortable insole
             }
           }
 
-          // Get all form values
-          const formData = {
-            productName: productName.value,
-            productCategory: selectedCategory,
-            productPrice: parseFloat(productPrice.value) || 0,
-            productQuantity: parseInt(productQuantity.value) || 0,
-            productDescription: productDescription.value,
-            productMainImage: mainImageInput.files[0]
-              ? {
-                  name: mainImageInput.files[0].name,
-                  type: mainImageInput.files[0].type,
-                  size: mainImageInput.files[0].size,
-                }
-              : null,
-            otherProductImage: [],
-            productSizes: [],
-            productColours: selectedColors,
-          };
+          // Prepare FormData for backend submission
+          const formDataForUpload = new FormData();
+          formDataForUpload.append("id", productId);
+          formDataForUpload.append("product_name", productName.value);
+          formDataForUpload.append("category", selectedCategory.toLowerCase());
+          formDataForUpload.append(
+            "price",
+            parseFloat(productPrice.value) || 0
+          );
+          formDataForUpload.append(
+            "quantity",
+            parseInt(productQuantity.value) || 0
+          );
+          formDataForUpload.append("description", productDescription.value);
 
-          // Get other images data
+          // Add main image if changed
+          if (mainImageInput.files[0]) {
+            formDataForUpload.append("mainImage", mainImageInput.files[0]);
+          }
+
+          // Add other images if changed
           if (otherImagesInput.files.length > 0) {
             for (let i = 0; i < otherImagesInput.files.length; i++) {
-              formData.otherProductImage.push({
-                name: otherImagesInput.files[i].name,
-                type: otherImagesInput.files[i].type,
-                size: otherImagesInput.files[i].size,
-              });
-            }
-          }
-
-          // Get selected sizes
-          sizeCheckboxes.forEach((checkbox) => {
-            if (checkbox.checked) {
-              formData.productSizes.push(
-                checkbox.nextElementSibling.textContent
+              formDataForUpload.append(
+                "otherImages",
+                otherImagesInput.files[i]
               );
             }
-          });
-
-          // Display the captured data
-          let outputHTML = "";
-
-          outputHTML += `<p><strong>Product Name:</strong> ${
-            formData.productName || "Not provided"
-          }</p>`;
-          outputHTML += `<p><strong>Category:</strong> <span class="category-info">${
-            formData.productCategory || "Not selected"
-          }</span></p>`;
-          outputHTML += `<p><strong>Price:</strong> $${formData.productPrice.toFixed(
-            2
-          )}</p>`;
-          outputHTML += `<p><strong>Quantity:</strong> ${formData.productQuantity}</p>`;
-          outputHTML += `<p><strong>Description:</strong> ${
-            formData.productDescription || "Not provided"
-          }</p>`;
-
-          if (formData.productMainImage) {
-            outputHTML += `<p><strong>Main Image:</strong> ${
-              formData.productMainImage.name
-            } (${Math.round(formData.productMainImage.size / 1024)} KB)</p>`;
-          } else {
-            outputHTML +=
-              "<p><strong>Main Image:</strong> Using existing image</p>";
           }
 
-          if (formData.otherProductImage.length > 0) {
-            outputHTML += "<p><strong>Other Images:</strong></p>";
-            formData.otherProductImage.forEach((file) => {
-              outputHTML += `<div class="file-info">
-                            <div>${file.name}</div>
-                            <div>${Math.round(file.size / 1024)} KB</div>
-                        </div>`;
-            });
-          } else {
-            outputHTML +=
-              "<p><strong>Other Images:</strong> Using existing images</p>";
-          }
-
-          if (formData.productSizes.length > 0) {
-            outputHTML += "<p><strong>Selected Sizes:</strong> ";
-            formData.productSizes.forEach((size) => {
-              outputHTML += `<span class="size-info">${size}</span>`;
-            });
-            outputHTML += "</p>";
-          } else {
-            outputHTML +=
-              "<p><strong>Selected Sizes:</strong> None selected</p>";
-          }
-
-          if (formData.productColours.length > 0) {
-            outputHTML += "<p><strong>Selected Colors:</strong> ";
-            formData.productColours.forEach((color) => {
-              outputHTML += `<span class="color-info">${color}</span>`;
-            });
-            outputHTML += "</p>";
-          } else {
-            outputHTML +=
-              "<p><strong>Selected Colors:</strong> None selected</p>";
-          }
-
-          outputDiv.innerHTML = outputHTML;
-
-          // Show success message
-          successMessage.classList.add("show");
-
-          // Hide success message after 5 seconds
-          setTimeout(() => {
-            successMessage.classList.remove("show");
-          }, 5000);
-        });
-
-        // Handle form reset
-        resetBtn.addEventListener("click", function () {
-          // Reset to original values
-          productName.value = "Classic White Sneakers";
-          productPrice.value = "89.99";
-          productQuantity.value = "45";
-          productDescription.value =
-            "Premium quality white sneakers made from genuine leather with comfortable insoles. Perfect for casual wear and light activities.";
-
-          // Reset category to Men
-          categoryRadios[1].checked = true;
-
-          // Reset sizes
-          sizeCheckboxes.forEach((checkbox, index) => {
-            checkbox.checked = index < 3; // First three checked
-          });
-
-          // Reset colors to Red only
-          colorOptions.forEach((option, index) => {
-            if (index === 0) {
-              option.classList.add("selected");
-            } else {
-              option.classList.remove("selected");
+          // Collect sizes and colors as arrays first, then append as comma-separated strings
+          const selectedSizes = [];
+          sizeCheckboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+              selectedSizes.push(checkbox.value);
             }
           });
-          selectedColors = ["Red"];
+          formDataForUpload.append("sizes", selectedSizes.join(","));
 
-          // Clear file inputs but keep previews of existing images
-          mainImageInput.value = "";
-          otherImagesInput.value = "";
+          // Add colors as comma-separated string
+          formDataForUpload.append("colors", selectedColors.join(",")); // Show loading state
+          updateBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Updating...';
+          updateBtn.disabled = true;
 
-          outputDiv.innerHTML =
-            '<p class="no-data">Updated data will appear here after submission</p>';
+          try {
+            const response = await fetch(
+              `http://localhost:3000/admin-api/products/${productId}`,
+              {
+                method: "PUT",
+                body: formDataForUpload,
+              }
+            );
+
+            const result = await response.json();
+            // console.log(result);
+
+            let outputHTML = "";
+
+            if (response.ok) {
+              outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px;">
+                <strong style="color: #52c41a;">Success!</strong> Product has been updated successfully.
+                ${result.id ? `<br>Product ID: ${result.id}` : ""}
+              </div>`;
+
+              // Show success message
+              successMessage.classList.add("show");
+
+              // Hide success message after 5 seconds
+              setTimeout(() => {
+                successMessage.classList.remove("show");
+              }, 5000);
+            } else {
+              outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
+                <strong style="color: #ff4d4f;">Error!</strong> ${
+                  result.error || "Failed to update product"
+                }
+              </div>`;
+            }
+
+            outputDiv.innerHTML = outputHTML;
+          } catch (error) {
+            console.error("Submission error:", error);
+            outputDiv.innerHTML = `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
+              <strong style="color: #ff4d4f;">Network Error!</strong> Could not connect to the server. Please try again.
+            </div>`;
+          } finally {
+            // Restore button state
+            updateBtn.innerHTML = '<i class="fas fa-save"></i> Update Product';
+            updateBtn.disabled = false;
+          }
+        });
+
+        // Handle reset button
+        resetBtn.addEventListener("click", function () {
+          if (originalProductData) {
+            populateForm(originalProductData);
+            currentOtherImages = [...originalProductData.other_images_urls];
+            successMessage.classList.remove("show");
+            outputDiv.innerHTML =
+              '<p class="no-data">Updated data will appear here after submission</p>';
+          }
         });
 
         // Handle delete button
         deleteBtn.addEventListener("click", function () {
-          if (
-            confirm(
-              "Are you sure you want to delete this product? This action cannot be undone."
-            )
-          ) {
-            alert(
-              "Product deletion simulated. In a real application, this would delete the product from the database."
-            );
-          }
+          showDeleteConfirmation();
         });
       });
-
-      // Function to remove images
-      function removeImage(element, type) {
-        const previewItem = element.parentElement;
-        previewItem.remove();
-
-        if (type === "main") {
-          document.getElementById("productMainImage").value = "";
-        }
-      }
     </script>
   </body>
 </html>

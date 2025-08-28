@@ -28,7 +28,14 @@ router.get("/products", getAllProducts);
 router.get("/products/:id", getSingleProduct);
 
 // Update product
-router.put("/products/:id", updateProduct);
+router.put(
+  "/products/:id",
+  upload.fields([
+    { name: "mainImage", maxCount: 1 },
+    { name: "otherImages", maxCount: 3 },
+  ]),
+  updateProduct
+);
 
 // Delete product
 router.delete("/products/:id", deleteProduct);

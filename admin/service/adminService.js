@@ -127,9 +127,27 @@ module.exports = class ProductService {
   // Update product
   static async updateProduct(id, updates) {
     try {
+      // Extract file-related updates (if any)
+      const { main_image_url, other_images_urls, ...dbUpdates } = updates;
+
+      // Prepare the update object
+      const updateData = {
+        ...dbUpdates,
+        updated_at: new Date().toISOString(),
+      };
+
+      // Add image URLs if they were provided
+      if (main_image_url) {
+        updateData.main_image_url = main_image_url;
+      }
+
+      if (other_images_urls) {
+        updateData.other_images_urls = other_images_urls;
+      }
+
       const { data, error } = await supabase
         .from("products")
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update(updateData)
         .eq("id", id)
         .select();
 
@@ -140,6 +158,23 @@ module.exports = class ProductService {
       throw error;
     }
   }
+
+  // Update product
+  // static async updateProduct(id, updates) {
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("products")
+  //       .update({ ...updates, updated_at: new Date().toISOString() })
+  //       .eq("id", id)
+  //       .select();
+
+  //     if (error) throw error;
+  //     return data[0];
+  //   } catch (error) {
+  //     console.error("Error updating product:", error);
+  //     throw error;
+  //   }
+  // }
 
   // Delete product
   static async deleteProduct(id) {
