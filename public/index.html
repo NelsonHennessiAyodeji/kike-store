@@ -60,6 +60,37 @@
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <style>
+      .wrap-modal1.loading .bg0 {
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .wrap-modal1.loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        margin: -20px 0 0 -20px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #4a6fa5;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+      }
+
+      /* Remove quantity controls from modal */
+      .wrap-num-product {
+        display: none;
+      }
+
+      /* Adjust add to cart button position */
+      .js-addcart-detail {
+        margin-top: 20px;
+      }
+    </style>
+    <style>
       /* Spinner Styles */
       .products-loading {
         display: flex;
@@ -1199,6 +1230,247 @@
     <script>
       const baseUrl = "http://localhost:3000/admin-api";
 
+      // Shopping Cart Functions
+      function getCart() {
+        const cart = localStorage.getItem("shoppingCart");
+        return cart ? JSON.parse(cart) : [];
+      }
+
+      function saveCart(cart) {
+        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+        updateCartIcon();
+        if ($(".js-panel-cart").hasClass("show-header-cart")) {
+          updateCartSidebar();
+        }
+        updateHeartIcons();
+      }
+
+      function isInCart(productId) {
+        const cart = getCart();
+        return cart.some((item) => item.id === productId);
+      }
+
+      function addToCart(product) {
+        const cart = getCart();
+
+        // Check if product already exists in cart
+        if (!isInCart(product.id)) {
+          cart.push({
+            id: product.id,
+            name: product.product_name,
+            price: product.price,
+            image: product.main_image_url,
+          });
+
+          saveCart(cart);
+          return true;
+        }
+        return false;
+      }
+
+      function removeFromCart(productId) {
+        let cart = getCart();
+        cart = cart.filter((item) => item.id !== productId);
+        saveCart(cart);
+      }
+
+      function toggleCartItem(product) {
+        if (isInCart(product.id)) {
+          removeFromCart(product.id);
+          return false;
+        } else {
+          addToCart(product);
+          return true;
+        }
+      }
+
+      function updateCartIcon() {
+        const cart = getCart();
+        const totalItems = cart.length;
+        $(".icon-header-noti.js-show-cart").attr("data-notify", totalItems);
+      }
+
+      function updateCartSidebar() {
+        const cart = getCart();
+        const cartItemsContainer = $(".header-cart-wrapitem");
+        const cartTotalElement = $(".header-cart-total");
+
+        cartItemsContainer.empty();
+
+        let total = 0;
+
+        if (cart.length === 0) {
+          cartItemsContainer.html(
+            '<p class="stext-107 cl7 p-l-25">Your cart is empty</p>'
+          );
+          cartTotalElement.text("Total: ₦0");
+          return;
+        }
+
+        cart.forEach((item) => {
+          total += parseInt(item.price);
+
+          const cartItemHTML = `
+            <li class="header-cart-item flex-w flex-t m-b-12">
+              <div class="header-cart-item-img">
+                <img src="${item.image}" alt="${item.name}">
+              </div>
+    
+              <div class="header-cart-item-txt p-t-8">
+                <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                  ${item.name}
+                </a>
+    
+                <span class="header-cart-item-info">
+                  ₦${item.price}
+                </span>
+              </div>
+            </li>
+          `;
+
+          cartItemsContainer.append(cartItemHTML);
+        });
+
+        cartTotalElement.text(`Total: ₦${total}`);
+      }
+
+      function updateHeartIcons() {
+        $(".btn-addwish-b2").each(function () {
+          const productData = $(this).data("product");
+          if (productData && isInCart(productData.id)) {
+            $(this).addClass("js-addedwish-b2");
+          } else {
+            $(this).removeClass("js-addedwish-b2");
+          }
+        });
+      }
+
+      // Product Modal Functions
+      async function fetchProductDetails(productId) {
+        try {
+          const response = await fetch(`${baseUrl}/products/${productId}`);
+          if (response.ok) {
+            return await response.json();
+          } else {
+            throw new Error("Failed to fetch product details");
+          }
+        } catch (error) {
+          console.error("Error fetching product details:", error);
+          throw error;
+        }
+      }
+
+      function populateModal(product) {
+        // Update basic product info
+        $(".js-name-detail").text(product.product_name);
+        $(".mtext-106.cl2").text(`₦${product.price}`);
+
+        // Update description
+        if (product.description) {
+          $(".stext-102.cl3.p-t-23").text(product.description);
+        } else {
+          $(".stext-102.cl3.p-t-23").text("No description available.");
+        }
+
+        // Update images
+        updateModalImages(product.images || [product.main_image_url]);
+
+        // Update size options
+        updateSizeOptions(product.sizes || ["S", "M", "L", "XL"]);
+
+        // Update color options
+        updateColorOptions(product.colors || ["Red", "Blue", "White", "Black"]);
+
+        // Set up add to cart button
+        $(".js-addcart-detail")
+          .off("click")
+          .on("click", function () {
+            const selectedSize = $('select[name="size"]').val();
+            const selectedColor = $('select[name="color"]').val();
+
+            addToCartWithOptions(product, selectedSize, selectedColor);
+          });
+      }
+
+      function updateModalImages(images) {
+        const gallery = $(".gallery-lb");
+        gallery.empty();
+
+        images.forEach((imageUrl, index) => {
+          const slide = `
+            <div class="item-slick3" data-thumb="${imageUrl}">
+              <div class="wrap-pic-w pos-relative">
+                <img src="${imageUrl}" alt="IMG-PRODUCT">
+                <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${imageUrl}">
+                  <i class="fa fa-expand"></i>
+                </a>
+              </div>
+            </div>
+          `;
+          gallery.append(slide);
+        });
+
+        // Reinitialize the slider
+        if (typeof $.fn.slick === "function") {
+          $(".slick3").slick("refresh");
+        }
+      }
+
+      function updateSizeOptions(sizes) {
+        const sizeSelect = $('select[name="size"]');
+        sizeSelect.empty();
+        sizeSelect.append("<option>Choose an option</option>");
+
+        sizes.forEach((size) => {
+          sizeSelect.append(`<option value="${size}">Size ${size}</option>`);
+        });
+
+        // Reinitialize select2
+        if (typeof $.fn.select2 === "function") {
+          sizeSelect.select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: sizeSelect.next(".dropDownSelect2"),
+          });
+        }
+      }
+
+      function updateColorOptions(colors) {
+        const colorSelect = $('select[name="color"]');
+        colorSelect.empty();
+        colorSelect.append("<option>Choose an option</option>");
+
+        colors.forEach((color) => {
+          colorSelect.append(`<option value="${color}">${color}</option>`);
+        });
+
+        // Reinitialize select2
+        if (typeof $.fn.select2 === "function") {
+          colorSelect.select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: colorSelect.next(".dropDownSelect2"),
+          });
+        }
+      }
+
+      function addToCartWithOptions(product, size, color) {
+        const cartItem = {
+          id: product.id,
+          name: product.product_name,
+          price: product.price,
+          image: product.main_image_url,
+          size: size,
+          color: color,
+        };
+
+        // Check if already in cart
+        if (!isInCart(product.id)) {
+          addToCart(cartItem);
+          swal(product.product_name, "is added to cart!", "success");
+        } else {
+          swal(product.product_name, "is already in your cart!", "info");
+        }
+      }
+
       // Sample product data for demonstration
       const sampleProducts = [
         {
@@ -1270,18 +1542,6 @@
 
       async function getAllProducts() {
         try {
-          // For demonstration, we'll use sample data with a delay to simulate network request
-          // In production, you would fetch from your API
-          // await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate network delay
-
-          // Uncomment the below code to simulate an error
-          // throw new Error("Failed to fetch products");
-
-          // Uncomment the below code to simulate empty products
-          // return [];
-
-          // return sampleProducts;
-
           const response = await fetch(`${baseUrl}/products`, {
             method: "GET",
           });
@@ -1319,8 +1579,12 @@
               productElement.innerHTML = `
                 <div class="block2">
                   <div class="block2-pic hov-img0">
-                    <img src="${product.main_image_url}" alt="${product.product_name}">
-                    <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-product-id="${product.id}">
+                    <img src="${product.main_image_url}" alt="${
+                product.product_name
+              }">
+                    <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-product-id="${
+                      product.id
+                    }">
                       Quick View
                     </a>
                   </div>
@@ -1332,7 +1596,9 @@
                       <span class="stext-105 cl3">₦${product.price}</span>
                     </div>
                     <div class="block2-txt-child2 flex-r p-t-3">
-                      <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                      <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" data-product='${JSON.stringify(
+                        product
+                      ).replace(/'/g, "&#39;")}'>
                         <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
                         <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
                       </a>
@@ -1345,6 +1611,12 @@
             });
 
             showProducts();
+
+            // Initialize wishlist/cart buttons
+            initWishlistHandlers();
+
+            // Update heart icons based on cart contents
+            updateHeartIcons();
 
             // Reinitialize modal handlers for the new products
             initModalHandlers();
@@ -1367,21 +1639,63 @@
         }
       }
 
-      function initModalHandlers() {
-        // Add click handlers for modal buttons
-        $(".js-show-modal1").each(function () {
-          $(this).on("click", function (e) {
-            e.preventDefault();
-            const productId = $(this).data("product-id");
-            showProductModal(productId);
-          });
+      function initWishlistHandlers() {
+        $(".js-addwish-b2").on("click", function (e) {
+          e.preventDefault();
+          const productData = $(this).data("product");
+          const added = toggleCartItem(productData);
+
+          // Show appropriate message
+          if (added) {
+            swal(productData.product_name, "is added to cart!", "success");
+          } else {
+            swal(productData.product_name, "is removed from cart!", "info");
+          }
+        });
+
+        $(".js-addwish-detail").on("click", function (e) {
+          e.preventDefault();
+          const productName = $(this)
+            .parent()
+            .parent()
+            .parent()
+            .find(".js-name-detail")
+            .html();
+          // In a real implementation, we would get the full product data
+          swal(productName, "is added to cart!", "success");
         });
       }
 
-      function showProductModal(productId) {
-        // In a real implementation, you would fetch product details based on ID
-        // For now, we'll just show the modal with generic content
-        $(".js-modal1").addClass("show-modal1");
+      function initModalHandlers() {
+        // Add click handlers for modal buttons
+        $(".js-show-modal1").on("click", function (e) {
+          e.preventDefault();
+          const productId = $(this).data("product-id");
+          showProductModal(productId);
+        });
+      }
+
+      async function showProductModal(productId) {
+        try {
+          // Show the modal immediately
+          $(".js-modal1").addClass("show-modal1");
+
+          // Show loading state in modal
+          $(".js-name-detail").text("Loading...");
+          $(".mtext-106.cl2").text("₦0");
+          $(".stext-102.cl3.p-t-23").text("Loading product details...");
+
+          // Fetch product details
+          const product = await fetchProductDetails(productId);
+
+          // Populate modal with product data
+          populateModal(product);
+        } catch (error) {
+          console.error("Error loading product details:", error);
+          $(".stext-102.cl3.p-t-23").text(
+            "Error loading product details. Please try again."
+          );
+        }
       }
 
       function retryLoadingProducts() {
@@ -1390,12 +1704,21 @@
 
       // Initialize when document is ready
       $(document).ready(function () {
-        renderProducts();
+        // Initialize cart icon
+        updateCartIcon();
+
+        // Initialize cart sidebar
+        $(".js-show-cart").on("click", function (e) {
+          e.preventDefault();
+          updateCartSidebar();
+        });
 
         // Close modal handler
         $(".js-hide-modal1").on("click", function () {
           $(".js-modal1").removeClass("show-modal1");
         });
+
+        renderProducts();
       });
     </script>
   </body>
