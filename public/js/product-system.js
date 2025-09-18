@@ -1,5 +1,4 @@
-// js/product-system.js
-const baseUrl = "https://estore-topaz.vercel.app/admin-api";
+const baseUrl = "/admin-api";
 
 // Shopping Cart Functions
 function getCart() {
