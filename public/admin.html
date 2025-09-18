@@ -1051,13 +1051,10 @@
               '<i class="fas fa-spinner fa-spin"></i> Saving...';
             submitBtn.disabled = true;
 
-            const response = await fetch(
-              "http://localhost:3000/admin-api/products",
-              {
-                method: "POST",
-                body: formDataForUpload,
-              }
-            );
+            const response = await fetch("/admin-api/products", {
+              method: "POST",
+              body: formDataForUpload,
+            });
 
             const result = await response.json();
 

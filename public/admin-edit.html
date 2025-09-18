@@ -1000,7 +1000,7 @@
 
     <script>
       // Backend URL
-      const baseUrl = "http://localhost:3000/admin-api";
+      const baseUrl = "/admin-api";
       const productId = localStorage.getItem("ProductId");
 
       // Available color options with their hex codes
@@ -1403,13 +1403,10 @@
           updateBtn.disabled = true;
 
           try {
-            const response = await fetch(
-              `http://localhost:3000/admin-api/products/${productId}`,
-              {
-                method: "PUT",
-                body: formDataForUpload,
-              }
-            );
+            const response = await fetch(`/admin-api/products/${productId}`, {
+              method: "PUT",
+              body: formDataForUpload,
+            });
 
             const result = await response.json();
             // console.log(result);
