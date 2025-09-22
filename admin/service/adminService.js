@@ -189,7 +189,7 @@ module.exports = class ProductService {
     }
   }
 
-  // Add this method to the existing ProductService class
+  // Sort by price
   static async getProductsSortedByPrice(order = "asc") {
     try {
       const { data, error } = await supabase
@@ -205,6 +205,46 @@ module.exports = class ProductService {
       return data;
     } catch (error) {
       console.error("Error fetching sorted products:", error);
+      throw error;
+    }
+  }
+
+  // Sort by date
+  static async getProductsSortedByDate(order = "desc") {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: order === "asc" });
+
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching date-sorted products:", error);
+      throw error;
+    }
+  }
+
+  // Sort by Alphabetical Order
+  static async getProductsSortedByName(order = "asc") {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("product_name", { ascending: order === "asc" });
+
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching name-sorted products:", error);
       throw error;
     }
   }

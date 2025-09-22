@@ -113,6 +113,30 @@ const sortLowToHigh = async (req, res) => {
   }
 };
 
+const sortByDate = async (req, res) => {
+  try {
+    const products = await ProductService.getProductsSortedByDate(
+      req.params.order
+    );
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error in products-sorted/date route:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const sortByName = async (req, res) => {
+  try {
+    const products = await ProductService.getProductsSortedByName(
+      req.params.order
+    );
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error in products-sorted/name route:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
@@ -120,4 +144,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   sortLowToHigh,
+  sortByDate,
+  sortByName,
 };

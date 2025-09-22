@@ -614,14 +614,25 @@ async function getAllProducts() {
   }
 }
 
-// New function to get sorted products
 async function getSortedProducts(sortType) {
   try {
-    let url = `${baseUrl}/products`;
+    let url = `${baseUrl}/products`; // Default URL
 
+    // Handle different sort types using query parameters
     if (sortType === "price-asc") {
       url = `${baseUrl}/products-sorted/price/asc`;
+    } else if (sortType === "price-desc") {
+      url = `${baseUrl}/products-sorted/price/desc`;
+    } else if (sortType === "date-asc") {
+      url = `${baseUrl}/products-sorted/date/asc`;
+    } else if (sortType === "date-desc") {
+      url = `${baseUrl}/products-sorted/date/desc`;
+    } else if (sortType === "name-asc") {
+      url = `${baseUrl}/products-sorted/name/asc`;
+    } else if (sortType === "name-desc") {
+      url = `${baseUrl}/products-sorted/name/desc`;
     }
+    // 'default' will use the base URL
 
     const response = await fetch(url, {
       method: "GET",
@@ -757,7 +768,6 @@ function initModalHandlers() {
   });
 }
 
-// Initialize filter handlers
 function initFilterHandlers() {
   // Remove any existing handlers first
   $(".filter-link[data-sort]").off("click");
@@ -773,6 +783,7 @@ function initFilterHandlers() {
     $(this).addClass("filter-link-active");
 
     // Render products with the selected sort
+    currentSort = sortType;
     renderProducts(sortType);
   });
 }
@@ -851,6 +862,9 @@ $(document).ready(function () {
   // Initialize filter handlers
   initFilterHandlers();
 
-  // Load products initially
-  renderProducts();
+  // Set default active filter (Default)
+  $('.filter-link[data-sort="default"]').addClass("filter-link-active");
+
+  // Load products initially with default sort (normal order)
+  renderProducts("default");
 });
