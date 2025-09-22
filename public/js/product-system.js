@@ -1,5 +1,9 @@
 const baseUrl = "/admin-api";
 
+// Global variables
+let allProducts = [];
+let currentSort = "default";
+
 // Shopping Cart Functions
 function getCart() {
   const cart = localStorage.getItem("shoppingCart");
@@ -148,24 +152,95 @@ function createModalForProduct(product) {
                 <div class="wrap-slick3 flex-sb flex-w">
                   <div class="wrap-slick3-dots"></div>
                   <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-                  <div class="slick3 gallery-lb"></div>
+
+                  <div class="slick3 gallery-lb">
+                    <div
+                      class="item-slick3"
+                      data-thumb="images/product-detail-01.jpg"
+                    >
+                      <div class="wrap-pic-w pos-relative">
+                        <img
+                          src="images/product-detail-01.jpg"
+                          alt="IMG-PRODUCT"
+                        />
+
+                        <a
+                          class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                          href="images/product-detail-01.jpg"
+                        >
+                          <i class="fa fa-expand"></i>
+                        </a>
+                      </div>
+                    </div>
+
+                    <div
+                      class="item-slick3"
+                      data-thumb="images/product-detail-02.jpg"
+                    >
+                      <div class="wrap-pic-w pos-relative">
+                        <img
+                          src="images/product-detail-02.jpg"
+                          alt="IMG-PRODUCT"
+                        />
+
+                        <a
+                          class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                          href="images/product-detail-02.jpg"
+                        >
+                          <i class="fa fa-expand"></i>
+                        </a>
+                      </div>
+                    </div>
+
+                    <div
+                      class="item-slick3"
+                      data-thumb="images/product-detail-03.jpg"
+                    >
+                      <div class="wrap-pic-w pos-relative">
+                        <img
+                          src="images/product-detail-03.jpg"
+                          alt="IMG-PRODUCT"
+                        />
+
+                        <a
+                          class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                          href="images/product-detail-03.jpg"
+                        >
+                          <i class="fa fa-expand"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="col-md-6 col-lg-5 p-b-30">
               <div class="p-r-50 p-t-5 p-lr-0-lg">
-                <h4 class="mtext-105 cl2 js-name-detail p-b-14"></h4>
-                <span class="mtext-106 cl2"></span>
-                <p class="stext-102 cl3 p-t-23"></p>
+                <h4 class="mtext-105 cl2 js-name-detail p-b-14">
+                  Lightweight Jacket
+                </h4>
 
+                <span class="mtext-106 cl2"> ₦5800 </span>
+
+                <p class="stext-102 cl3 p-t-23">
+                  Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus
+                  ligula. Mauris consequat ornare feugiat.
+                </p>
+
+                <!--  -->
                 <div class="p-t-33">
                   <div class="flex-w flex-r-m p-b-10">
                     <div class="size-203 flex-c-m respon6">Size</div>
+
                     <div class="size-204 respon6-next">
                       <div class="rs1-select2 bor8 bg0">
-                        <select class="js-select2" name="size">
+                        <select class="js-select2" name="time">
                           <option>Choose an option</option>
+                          <option>Size S</option>
+                          <option>Size M</option>
+                          <option>Size L</option>
+                          <option>Size XL</option>
                         </select>
                         <div class="dropDownSelect2"></div>
                       </div>
@@ -174,10 +249,15 @@ function createModalForProduct(product) {
 
                   <div class="flex-w flex-r-m p-b-10">
                     <div class="size-203 flex-c-m respon6">Color</div>
+
                     <div class="size-204 respon6-next">
                       <div class="rs1-select2 bor8 bg0">
-                        <select class="js-select2" name="color">
+                        <select class="js-select2" name="time">
                           <option>Choose an option</option>
+                          <option>Red</option>
+                          <option>Blue</option>
+                          <option>White</option>
+                          <option>Grey</option>
                         </select>
                         <div class="dropDownSelect2"></div>
                       </div>
@@ -186,29 +266,69 @@ function createModalForProduct(product) {
 
                   <div class="flex-w flex-r-m p-b-10">
                     <div class="size-204 flex-w flex-m respon6-next">
-                      <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                      <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                        <div
+                          class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                        >
+                          <i class="fs-16 zmdi zmdi-minus"></i>
+                        </div>
+
+                        <input
+                          class="mtext-104 cl3 txt-center num-product"
+                          type="number"
+                          name="num-product"
+                          value="1"
+                        />
+
+                        <div
+                          class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                        >
+                          <i class="fs-16 zmdi zmdi-plus"></i>
+                        </div>
+                      </div>
+
+                      <button
+                        class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+                      >
                         Add to cart
                       </button>
                     </div>
                   </div>
                 </div>
 
+                <!--  -->
                 <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                   <div class="flex-m bor9 p-r-10 m-r-11">
-                    <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+                    <a
+                      href="#"
+                      class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
+                      data-tooltip="Add to Wishlist"
+                    >
                       <i class="zmdi zmdi-favorite"></i>
                     </a>
                   </div>
 
-                  <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
+                  <a
+                    href="#"
+                    class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                    data-tooltip="Facebook"
+                  >
                     <i class="fa fa-facebook"></i>
                   </a>
 
-                  <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
+                  <a
+                    href="#"
+                    class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                    data-tooltip="Twitter"
+                  >
                     <i class="fa fa-twitter"></i>
                   </a>
 
-                  <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
+                  <a
+                    href="#"
+                    class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                    data-tooltip="Google Plus"
+                  >
                     <i class="fa fa-google-plus"></i>
                   </a>
                 </div>
@@ -271,10 +391,12 @@ function populateModal($modal, product) {
     .find(".js-addcart-detail")
     .off("click")
     .on("click", function () {
-      const selectedSize = $modal.find('select[name="size"]').val();
-      const selectedColor = $modal.find('select[name="color"]').val();
+      const selectedSize = $modal.find('select[name="time"]').val();
+      const selectedColor = $modal.find('select[name="time"]').val();
+      const quantity =
+        parseInt($modal.find('input[name="num-product"]').val()) || 1;
 
-      addToCartWithOptions(product, selectedSize, selectedColor);
+      addToCartWithOptions(product, selectedSize, selectedColor, quantity);
       $modal.remove();
     });
 
@@ -291,6 +413,24 @@ function populateModal($modal, product) {
       } else {
         swal(product.product_name, "is removed from cart!", "info");
       }
+    });
+
+  // Set up quantity controls
+  $modal
+    .find(".btn-num-product-down")
+    .off("click")
+    .on("click", function () {
+      var numProduct = Number($modal.find('input[name="num-product"]').val());
+      if (numProduct > 1)
+        $modal.find('input[name="num-product"]').val(numProduct - 1);
+    });
+
+  $modal
+    .find(".btn-num-product-up")
+    .off("click")
+    .on("click", function () {
+      var numProduct = Number($modal.find('input[name="num-product"]').val());
+      $modal.find('input[name="num-product"]').val(numProduct + 1);
     });
 }
 
@@ -364,7 +504,7 @@ function updateModalImages($modal, product) {
 }
 
 function updateSizeOptions($modal, sizes) {
-  const sizeSelect = $modal.find('select[name="size"]');
+  const sizeSelect = $modal.find('select[name="time"]').first();
   sizeSelect.empty();
   sizeSelect.append("<option>Choose an option</option>");
 
@@ -382,7 +522,7 @@ function updateSizeOptions($modal, sizes) {
 }
 
 function updateColorOptions($modal, colors) {
-  const colorSelect = $modal.find('select[name="color"]');
+  const colorSelect = $modal.find('select[name="time"]').last();
   colorSelect.empty();
   colorSelect.append("<option>Choose an option</option>");
 
@@ -399,7 +539,7 @@ function updateColorOptions($modal, colors) {
   }
 }
 
-function addToCartWithOptions(product, size, color) {
+function addToCartWithOptions(product, size, color, quantity = 1) {
   const cartItem = {
     id: product.id,
     name: product.product_name,
@@ -407,6 +547,7 @@ function addToCartWithOptions(product, size, color) {
     image: product.main_image_url,
     size: size,
     color: color,
+    quantity: quantity,
   };
 
   // Check if already in cart
@@ -473,11 +614,41 @@ async function getAllProducts() {
   }
 }
 
-async function renderProducts() {
+// New function to get sorted products
+async function getSortedProducts(sortType) {
+  try {
+    let url = `${baseUrl}/products`;
+
+    if (sortType === "price-asc") {
+      url = `${baseUrl}/products-sorted/price/asc`;
+    }
+
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const products = await response.json();
+      return products;
+    } else {
+      throw new Error("Failed to fetch sorted products");
+    }
+  } catch (error) {
+    console.error("Error fetching sorted products:", error);
+    throw error;
+  }
+}
+
+async function renderProducts(sortType = "default") {
   showLoading();
 
   try {
-    const products = await getAllProducts();
+    const products =
+      sortType === "default"
+        ? await getAllProducts()
+        : await getSortedProducts(sortType);
+
+    allProducts = products; // Store for potential client-side sorting
     const productsContainer = document.getElementById("productsContainer");
 
     // Clear existing content
@@ -586,6 +757,26 @@ function initModalHandlers() {
   });
 }
 
+// Initialize filter handlers
+function initFilterHandlers() {
+  // Remove any existing handlers first
+  $(".filter-link[data-sort]").off("click");
+
+  // Add click handlers for sort filters
+  $(".filter-link[data-sort]").on("click", function (e) {
+    e.preventDefault();
+    const sortType = $(this).data("sort");
+
+    // Remove active class from all sort links
+    $(".filter-link").removeClass("filter-link-active");
+    // Add active class to clicked link
+    $(this).addClass("filter-link-active");
+
+    // Render products with the selected sort
+    renderProducts(sortType);
+  });
+}
+
 async function showProductModal(productId, $button) {
   try {
     // Fetch product details
@@ -614,7 +805,7 @@ async function showProductModal(productId, $button) {
 }
 
 function retryLoadingProducts() {
-  renderProducts();
+  renderProducts(currentSort);
 }
 
 // Initialize when document is ready
@@ -639,6 +830,11 @@ $(document).ready(function () {
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    
+    .filter-link-active {
+      color: #4a6fa5 !important;
+      font-weight: 600;
+    }
   `;
 
   $("head").append("<style>" + loadingStyles + "</style>");
@@ -652,5 +848,9 @@ $(document).ready(function () {
     updateCartSidebar();
   });
 
+  // Initialize filter handlers
+  initFilterHandlers();
+
+  // Load products initially
   renderProducts();
 });

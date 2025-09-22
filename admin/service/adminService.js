@@ -188,4 +188,24 @@ module.exports = class ProductService {
       throw error;
     }
   }
+
+  // Add this method to the existing ProductService class
+  static async getProductsSortedByPrice(order = "asc") {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("price", { ascending: order === "asc" });
+
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching sorted products:", error);
+      throw error;
+    }
+  }
 };

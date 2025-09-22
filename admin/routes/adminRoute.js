@@ -9,6 +9,7 @@ const {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  sortLowToHigh,
 } = require("../controllers/adminController");
 
 // Create product with file uploads
@@ -26,6 +27,9 @@ router.get("/products", getAllProducts);
 
 // Get single product
 router.get("/products/:id", getSingleProduct);
+
+// Add this route after the existing product routes
+router.get("/products-sorted/price/:order", sortLowToHigh);
 
 // Update product
 router.put(
