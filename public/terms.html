@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>About</title>
+    <title>Terms and Conditions - LinaBen</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
@@ -68,156 +68,205 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
     <style>
-      /* WhatsApp Floating Button Styles */
-      .whatsapp-float {
-          position: fixed;
-          width: 60px;
-          height: 60px;
-          bottom: 40px;
-          right: 40px;
-          background-color: #25d366;
-          color: #FFF;
-          border-radius: 50px;
-          text-align: center;
-          font-size: 30px;
-          box-shadow: 2px 2px 3px #999;
-          z-index: 100;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-decoration: none;
-          transition: all 0.3s ease;
+      .terms-content {
+        background: #fff;
+        padding: 50px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        margin-bottom: 50px;
       }
-
-      .whatsapp-float:hover {
-          background-color: #128C7E;
-          transform: scale(1.1);
-          color: #FFF;
+      
+      .terms-content h2 {
+        font-size: 28px;
+        margin-bottom: 25px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
       }
-
-      .whatsapp-my-float {
-          margin-top: 0;
+      
+      .terms-content h3 {
+        font-size: 22px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        color: #444;
       }
-
-      /* WhatsApp Chat Widget */
-      .whatsapp-widget {
-          position: fixed;
-          width: 300px;
-          height: 400px;
-          bottom: 110px;
-          right: 40px;
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-          z-index: 99;
-          display: none;
-          flex-direction: column;
-          overflow: hidden;
-          border: 1px solid #e0e0e0;
+      
+      .terms-content p {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        color: #666;
       }
-
-      .whatsapp-widget-header {
-          background: #25d366;
-          color: white;
-          padding: 15px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
+      
+      .terms-content ul {
+        margin-bottom: 20px;
+        padding-left: 20px;
       }
-
-      .whatsapp-widget-header i {
-          font-size: 20px;
+      
+      .terms-content li {
+        margin-bottom: 10px;
+        line-height: 1.6;
+        color: #666;
       }
-
-      .whatsapp-widget-body {
-          flex: 1;
-          padding: 15px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          overflow-y: auto;
+      
+      .last-updated {
+        font-style: italic;
+        color: #888;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
       }
-
-      .whatsapp-widget-message {
-          background: #f0f0f0;
-          padding: 10px;
-          border-radius: 10px;
-          font-size: 14px;
-          line-height: 1.4;
-      }
-
-      .whatsapp-widget-footer {
-          padding: 15px;
-          border-top: 1px solid #e0e0e0;
-      }
-
-      .whatsapp-input-container {
-          position: relative;
-          display: flex;
-          align-items: center;
-      }
-
-      .whatsapp-widget-input {
-          width: 100%;
-          padding: 10px 45px 10px 15px;
-          border: 1px solid #ddd;
-          border-radius: 25px;
-          font-size: 14px;
-          outline: none;
-      }
-
-      .whatsapp-send-btn {
-          position: absolute;
-          right: 5px;
-          background: #25d366;
-          border: none;
-          border-radius: 50%;
-          color: white;
-          width: 32px;
-          height: 32px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: background 0.3s ease;
-      }
-
-      .whatsapp-send-btn:hover {
-          background: #128C7E;
-      }
-
-      .whatsapp-close {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: rgba(0, 0, 0, 0.2);
-          border: none;
-          color: white;
-          border-radius: 50%;
-          width: 25px;
-          height: 25px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
-
-      @media (max-width: 768px) {
+    </style>
+        <style>
+          /* WhatsApp Floating Button Styles */
           .whatsapp-float {
-              width: 50px;
-              height: 50px;
-              bottom: 20px;
-              right: 20px;
-              font-size: 24px;
+              position: fixed;
+              width: 60px;
+              height: 60px;
+              bottom: 40px;
+              right: 40px;
+              background-color: #25d366;
+              color: #FFF;
+              border-radius: 50px;
+              text-align: center;
+              font-size: 30px;
+              box-shadow: 2px 2px 3px #999;
+              z-index: 100;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              text-decoration: none;
+              transition: all 0.3s ease;
           }
-
+    
+          .whatsapp-float:hover {
+              background-color: #128C7E;
+              transform: scale(1.1);
+              color: #FFF;
+          }
+    
+          .whatsapp-my-float {
+              margin-top: 0;
+          }
+    
+          /* WhatsApp Chat Widget */
           .whatsapp-widget {
-              width: calc(100% - 40px);
-              right: 20px;
-              bottom: 90px;
+              position: fixed;
+              width: 300px;
+              height: 400px;
+              bottom: 110px;
+              right: 40px;
+              background: white;
+              border-radius: 10px;
+              box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+              z-index: 99;
+              display: none;
+              flex-direction: column;
+              overflow: hidden;
+              border: 1px solid #e0e0e0;
           }
-      }
-  </style>
+    
+          .whatsapp-widget-header {
+              background: #25d366;
+              color: white;
+              padding: 15px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+          }
+    
+          .whatsapp-widget-header i {
+              font-size: 20px;
+          }
+    
+          .whatsapp-widget-body {
+              flex: 1;
+              padding: 15px;
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              overflow-y: auto;
+          }
+    
+          .whatsapp-widget-message {
+              background: #f0f0f0;
+              padding: 10px;
+              border-radius: 10px;
+              font-size: 14px;
+              line-height: 1.4;
+          }
+    
+          .whatsapp-widget-footer {
+              padding: 15px;
+              border-top: 1px solid #e0e0e0;
+          }
+    
+          .whatsapp-input-container {
+              position: relative;
+              display: flex;
+              align-items: center;
+          }
+    
+          .whatsapp-widget-input {
+              width: 100%;
+              padding: 10px 45px 10px 15px;
+              border: 1px solid #ddd;
+              border-radius: 25px;
+              font-size: 14px;
+              outline: none;
+          }
+    
+          .whatsapp-send-btn {
+              position: absolute;
+              right: 5px;
+              background: #25d366;
+              border: none;
+              border-radius: 50%;
+              color: white;
+              width: 32px;
+              height: 32px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: background 0.3s ease;
+          }
+    
+          .whatsapp-send-btn:hover {
+              background: #128C7E;
+          }
+    
+          .whatsapp-close {
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              background: rgba(0, 0, 0, 0.2);
+              border: none;
+              color: white;
+              border-radius: 50%;
+              width: 25px;
+              height: 25px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+          }
+    
+          @media (max-width: 768px) {
+              .whatsapp-float {
+                  width: 50px;
+                  height: 50px;
+                  bottom: 20px;
+                  right: 20px;
+                  font-size: 24px;
+              }
+    
+              .whatsapp-widget {
+                  width: calc(100% - 40px);
+                  right: 20px;
+                  bottom: 90px;
+              }
+          }
+      </style>
   </head>
   <body class="animsition">
     <!-- Header -->
@@ -245,7 +294,7 @@
                   <a href="product.html">Shop</a>
                 </li>
 
-                <li class="active-menu">
+                <li>
                   <a href="about.html">About</a>
                 </li>
 
@@ -433,71 +482,99 @@
       class="bg-img1 txt-center p-lr-15 p-tb-92"
       style="background-image: url('images/bg-01.jpg')"
     >
-      <h2 class="ltext-105 cl0 txt-center">About</h2>
+      <h2 class="ltext-105 cl0 txt-center">Terms and Conditions</h2>
     </section>
 
-    <!-- Content page -->
-    <section class="bg0 p-t-75 p-b-120">
+    <!-- Terms and Conditions Content -->
+    <section class="bg0 p-t-50 p-b-100">
       <div class="container">
-        <div class="row p-b-148">
-          <div class="col-md-7 col-lg-8">
-            <div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
-              <h3 class="mtext-111 cl2 p-b-16">Our Story</h3>
-
-              <p class="stext-113 cl6 p-b-26">
-                Welcome to LinaBen, where vibrant fusion meets limitless self-expression. Our collections are crafted from 100% cotton and blended cotton fabrics, empowering you to embody beauty and elegance in every stitch. 
-              </p>
-
-              <p class="stext-113 cl6 p-b-26">
-                At LinaBen, we believe that what you wear is more than just clothing—it's a declaration of who you are.
-                We are a haven for those who see style as a language, a vibrant medium for telling their unique story to
-                the world. Welcome to a space where vibrant fusion meets limitless self-expression.
-              </p>
-
-              <p class="stext-113 cl6 p-b-26">
-                Any questions? Let us know in store at 10 Balogun Street, Ajao
-                Estate, Anthony, Lagos. Or call us on (+234) 706-0558-584
-              </p>
-            </div>
-          </div>
-
-          <div class="col-11 col-md-5 col-lg-4 m-lr-auto">
-            <div class="how-bor1">
-              <div class="hov-img0">
-                <img src="images/about-01.jpg" alt="IMG" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="order-md-2 col-md-7 col-lg-8 p-b-30">
-            <div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
-              <h3 class="mtext-111 cl2 p-b-16">Our Mission</h3>
-
-              <p class="stext-113 cl6 p-b-26">
-                Our mission is simple yet profound: to empower you to embody beauty, confidence, and elegance in every 
-                stitch. We go beyond following trends; we strive to create them. We are dedicated to crafting clothing
-                that doesn't just fit your body, but also reflects your spirit. Every piece in our collection is designed
-                to be a catalyst for confidence, giving you the platform to stand out, not blend in.              </p>
-
-              <!-- <div class="bor16 p-l-29 p-b-9 m-t-22">
-                <p class="stext-114 cl6 p-r-40 p-b-11">
-                  Join us on this journey of self-expression, where fashion knows no bounds.
-                </p>
-
-                <span class="stext-111 cl8"> - Steve Job’s </span>
-              </div> -->
-            </div>
-          </div>
-
-          <div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
-            <div class="how-bor2">
-              <div class="hov-img0">
-                <img src="images/about-02.jpg" alt="IMG" />
-              </div>
-            </div>
-          </div>
+        <div class="terms-content">
+          <!-- <p class="last-updated">Last updated: <script>document.write(new Date().getFullYear());</script></p> -->
+          
+          <h2>Welcome to LinaBen</h2>
+          <p>These terms and conditions outline the rules and regulations for the use of LinaBen Website, located at www.linabenstores.com.</p>
+          <p>By accessing this website, we assume you accept these terms and conditions. Do not continue to use LinaBen if you do not agree to take all of the terms and conditions stated on this page.</p>
+          <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company's terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client's needs in respect of provision of the Company's stated services, in accordance with and subject to, prevailing law of ng. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.</p>
+          
+          <h3>Cookies</h3>
+          <p>We employ the use of cookies. By accessing LinaBen, you agreed to use cookies in agreement with the LinaBen Privacy Policy.</p>
+          <p>Most interactive websites use cookies to let us retrieve the user's details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>
+          
+          <h3>License</h3>
+          <p>Unless otherwise stated, LinaBen and/or its licensors own the intellectual property rights for all material on LinaBen. All intellectual property rights are reserved. You may access this from LinaBen for your own personal use subjected to restrictions set in these terms and conditions.</p>
+          <p>You must not:</p>
+          <ul>
+            <li>Republish material from LinaBen</li>
+            <li>Sell, rent or sub-license material from LinaBen</li>
+            <li>Reproduce, duplicate or copy material from LinaBen</li>
+            <li>Redistribute content from LinaBen</li>
+          </ul>
+          <p>This Agreement shall begin on the date hereof.</p>
+          <p>Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. LinaBen does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of LinaBen, its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, LinaBen shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.</p>
+          <p>LinaBen reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate, offensive or causes breach of these Terms and Conditions.</p>
+          <p>You warrant and represent that:</p>
+          <ul>
+            <li>You are entitled to post the Comments on our website and have all necessary licenses and consents to do so;</li>
+            <li>The Comments do not invade any intellectual property right, including without limitation copyright, patent or trademark of any third party;</li>
+            <li>The Comments do not contain any defamatory, libellous, offensive, indecent or otherwise unlawful material which is an invasion of privacy</li>
+            <li>The Comments will not be used to solicit or promote business or custom or present commercial activities or unlawful activity.</li>
+          </ul>
+          <p>You hereby grant LinaBen a non-exclusive license to use, reproduce, edit and authorize others to use, reproduce and edit any of your Comments in any and all forms, formats or media.</p>
+          
+          <h3>Hyperlinking to our Content</h3>
+          <p>The following organizations may link to our Website without prior written approval:</p>
+          <ul>
+            <li>Government agencies;</li>
+            <li>Search engines;</li>
+            <li>News organizations;</li>
+            <li>Online directory distributors may link to our Website in the same manner as they hyperlink to the Websites of other listed businesses; and</li>
+            <li>System wide Accredited Businesses except soliciting non-profit organizations, charity shopping malls, and charity fundraising groups which may not hyperlink to our Web site.</li>
+          </ul>
+          <p>These organizations may link to our home page, to publications or to other Website information so long as the link: (a) is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement or approval of the linking party and its products and/or services; and (c) fits within the context of the linking party's site.</p>
+          <p>We may consider and approve other link requests from the following types of organizations:</p>
+          <ul>
+            <li>commonly-known consumer and/or business information sources;</li>
+            <li>dot.com community sites;</li>
+            <li>associations or other groups representing charities;</li>
+            <li>online directory distributors;</li>
+            <li>internet portals;</li>
+            <li>accounting, law and consulting firms; and</li>
+            <li>educational institutions and trade associations.</li>
+          </ul>
+          <p>We will approve link requests from these organizations if we decide that: (a) the link would not make us look unfavourably to ourselves or to our accredited businesses; (b) the organization does not have any negative records with us; (c) the benefit to us from the visibility of the hyperlink compensates the absence of LinaBen; and (d) the link is in the context of general resource information.</p>
+          <p>These organizations may link to our home page so long as the link: (a) is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement or approval of the linking party and its products or services; and (c) fits within the context of the linking party's site.</p>
+          <p>If you are one of the organizations listed in paragraph 2 above and are interested in linking to our website, you must inform us by sending an e-mail to LinaBen. Please include your name, your organization name, contact information as well as the URL of your site, a list of any URLs from which you intend to link to our Website, and a list of the URLs on our site to which you would like to link. Wait 2-3 weeks for a response.</p>
+          <p>Approved organizations may hyperlink to our Website as follows:</p>
+          <ul>
+            <li>By use of our corporate name; or</li>
+            <li>By use of the uniform resource locator being linked to; or</li>
+            <li>By use of any other description of our Website being linked to that makes sense within the context and format of content on the linking party's site.</li>
+          </ul>
+          <p>No use of LinaBen logo or other artwork will be allowed for linking absent a trademark license agreement.</p>
+          
+          <h3>iFrames</h3>
+          <p>Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the visual presentation or appearance of our Website.</p>
+          
+          <h3>Content Liability</h3>
+          <p>We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend us against all claims that is rising on your Website. No link(s) should appear on any Website that may be interpreted as libellous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.</p>
+          
+          <h3>Reservation of Rights</h3>
+          <p>We reserve the right to request that you remove all links or any particular link to our Website. You approve to immediately remove all links to our Website upon request. We also reserve the right to amen these terms and conditions and it's linking policy at any time. By continuously linking to our Website, you agree to be bound to and follow these linking terms and conditions.</p>
+          
+          <h3>Removal of links from our website</h3>
+          <p>If you find any link on our Website that is offensive for any reason, you are free to contact and inform us any moment. We will consider requests to remove links but we are not obligated to or so or to respond to you directly.</p>
+          <p>We do not ensure that the information on this website is correct, we do not warrant its completeness or accuracy; nor do we promise to ensure that the website remains available or that the material on the website is kept up to date.</p>
+          
+          <h3>Disclaimer</h3>
+          <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:</p>
+          <ul>
+            <li>limit or exclude our or your liability for death or personal injury;</li>
+            <li>limit or exclude our or your liability for fraud or fraudulent misrepresentation;</li>
+            <li>limit any of our or your liabilities in any way that is not permitted under applicable law; or</li>
+            <li>exclude any of our or your liabilities that may not be excluded under applicable law.</li>
+          </ul>
+          <p>The limitations and prohibitions of liability set in this Section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising under the disclaimer, including liabilities arising in contract, in tort and for breach of statutory duty.</p>
+          <p>As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
         </div>
       </div>
     </section>
@@ -559,18 +636,18 @@
 
             <div class="p-t-27">
               <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                <i class="fa-brands fa-facebook-f"></i>
+                <i class="fa fa-facebook"></i>
               </a>
 
               <a
                 href="https://www.instagram.com/linabenstores/"
                 class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
               >
-                <i class="fa-brands fa-instagram"></i>
+                <i class="fa fa-instagram"></i>
               </a>
 
               <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                <i class="fab fa-tiktok"></i>
+                <i class="fa fa-tiktok"></i>
               </a>
             </div>
           </div>
@@ -621,8 +698,8 @@
             <a href="#" class="m-all-1">
               <img src="images/icons/icon-pay-05.png" alt="ICON-PAY" />
             </a>
-          </div>
- -->
+          </div> -->
+
            <p class="stext-107 cl6 txt-center">
             Copyright &copy;
             <script>
@@ -633,13 +710,6 @@
         </div>
       </div>
     </footer>
-
-    <!-- Back to top -->
-    <!-- <div class="btn-back-to-top" id="myBtn">
-      <span class="symbol-btn-back-to-top">
-        <i class="zmdi zmdi-chevron-up"></i>
-      </span>
-    </div> -->
 
     <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
     class="whatsapp-float" 
@@ -718,7 +788,7 @@
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
     <script src="js/product-system.js"></script>
-        <script>
+    <script>
       // WhatsApp Widget Functions
       function toggleWhatsAppWidget() {
           const widget = document.getElementById('whatsappWidget');

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>About</title>
+    <title>Shipping Policy - LinaBen</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
@@ -12,13 +12,6 @@
       type="text/css"
       href="vendor/bootstrap/css/bootstrap.min.css"
     />
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
     <!--===============================================================================================-->
     <link
       rel="stylesheet"
@@ -68,156 +61,61 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
     <style>
-      /* WhatsApp Floating Button Styles */
-      .whatsapp-float {
-          position: fixed;
-          width: 60px;
-          height: 60px;
-          bottom: 40px;
-          right: 40px;
-          background-color: #25d366;
-          color: #FFF;
-          border-radius: 50px;
-          text-align: center;
-          font-size: 30px;
-          box-shadow: 2px 2px 3px #999;
-          z-index: 100;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-decoration: none;
-          transition: all 0.3s ease;
+      .policy-content {
+        background: #fff;
+        padding: 50px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        margin-bottom: 50px;
       }
-
-      .whatsapp-float:hover {
-          background-color: #128C7E;
-          transform: scale(1.1);
-          color: #FFF;
+      
+      .policy-content h2 {
+        font-size: 28px;
+        margin-bottom: 25px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
       }
-
-      .whatsapp-my-float {
-          margin-top: 0;
+      
+      .policy-content h3 {
+        font-size: 22px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        color: #444;
       }
-
-      /* WhatsApp Chat Widget */
-      .whatsapp-widget {
-          position: fixed;
-          width: 300px;
-          height: 400px;
-          bottom: 110px;
-          right: 40px;
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-          z-index: 99;
-          display: none;
-          flex-direction: column;
-          overflow: hidden;
-          border: 1px solid #e0e0e0;
+      
+      .policy-content p {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        color: #666;
       }
-
-      .whatsapp-widget-header {
-          background: #25d366;
-          color: white;
-          padding: 15px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
+      
+      .policy-content ul {
+        margin-bottom: 20px;
+        padding-left: 20px;
       }
-
-      .whatsapp-widget-header i {
-          font-size: 20px;
+      
+      .policy-content li {
+        margin-bottom: 10px;
+        line-height: 1.6;
+        color: #666;
       }
-
-      .whatsapp-widget-body {
-          flex: 1;
-          padding: 15px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          overflow-y: auto;
+      
+      .highlight-box {
+        background-color: #f9f9f9;
+        border-left: 4px solid #4a6fa5;
+        padding: 20px;
+        margin: 20px 0;
       }
-
-      .whatsapp-widget-message {
-          background: #f0f0f0;
-          padding: 10px;
-          border-radius: 10px;
-          font-size: 14px;
-          line-height: 1.4;
+      
+      .last-updated {
+        font-style: italic;
+        color: #888;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
       }
-
-      .whatsapp-widget-footer {
-          padding: 15px;
-          border-top: 1px solid #e0e0e0;
-      }
-
-      .whatsapp-input-container {
-          position: relative;
-          display: flex;
-          align-items: center;
-      }
-
-      .whatsapp-widget-input {
-          width: 100%;
-          padding: 10px 45px 10px 15px;
-          border: 1px solid #ddd;
-          border-radius: 25px;
-          font-size: 14px;
-          outline: none;
-      }
-
-      .whatsapp-send-btn {
-          position: absolute;
-          right: 5px;
-          background: #25d366;
-          border: none;
-          border-radius: 50%;
-          color: white;
-          width: 32px;
-          height: 32px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: background 0.3s ease;
-      }
-
-      .whatsapp-send-btn:hover {
-          background: #128C7E;
-      }
-
-      .whatsapp-close {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: rgba(0, 0, 0, 0.2);
-          border: none;
-          color: white;
-          border-radius: 50%;
-          width: 25px;
-          height: 25px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
-
-      @media (max-width: 768px) {
-          .whatsapp-float {
-              width: 50px;
-              height: 50px;
-              bottom: 20px;
-              right: 20px;
-              font-size: 24px;
-          }
-
-          .whatsapp-widget {
-              width: calc(100% - 40px);
-              right: 20px;
-              bottom: 90px;
-          }
-      }
-  </style>
+    </style>
   </head>
   <body class="animsition">
     <!-- Header -->
@@ -245,7 +143,7 @@
                   <a href="product.html">Shop</a>
                 </li>
 
-                <li class="active-menu">
+                <li>
                   <a href="about.html">About</a>
                 </li>
 
@@ -433,71 +331,72 @@
       class="bg-img1 txt-center p-lr-15 p-tb-92"
       style="background-image: url('images/bg-01.jpg')"
     >
-      <h2 class="ltext-105 cl0 txt-center">About</h2>
+      <h2 class="ltext-105 cl0 txt-center">Shipping Policy</h2>
     </section>
 
-    <!-- Content page -->
-    <section class="bg0 p-t-75 p-b-120">
+    <!-- Shipping Policy Content -->
+    <section class="bg0 p-t-50 p-b-100">
       <div class="container">
-        <div class="row p-b-148">
-          <div class="col-md-7 col-lg-8">
-            <div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
-              <h3 class="mtext-111 cl2 p-b-16">Our Story</h3>
-
-              <p class="stext-113 cl6 p-b-26">
-                Welcome to LinaBen, where vibrant fusion meets limitless self-expression. Our collections are crafted from 100% cotton and blended cotton fabrics, empowering you to embody beauty and elegance in every stitch. 
-              </p>
-
-              <p class="stext-113 cl6 p-b-26">
-                At LinaBen, we believe that what you wear is more than just clothing—it's a declaration of who you are.
-                We are a haven for those who see style as a language, a vibrant medium for telling their unique story to
-                the world. Welcome to a space where vibrant fusion meets limitless self-expression.
-              </p>
-
-              <p class="stext-113 cl6 p-b-26">
-                Any questions? Let us know in store at 10 Balogun Street, Ajao
-                Estate, Anthony, Lagos. Or call us on (+234) 706-0558-584
-              </p>
-            </div>
+        <div class="policy-content">
+          <p class="last-updated">Last updated: <script>document.write(new Date().getFullYear());</script></p>
+          
+          <h2>Shipping Information</h2>
+          <p>All orders are processed within <strong>7 to 10 business days</strong> (excluding weekends and holidays) after receiving your order confirmation email. You will receive another notification when your order has shipped.</p>
+          
+          <div class="highlight-box">
+            <h3>Processing Time</h3>
+            <p>Please allow <strong>7-10 business days</strong> for order processing before shipment.</p>
           </div>
-
-          <div class="col-11 col-md-5 col-lg-4 m-lr-auto">
-            <div class="how-bor1">
-              <div class="hov-img0">
-                <img src="images/about-01.jpg" alt="IMG" />
-              </div>
-            </div>
+          
+          <h3>Shipping Rates and Estimates</h3>
+          <p>Shipping charges for your order will be calculated and displayed at checkout, or a confirmation of the shipping fee will be sent to you after you request to place the order, ideally between <strong>2 to 8 business days</strong>.</p>
+          
+          <h3>In-Store Pickup</h3>
+          <p>We do not offer in-store pickup. All orders will be shipped directly to your provided address.</p>
+          
+          <h3>International Shipping</h3>
+          <p>We offer international shipping to the following countries:</p>
+          
+          <div class="highlight-box">
+            <h4>International Destinations</h4>
+            <ul>
+              <li>United States (USA)</li>
+              <li>United Kingdom (UK)</li>
+              <li>Canada</li>
+              <li>Ghana</li>
+              <li>Ireland</li>
+            </ul>
+            <p><strong>Delivery Time:</strong> 4 to 10 business days</p>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="order-md-2 col-md-7 col-lg-8 p-b-30">
-            <div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
-              <h3 class="mtext-111 cl2 p-b-16">Our Mission</h3>
-
-              <p class="stext-113 cl6 p-b-26">
-                Our mission is simple yet profound: to empower you to embody beauty, confidence, and elegance in every 
-                stitch. We go beyond following trends; we strive to create them. We are dedicated to crafting clothing
-                that doesn't just fit your body, but also reflects your spirit. Every piece in our collection is designed
-                to be a catalyst for confidence, giving you the platform to stand out, not blend in.              </p>
-
-              <!-- <div class="bor16 p-l-29 p-b-9 m-t-22">
-                <p class="stext-114 cl6 p-r-40 p-b-11">
-                  Join us on this journey of self-expression, where fashion knows no bounds.
-                </p>
-
-                <span class="stext-111 cl8"> - Steve Job’s </span>
-              </div> -->
-            </div>
+          
+          <p>Shipping charges for your international order will be calculated and displayed at checkout, or a confirmation of the shipping fee will be sent to you after you request to place the order.</p>
+          
+          <div class="highlight-box">
+            <h4>Important Note for International Customers</h4>
+            <p>Your order may be subject to import duties and taxes (including VAT), incurred once a shipment reaches your destination country. <strong>LinaBen is not responsible for these charges</strong> if they are applied and are your responsibility as the customer.</p>
           </div>
-
-          <div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
-            <div class="how-bor2">
-              <div class="hov-img0">
-                <img src="images/about-02.jpg" alt="IMG" />
-              </div>
-            </div>
+          
+          <h3>How do I check the status of my order?</h3>
+          <p>When your order has shipped, you will receive an Email/WhatsApp notification from us which will include an order number you can use to check its status.</p>
+          
+          <p>You can check your order status by:</p>
+          <ul>
+            <li>Heading over to "find my order" at the footer of our site</li>
+            <li>If you have created an account, you can check your user account under "Orders" to see the status of your order</li>
+          </ul>
+          
+          <div class="highlight-box">
+            <h4>Haven't Received Your Order?</h4>
+            <p>If you haven't received your order within <strong>10 days</strong> of receiving your shipping confirmation Email/WhatsApp message, please contact us at <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a> with your name and order number, and we will look into it for you.</p>
           </div>
+          
+          <h3>Contact Us</h3>
+          <p>If you have any questions about our shipping policy, please contact us:</p>
+          <ul>
+            <li>Email: <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a></li>
+            <li>Phone: (+234) 706-0558-584</li>
+            <li>Address: 10 Balogun Street, Ajao Estate, Anthony, Lagos</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -537,14 +436,14 @@
 
             <ul>
               <li class="p-b-10">
-                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                  Track Order
+                <a href="shipping-policy.html" class="stext-107 cl7 hov-cl1 trans-04">
+                  Shipping Policy
                 </a>
               </li>
 
               <li class="p-b-10">
-                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                  Store Policy
+                <a href="terms.html" class="stext-107 cl7 hov-cl1 trans-04">
+                  Terms & Conditions
                 </a>
               </li>
             </ul>
@@ -559,18 +458,18 @@
 
             <div class="p-t-27">
               <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                <i class="fa-brands fa-facebook-f"></i>
+                <i class="fa fa-facebook"></i>
               </a>
 
               <a
                 href="https://www.instagram.com/linabenstores/"
                 class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
               >
-                <i class="fa-brands fa-instagram"></i>
+                <i class="fa fa-instagram"></i>
               </a>
 
               <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                <i class="fab fa-tiktok"></i>
+                <i class="fa fa-tiktok"></i>
               </a>
             </div>
           </div>
@@ -621,8 +520,8 @@
             <a href="#" class="m-all-1">
               <img src="images/icons/icon-pay-05.png" alt="ICON-PAY" />
             </a>
-          </div>
- -->
+          </div> -->
+
            <p class="stext-107 cl6 txt-center">
             Copyright &copy;
             <script>
@@ -635,49 +534,11 @@
     </footer>
 
     <!-- Back to top -->
-    <!-- <div class="btn-back-to-top" id="myBtn">
+    <div class="btn-back-to-top" id="myBtn">
       <span class="symbol-btn-back-to-top">
         <i class="zmdi zmdi-chevron-up"></i>
       </span>
-    </div> -->
-
-    <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
-    class="whatsapp-float" 
-    target="_blank"
-    onclick="if(window.innerWidth > 768) { event.preventDefault(); toggleWhatsAppWidget(); }">
-   <i class="fa-brands fa-whatsapp whatsapp-my-float"></i>
- </a>
-
- <!-- WhatsApp Chat Widget -->
- <div class="whatsapp-widget" id="whatsappWidget">
-   <div class="whatsapp-widget-header">
-     <i class="fa-brands fa-whatsapp"></i>
-     <span>LinaBen Stores</span>
-     <button class="whatsapp-close" onclick="closeWhatsAppWidget()">
-       <i class="fa fa-times"></i>
-     </button>
-   </div>
-   <div class="whatsapp-widget-body">
-     <div class="whatsapp-widget-message">
-       Hi! 👋 Welcome to LinaBen Stores. We're here to help you with any questions about our products, custom orders, or general inquiries. What can we assist you with today?
-     </div>
-   </div>
-   <div class="whatsapp-widget-footer">
-     <div class="whatsapp-input-container">
-       <input type="text" 
-              class="whatsapp-widget-input" 
-              placeholder="Type your message..."
-              onkeypress="if(event.key === 'Enter') sendWhatsAppMessage(this.value)"
-              id="whatsappInput">
-       <button class="whatsapp-send-btn" onclick="sendWhatsAppMessage(document.getElementById('whatsappInput').value)">
-         <i class="fa fa-paper-plane"></i>
-       </button>
-     </div>
-     <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
-       Press Enter to send or <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
-     </small>
-   </div>
- </div>
+    </div>
 
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -717,76 +578,5 @@
     </script>
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
-    <script src="js/product-system.js"></script>
-        <script>
-      // WhatsApp Widget Functions
-      function toggleWhatsAppWidget() {
-          const widget = document.getElementById('whatsappWidget');
-          if (widget.style.display === 'flex') {
-              closeWhatsAppWidget();
-          } else {
-              openWhatsAppWidget();
-          }
-      }
-
-      function openWhatsAppWidget() {
-          const widget = document.getElementById('whatsappWidget');
-          widget.style.display = 'flex';
-          // Auto-focus on input when opened
-          setTimeout(() => {
-              const input = document.getElementById('whatsappInput');
-              if (input) input.focus();
-          }, 300);
-      }
-
-      function closeWhatsAppWidget() {
-          const widget = document.getElementById('whatsappWidget');
-          widget.style.display = 'none';
-      }
-
-      function sendWhatsAppMessage(message) {
-          if (message.trim() === '') return;
-          
-          // Encode the message for URL
-          const encodedMessage = encodeURIComponent(message);
-          const whatsappUrl = `https://wa.me/2347060558584?text=${encodedMessage}`;
-          
-          // Open WhatsApp in a new tab
-          window.open(whatsappUrl, '_blank');
-          
-          // Close the widget
-          closeWhatsAppWidget();
-          
-          // Clear the input
-          const input = document.getElementById('whatsappInput');
-          if (input) input.value = '';
-      }
-
-      // Close widget when clicking outside (on mobile)
-      document.addEventListener('click', function(event) {
-          const widget = document.getElementById('whatsappWidget');
-          const floatButton = document.querySelector('.whatsapp-float');
-          
-          if (widget.style.display === 'flex' && 
-              !widget.contains(event.target) && 
-              !floatButton.contains(event.target)) {
-              closeWhatsAppWidget();
-          }
-      });
-
-      // Handle Escape key to close widget
-      document.addEventListener('keydown', function(event) {
-          if (event.key === 'Escape') {
-              closeWhatsAppWidget();
-          }
-      });
-
-      // Auto-close widget on mobile when orientation changes
-      window.addEventListener('orientationchange', function() {
-          if (window.innerWidth <= 768) {
-              closeWhatsAppWidget();
-          }
-      });
-  </script>
   </body>
 </html>

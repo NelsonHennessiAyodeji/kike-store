@@ -30,12 +30,10 @@ router.get("/products", getAllProducts);
 // Get single product
 router.get("/products/:id", getSingleProduct);
 
-// Add these routes after the existing product routes
 router.get("/products-sorted/price/:order", sortLowToHigh);
 
 router.get("/products-sorted/date/:order", sortByDate);
 
-// Add this route after the existing sorting routes
 router.get("/products-sorted/name/:order", sortByName);
 
 // Update product

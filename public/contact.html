@@ -67,6 +67,157 @@
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
+    <style>
+      /* WhatsApp Floating Button Styles */
+      .whatsapp-float {
+          position: fixed;
+          width: 60px;
+          height: 60px;
+          bottom: 40px;
+          right: 40px;
+          background-color: #25d366;
+          color: #FFF;
+          border-radius: 50px;
+          text-align: center;
+          font-size: 30px;
+          box-shadow: 2px 2px 3px #999;
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: all 0.3s ease;
+      }
+
+      .whatsapp-float:hover {
+          background-color: #128C7E;
+          transform: scale(1.1);
+          color: #FFF;
+      }
+
+      .whatsapp-my-float {
+          margin-top: 0;
+      }
+
+      /* WhatsApp Chat Widget */
+      .whatsapp-widget {
+          position: fixed;
+          width: 300px;
+          height: 400px;
+          bottom: 110px;
+          right: 40px;
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+          z-index: 99;
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+          border: 1px solid #e0e0e0;
+      }
+
+      .whatsapp-widget-header {
+          background: #25d366;
+          color: white;
+          padding: 15px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .whatsapp-widget-header i {
+          font-size: 20px;
+      }
+
+      .whatsapp-widget-body {
+          flex: 1;
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          overflow-y: auto;
+      }
+
+      .whatsapp-widget-message {
+          background: #f0f0f0;
+          padding: 10px;
+          border-radius: 10px;
+          font-size: 14px;
+          line-height: 1.4;
+      }
+
+      .whatsapp-widget-footer {
+          padding: 15px;
+          border-top: 1px solid #e0e0e0;
+      }
+
+      .whatsapp-input-container {
+          position: relative;
+          display: flex;
+          align-items: center;
+      }
+
+      .whatsapp-widget-input {
+          width: 100%;
+          padding: 10px 45px 10px 15px;
+          border: 1px solid #ddd;
+          border-radius: 25px;
+          font-size: 14px;
+          outline: none;
+      }
+
+      .whatsapp-send-btn {
+          position: absolute;
+          right: 5px;
+          background: #25d366;
+          border: none;
+          border-radius: 50%;
+          color: white;
+          width: 32px;
+          height: 32px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.3s ease;
+      }
+
+      .whatsapp-send-btn:hover {
+          background: #128C7E;
+      }
+
+      .whatsapp-close {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(0, 0, 0, 0.2);
+          border: none;
+          color: white;
+          border-radius: 50%;
+          width: 25px;
+          height: 25px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      @media (max-width: 768px) {
+          .whatsapp-float {
+              width: 50px;
+              height: 50px;
+              bottom: 20px;
+              right: 20px;
+              font-size: 24px;
+          }
+
+          .whatsapp-widget {
+              width: calc(100% - 40px);
+              right: 20px;
+              bottom: 90px;
+          }
+      }
+  </style>
   </head>
   <body class="animsition">
     <!-- Header -->
@@ -398,20 +549,6 @@
       </div>
     </section>
 
-    <!-- Map -->
-    <!-- <div class="map">
-      <div
-        class="size-303"
-        id="google_map"
-        data-map-x="40.691446"
-        data-map-y="-73.886787"
-        data-pin="images/icons/pin.png"
-        data-scrollwhell="0"
-        data-draggable="1"
-        data-zoom="11"
-      ></div>
-    </div> -->
-
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">
       <div class="container">
@@ -544,11 +681,49 @@
       </div>
     </footer>
     <!-- Back to top -->
-    <div class="btn-back-to-top" id="myBtn">
+    <!-- <div class="btn-back-to-top" id="myBtn">
       <span class="symbol-btn-back-to-top">
         <i class="zmdi zmdi-chevron-up"></i>
       </span>
-    </div>
+    </div> -->
+
+    <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
+    class="whatsapp-float" 
+    target="_blank"
+    onclick="if(window.innerWidth > 768) { event.preventDefault(); toggleWhatsAppWidget(); }">
+   <i class="fa-brands fa-whatsapp whatsapp-my-float"></i>
+ </a>
+
+ <!-- WhatsApp Chat Widget -->
+ <div class="whatsapp-widget" id="whatsappWidget">
+   <div class="whatsapp-widget-header">
+     <i class="fa-brands fa-whatsapp"></i>
+     <span>LinaBen Stores</span>
+     <button class="whatsapp-close" onclick="closeWhatsAppWidget()">
+       <i class="fa fa-times"></i>
+     </button>
+   </div>
+   <div class="whatsapp-widget-body">
+     <div class="whatsapp-widget-message">
+       Hi! 👋 Welcome to LinaBen Stores. We're here to help you with any questions about our products, custom orders, or general inquiries. What can we assist you with today?
+     </div>
+   </div>
+   <div class="whatsapp-widget-footer">
+     <div class="whatsapp-input-container">
+       <input type="text" 
+              class="whatsapp-widget-input" 
+              placeholder="Type your message..."
+              onkeypress="if(event.key === 'Enter') sendWhatsAppMessage(this.value)"
+              id="whatsappInput">
+       <button class="whatsapp-send-btn" onclick="sendWhatsAppMessage(document.getElementById('whatsappInput').value)">
+         <i class="fa fa-paper-plane"></i>
+       </button>
+     </div>
+     <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
+       Press Enter to send or <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
+     </small>
+   </div>
+ </div>
 
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -592,5 +767,75 @@
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
     <script src="js/product-system.js"></script>
+    <script>
+      // WhatsApp Widget Functions
+      function toggleWhatsAppWidget() {
+          const widget = document.getElementById('whatsappWidget');
+          if (widget.style.display === 'flex') {
+              closeWhatsAppWidget();
+          } else {
+              openWhatsAppWidget();
+          }
+      }
+
+      function openWhatsAppWidget() {
+          const widget = document.getElementById('whatsappWidget');
+          widget.style.display = 'flex';
+          // Auto-focus on input when opened
+          setTimeout(() => {
+              const input = document.getElementById('whatsappInput');
+              if (input) input.focus();
+          }, 300);
+      }
+
+      function closeWhatsAppWidget() {
+          const widget = document.getElementById('whatsappWidget');
+          widget.style.display = 'none';
+      }
+
+      function sendWhatsAppMessage(message) {
+          if (message.trim() === '') return;
+          
+          // Encode the message for URL
+          const encodedMessage = encodeURIComponent(message);
+          const whatsappUrl = `https://wa.me/2347060558584?text=${encodedMessage}`;
+          
+          // Open WhatsApp in a new tab
+          window.open(whatsappUrl, '_blank');
+          
+          // Close the widget
+          closeWhatsAppWidget();
+          
+          // Clear the input
+          const input = document.getElementById('whatsappInput');
+          if (input) input.value = '';
+      }
+
+      // Close widget when clicking outside (on mobile)
+      document.addEventListener('click', function(event) {
+          const widget = document.getElementById('whatsappWidget');
+          const floatButton = document.querySelector('.whatsapp-float');
+          
+          if (widget.style.display === 'flex' && 
+              !widget.contains(event.target) && 
+              !floatButton.contains(event.target)) {
+              closeWhatsAppWidget();
+          }
+      });
+
+      // Handle Escape key to close widget
+      document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+              closeWhatsAppWidget();
+          }
+      });
+
+      // Auto-close widget on mobile when orientation changes
+      window.addEventListener('orientationchange', function() {
+          if (window.innerWidth <= 768) {
+              closeWhatsAppWidget();
+          }
+      });
+  </script>
   </body>
 </html>
