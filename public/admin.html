@@ -392,7 +392,10 @@
 
       .size-info,
       .color-info,
-      .category-info {
+      .category-info,
+      .length-info,
+      .tag-info,
+      .brand-info {
         display: inline-block;
         padding: 6px 14px;
         background: #e6f7ff;
@@ -411,6 +414,21 @@
       .category-info {
         background: #fff7e6;
         color: #fa8c16;
+      }
+
+      .length-info {
+        background: #f9f0ff;
+        color: #722ed1;
+      }
+
+      .tag-info {
+        background: #fff2e8;
+        color: #fa541c;
+      }
+
+      .brand-info {
+        background: #f6ffed;
+        color: #389e0d;
       }
 
       .no-data {
@@ -559,9 +577,81 @@
                 <span>Men</span>
               </label>
               <label class="category-option">
-                <input type="radio" name="productCategory" value="kike" />
-                <span>Kike</span>
+                <input
+                  type="radio"
+                  name="productCategory"
+                  value="adireInfusion"
+                />
+                <span>Adire Infusion</span>
               </label>
+            </div>
+          </div>
+
+          <!-- NEW LENGTH FIELD -->
+          <div class="form-group">
+            <label>Length</label>
+            <div class="category-options">
+              <label class="category-option">
+                <input
+                  type="radio"
+                  name="productLength"
+                  value="shorts"
+                  checked
+                />
+                <span>Shorts</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productLength" value="medium" />
+                <span>Medium</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productLength" value="long" />
+                <span>Full Length</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productLength" value="extra-long" />
+                <span>Extra Long</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NEW BRAND FIELD -->
+          <div class="form-group">
+            <label>Brand</label>
+            <div class="category-options">
+              <label class="category-option">
+                <input
+                  type="radio"
+                  name="productBrand"
+                  value="linaben"
+                  checked
+                />
+                <span>LinaBen</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productBrand" value="lizAndCo" />
+                <span>LizandCo</span>
+              </label>
+              <label class="category-option">
+                <input
+                  type="radio"
+                  name="productBrand"
+                  value="everyStylishMan"
+                />
+                <span>EveryStylishMan</span>
+              </label>
+              <!-- <label class="category-option">
+                <input type="radio" name="productBrand" value="puma" />
+                <span>Puma</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productBrand" value="zara" />
+                <span>Zara</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productBrand" value="hm" />
+                <span>H&M</span>
+              </label> -->
             </div>
           </div>
 
@@ -629,6 +719,54 @@
             <div id="anglesPreview" class="preview"></div>
           </div>
 
+          <!-- NEW PRODUCT TAGS FIELD -->
+          <div class="form-group">
+            <label>Product Tags</label>
+            <div id="productTags" class="options-group">
+              <label
+                ><input type="checkbox" value="shirts" checked /><span
+                  >Shirts</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="tShirts" /><span
+                  >T-Shirts</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="poloShirts" /><span
+                  >Polo Shirts</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="hoodiesAndJackets" /><span
+                  >Hoodies & Jackets</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="pants" /><span
+                  >Pants</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="sets" /><span>Sets</span></label
+              >
+              <label
+                ><input type="checkbox" value="hats" /><span>Hats</span></label
+              >
+              <label
+                ><input type="checkbox" value="summer" /><span
+                  >Summer Collection</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="winter" /><span
+                  >Winter Collection</span
+                ></label
+              >
+            </div>
+          </div>
+
           <div class="form-group">
             <label>Sizes</label>
             <div id="productSizes" class="options-group">
@@ -636,9 +774,11 @@
               <label><input type="checkbox" /><span>M</span></label>
               <label><input type="checkbox" /><span>L</span></label>
               <label><input type="checkbox" /><span>XL</span></label>
+              <label><input type="checkbox" /><span>XXL</span></label>
             </div>
           </div>
 
+          <!-- Todo: Use the entire color list on the LizandCo webpage including one more color “beige” -->
           <div class="form-group">
             <label>Colors</label>
             <div class="color-options">
@@ -758,6 +898,18 @@
           document.getElementById("productDescription");
         const categoryRadios = document.querySelectorAll(
           'input[name="productCategory"]'
+        );
+        // NEW: Get length radios
+        const lengthRadios = document.querySelectorAll(
+          'input[name="productLength"]'
+        );
+        // NEW: Get brand radios
+        const brandRadios = document.querySelectorAll(
+          'input[name="productBrand"]'
+        );
+        // NEW: Get tag checkboxes
+        const tagCheckboxes = document.querySelectorAll(
+          '#productTags input[type="checkbox"]'
         );
         const mainImageInput = document.getElementById("productMainImage");
         const mainImagePreview = document.getElementById("mainImagePreview");
@@ -887,10 +1039,39 @@
             }
           }
 
+          // NEW: Get selected length
+          let selectedLength = "";
+          for (const radio of lengthRadios) {
+            if (radio.checked) {
+              selectedLength = radio.value;
+              break;
+            }
+          }
+
+          // NEW: Get selected brand
+          let selectedBrand = "";
+          for (const radio of brandRadios) {
+            if (radio.checked) {
+              selectedBrand = radio.value;
+              break;
+            }
+          }
+
+          // NEW: Get selected tags
+          const selectedTags = [];
+          tagCheckboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+              selectedTags.push(checkbox.value);
+            }
+          });
+
           // Get all form values
           const formData = {
             productName: productName.value,
             productCategory: selectedCategory,
+            productLength: selectedLength, // NEW: Add length to form data
+            productBrand: selectedBrand, // NEW: Add brand to form data
+            productTags: selectedTags, // NEW: Add tags to form data
             productPrice: parseFloat(productPrice.value) || 0,
             productQuantity: parseInt(productQuantity.value) || 0,
             productDescription: productDescription.value,
@@ -936,6 +1117,24 @@
           outputHTML += `<p><strong>Category:</strong> <span class="category-info">${
             formData.productCategory || "Not selected"
           }</span></p>`;
+          // NEW: Display length
+          outputHTML += `<p><strong>Length:</strong> <span class="length-info">${
+            formData.productLength || "Not selected"
+          }</span></p>`;
+          // NEW: Display brand
+          outputHTML += `<p><strong>Brand:</strong> <span class="brand-info">${
+            formData.productBrand || "Not selected"
+          }</span></p>`;
+          // NEW: Display tags
+          if (formData.productTags.length > 0) {
+            outputHTML += "<p><strong>Product Tags:</strong> ";
+            formData.productTags.forEach((tag) => {
+              outputHTML += `<span class="tag-info">${tag}</span>`;
+            });
+            outputHTML += "</p>";
+          } else {
+            outputHTML += "<p><strong>Product Tags:</strong> None selected</p>";
+          }
           outputHTML += `<p><strong>Price:</strong> ₦${formData.productPrice.toFixed(
             2
           )}</p>`;
@@ -1016,6 +1215,12 @@
             "category",
             formData.productCategory.toLowerCase()
           );
+          // NEW: Append length, brand, and tags to FormData
+          formDataForUpload.append("length", formData.productLength);
+          formDataForUpload.append("brand", formData.productBrand);
+          formData.productTags.forEach((tag) => {
+            formDataForUpload.append("tags", tag);
+          });
           formDataForUpload.append("price", formData.productPrice);
           formDataForUpload.append("quantity", formData.productQuantity);
           formDataForUpload.append("description", formData.productDescription);
@@ -1101,6 +1306,17 @@
 
           // Reset category - select Women by default
           categoryRadios[0].checked = true;
+
+          // NEW: Reset length - select Short by default
+          lengthRadios[0].checked = true;
+
+          // NEW: Reset brand - select LinaBen by default
+          brandRadios[0].checked = true;
+
+          // NEW: Reset tags - check first one only
+          tagCheckboxes.forEach((checkbox, index) => {
+            checkbox.checked = index === 0;
+          });
 
           // Reset colors - select first one only
           colorOptions.forEach((option, index) => {

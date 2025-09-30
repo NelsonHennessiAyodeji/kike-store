@@ -59,7 +59,7 @@ module.exports = class ProductService {
         }
       }
 
-      // Prepare product data
+      // Prepare product data with NEW fields
       const product = {
         product_name: productData.productName,
         description: productData.description,
@@ -72,6 +72,14 @@ module.exports = class ProductService {
           ? productData.colors
           : [productData.colors],
         category: productData.category,
+        // NEW FIELDS
+        length: productData.length,
+        brand: productData.brand,
+        tags: Array.isArray(productData.tags)
+          ? productData.tags
+          : productData.tags
+          ? [productData.tags]
+          : [],
         main_image_url: mainImageUrl,
         other_images_urls: otherImagesUrls,
       };

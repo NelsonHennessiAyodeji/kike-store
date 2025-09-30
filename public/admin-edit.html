@@ -425,7 +425,10 @@
 
       .size-info,
       .color-info,
-      .category-info {
+      .category-info,
+      .length-info,
+      .tag-info,
+      .brand-info {
         display: inline-block;
         padding: 6px 14px;
         background: #e6f7ff;
@@ -444,6 +447,21 @@
       .category-info {
         background: #fff7e6;
         color: #fa8c16;
+      }
+
+      .length-info {
+        background: #f9f0ff;
+        color: #722ed1;
+      }
+
+      .tag-info {
+        background: #fff2e8;
+        color: #fa541c;
+      }
+
+      .brand-info {
+        background: #f6ffed;
+        color: #389e0d;
       }
 
       .no-data {
@@ -829,8 +847,58 @@
                 <span>Men</span>
               </label>
               <label class="category-option">
-                <input type="radio" name="productCategory" value="kike" />
-                <span>Kike</span>
+                <input
+                  type="radio"
+                  name="productCategory"
+                  value="adireInfusion"
+                />
+                <span>Adire Infusion</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NEW LENGTH FIELD -->
+          <div class="form-group">
+            <label>Length</label>
+            <div class="category-options">
+              <label class="category-option">
+                <input type="radio" name="productLength" value="shorts" />
+                <span>Shorts</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productLength" value="medium" />
+                <span>Medium</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productLength" value="long" />
+                <span>Full Length</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productLength" value="extra-long" />
+                <span>Extra Long</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NEW BRAND FIELD -->
+          <div class="form-group">
+            <label>Brand</label>
+            <div class="category-options">
+              <label class="category-option">
+                <input type="radio" name="productBrand" value="linaben" />
+                <span>LinaBen</span>
+              </label>
+              <label class="category-option">
+                <input type="radio" name="productBrand" value="lizAndCo" />
+                <span>LizandCo</span>
+              </label>
+              <label class="category-option">
+                <input
+                  type="radio"
+                  name="productBrand"
+                  value="everyStylishMan"
+                />
+                <span>EveryStylishMan</span>
               </label>
             </div>
           </div>
@@ -903,6 +971,54 @@
             </div>
           </div>
 
+          <!-- NEW PRODUCT TAGS FIELD -->
+          <div class="form-group">
+            <label>Product Tags</label>
+            <div id="productTags" class="options-group">
+              <label
+                ><input type="checkbox" value="shirts" /><span
+                  >Shirts</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="tShirts" /><span
+                  >T-Shirts</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="poloShirts" /><span
+                  >Polo Shirts</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="hoodiesAndJackets" /><span
+                  >Hoodies & Jackets</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="pants" /><span
+                  >Pants</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="sets" /><span>Sets</span></label
+              >
+              <label
+                ><input type="checkbox" value="hats" /><span>Hats</span></label
+              >
+              <label
+                ><input type="checkbox" value="summer" /><span
+                  >Summer Collection</span
+                ></label
+              >
+              <label
+                ><input type="checkbox" value="winter" /><span
+                  >Winter Collection</span
+                ></label
+              >
+            </div>
+          </div>
+
           <div class="form-group">
             <label>Sizes</label>
             <div id="productSizes" class="options-group">
@@ -910,6 +1026,9 @@
               <label><input type="checkbox" value="M" /><span>M</span></label>
               <label><input type="checkbox" value="L" /><span>L</span></label>
               <label><input type="checkbox" value="XL" /><span>XL</span></label>
+              <label
+                ><input type="checkbox" value="XXL" /><span>XXL</span></label
+              >
             </div>
           </div>
 
@@ -969,17 +1088,6 @@
           </p>
         </div>
 
-        <!-- <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Orders</a></li>
-            <li><a href="#">Customers</a></li>
-            <li><a href="#">Settings</a></li>
-          </ul>
-        </div> -->
-
         <div class="footer-section footer-contact">
           <h3>Contact</h3>
           <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
@@ -1000,7 +1108,7 @@
 
     <script>
       // Backend URL
-      const baseUrl = "/admin-api";
+      const baseUrl = "http://localhost:3000/admin-api";
       const productId = localStorage.getItem("ProductId");
 
       // Available color options with their hex codes
@@ -1196,6 +1304,18 @@
         const categoryRadios = document.querySelectorAll(
           'input[name="productCategory"]'
         );
+        // NEW: Get length radios
+        const lengthRadios = document.querySelectorAll(
+          'input[name="productLength"]'
+        );
+        // NEW: Get brand radios
+        const brandRadios = document.querySelectorAll(
+          'input[name="productBrand"]'
+        );
+        // NEW: Get tag checkboxes
+        const tagCheckboxes = document.querySelectorAll(
+          '#productTags input[type="checkbox"]'
+        );
         const mainImageInput = document.getElementById("productMainImage");
         const mainImagePreview = document.getElementById("mainImagePreview");
         const otherImagesInput = document.getElementById("otherProductImage");
@@ -1225,6 +1345,27 @@
           document.querySelector(
             `input[name="productCategory"][value="${productData.category}"]`
           ).checked = true;
+
+          // NEW: Set length
+          if (productData.length) {
+            document.querySelector(
+              `input[name="productLength"][value="${productData.length}"]`
+            ).checked = true;
+          }
+
+          // NEW: Set brand
+          if (productData.brand) {
+            document.querySelector(
+              `input[name="productBrand"][value="${productData.brand}"]`
+            ).checked = true;
+          }
+
+          // NEW: Set tags
+          if (productData.tags && Array.isArray(productData.tags)) {
+            tagCheckboxes.forEach((checkbox) => {
+              checkbox.checked = productData.tags.includes(checkbox.value);
+            });
+          }
 
           // Set sizes
           sizeCheckboxes.forEach((checkbox) => {
@@ -1357,11 +1498,41 @@
             }
           }
 
+          // NEW: Get selected length
+          let selectedLength = "";
+          for (const radio of lengthRadios) {
+            if (radio.checked) {
+              selectedLength = radio.value;
+              break;
+            }
+          }
+
+          // NEW: Get selected brand
+          let selectedBrand = "";
+          for (const radio of brandRadios) {
+            if (radio.checked) {
+              selectedBrand = radio.value;
+              break;
+            }
+          }
+
+          // NEW: Get selected tags
+          const selectedTags = [];
+          tagCheckboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+              selectedTags.push(checkbox.value);
+            }
+          });
+
           // Prepare FormData for backend submission
           const formDataForUpload = new FormData();
           formDataForUpload.append("id", productId);
           formDataForUpload.append("product_name", productName.value);
           formDataForUpload.append("category", selectedCategory.toLowerCase());
+          // NEW: Append length, brand, and tags
+          formDataForUpload.append("length", selectedLength);
+          formDataForUpload.append("brand", selectedBrand);
+          formDataForUpload.append("tags", selectedTags.join(","));
           formDataForUpload.append(
             "price",
             parseFloat(productPrice.value) || 0
@@ -1397,19 +1568,23 @@
           formDataForUpload.append("sizes", selectedSizes.join(","));
 
           // Add colors as comma-separated string
-          formDataForUpload.append("colors", selectedColors.join(",")); // Show loading state
+          formDataForUpload.append("colors", selectedColors.join(","));
+
+          // Show loading state
           updateBtn.innerHTML =
             '<i class="fas fa-spinner fa-spin"></i> Updating...';
           updateBtn.disabled = true;
 
           try {
-            const response = await fetch(`/admin-api/products/${productId}`, {
-              method: "PUT",
-              body: formDataForUpload,
-            });
+            const response = await fetch(
+              `http://localhost:3000/admin-api/products/${productId}`,
+              {
+                method: "PUT",
+                body: formDataForUpload,
+              }
+            );
 
             const result = await response.json();
-            // console.log(result);
 
             let outputHTML = "";
 
@@ -1417,7 +1592,6 @@
               outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px;">
                 <strong style="color: #52c41a;">Success!</strong> Product has been updated successfully.
                 </div>`;
-              // ${result.id ? `<br>Product ID: ${result.id}` : ""}
 
               // Show success message
               successMessage.classList.add("show");
@@ -1426,6 +1600,45 @@
               setTimeout(() => {
                 successMessage.classList.remove("show");
               }, 8000);
+
+              // Update output with current data
+              outputHTML += `<p><strong>Product Name:</strong> ${productName.value}</p>`;
+              outputHTML += `<p><strong>Category:</strong> <span class="category-info">${selectedCategory}</span></p>`;
+              outputHTML += `<p><strong>Length:</strong> <span class="length-info">${selectedLength}</span></p>`;
+              outputHTML += `<p><strong>Brand:</strong> <span class="brand-info">${selectedBrand}</span></p>`;
+
+              if (selectedTags.length > 0) {
+                outputHTML += "<p><strong>Product Tags:</strong> ";
+                selectedTags.forEach((tag) => {
+                  outputHTML += `<span class="tag-info">${tag}</span>`;
+                });
+                outputHTML += "</p>";
+              } else {
+                outputHTML +=
+                  "<p><strong>Product Tags:</strong> None selected</p>";
+              }
+
+              outputHTML += `<p><strong>Price:</strong> ₦${parseFloat(
+                productPrice.value
+              ).toFixed(2)}</p>`;
+              outputHTML += `<p><strong>Quantity:</strong> ${productQuantity.value}</p>`;
+              outputHTML += `<p><strong>Description:</strong> ${productDescription.value}</p>`;
+
+              if (selectedSizes.length > 0) {
+                outputHTML += "<p><strong>Selected Sizes:</strong> ";
+                selectedSizes.forEach((size) => {
+                  outputHTML += `<span class="size-info">${size}</span>`;
+                });
+                outputHTML += "</p>";
+              }
+
+              if (selectedColors.length > 0) {
+                outputHTML += "<p><strong>Selected Colors:</strong> ";
+                selectedColors.forEach((color) => {
+                  outputHTML += `<span class="color-info">${color}</span>`;
+                });
+                outputHTML += "</p>";
+              }
             } else {
               outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
                 <strong style="color: #ff4d4f;">Error!</strong> ${

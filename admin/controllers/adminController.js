@@ -44,6 +44,11 @@ const updateProduct = async (req, res) => {
       updates.colors = updates.colors.split(",");
     }
 
+    // NEW: Parse tags from comma-separated string to array
+    if (updates.tags && typeof updates.tags === "string") {
+      updates.tags = updates.tags.split(",");
+    }
+
     // Handle file uploads if they exist
     if (req.files) {
       // Process main image
