@@ -14,9 +14,19 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Route to serve Admin HTML file
+// Route to serve Admin HTML file - PROTECTED
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
+});
+
+// Route to serve Admin Products HTML file - PROTECTED
+app.get("/admin-products.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-products.html"));
+});
+
+// Route to serve Admin Edit HTML file - PROTECTED
+app.get("/admin-edit.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-edit.html"));
 });
 
 app.use("/admin-api", adminRoute);

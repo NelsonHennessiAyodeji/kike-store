@@ -12,7 +12,72 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+      /* Add login styles */
+      .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .login-container.active {
+        display: block;
+      }
+
+      .login-form .form-group {
+        margin-bottom: 20px;
+      }
+
+      .login-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 12px;
+        background: #4a6fa5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .login-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .login-error {
+        color: #ff4d4f;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .admin-content {
+        display: none;
+      }
+
+      .admin-content.active {
+        display: block;
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -327,101 +392,220 @@
     </style>
   </head>
   <body>
-    <!-- Header -->
-    <header>
-      <div class="container header-container">
-        <div class="logo">ADMIN PANEL</div>
-        <div class="nav-links">
-          <a href="./admin.html">Add Product</a>
-          <a href="./admin-products.html" class="active">View All Products</a>
+    <!-- Login Container -->
+    <div class="container">
+      <div id="loginContainer" class="login-container">
+        <h2 style="text-align: center; margin-bottom: 30px">Admin Login</h2>
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="adminEmail">Email</label>
+            <input
+              type="email"
+              id="adminEmail"
+              required
+              placeholder="Enter admin email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input
+              type="password"
+              id="adminPassword"
+              required
+              placeholder="Enter admin password"
+            />
+          </div>
+          <button type="submit" class="login-btn" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <div id="loginError" class="login-error">
+            Invalid credentials. Please try again.
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Content (Hidden until login) -->
+    <div id="adminContent" class="admin-content">
+      <!-- Header -->
+      <header>
+        <div class="container header-container">
+          <div class="logo">ADMIN PANEL</div>
+          <div class="nav-links">
+            <a href="./admin.html">Add Product</a>
+            <a href="#" class="active">View All Products</a>
+            <a
+              href="#"
+              id="logoutBtn"
+              style="background: rgba(255, 255, 255, 0.1)"
+            >
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Title -->
+      <div class="container">
+        <div class="page-title">
+          <h1>PRODUCT MANAGEMENT</h1>
+          <p>View and manage all products here</p>
         </div>
       </div>
-    </header>
 
-    <!-- Page Title -->
-    <div class="container">
-      <div class="page-title">
-        <h1>PRODUCT MANAGEMENT</h1>
-        <p>View and manage all products here</p>
+      <!-- Loading Spinner -->
+      <div class="container">
+        <div id="loadingSpinner" class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Loading Spinner -->
-    <div class="container">
-      <div id="loadingSpinner" class="loading-spinner">
-        <div class="spinner"></div>
+      <!-- Error Message (hidden by default) -->
+      <div class="container">
+        <div id="errorMessage" class="error-message" style="display: none">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorText"
+            >There was an error loading products. Please try again.</span
+          >
+        </div>
       </div>
-    </div>
 
-    <!-- Error Message (hidden by default) -->
-    <div class="container">
-      <div id="errorMessage" class="error-message" style="display: none">
-        <i class="fas fa-exclamation-circle"></i>
-        <span id="errorText"
-          >There was an error loading products. Please try again.</span
-        >
+      <!-- Products Grid -->
+      <div class="container">
+        <div class="products-grid" id="productsGrid" style="display: none">
+          <!-- Product cards will be dynamically generated here -->
+        </div>
       </div>
-    </div>
 
-    <!-- Products Grid -->
-    <div class="container">
-      <div class="products-grid" id="productsGrid" style="display: none">
-        <!-- Product cards will be dynamically generated here -->
-      </div>
-    </div>
+      <!-- Footer -->
+      <footer>
+        <div class="container footer-container">
+          <div class="footer-section">
+            <h3>About The Admin Panel</h3>
+            <p>
+              This Admin Panel is a comprehensive product management system for
+              e-commerce businesses. In it you can Manage all your products.
+            </p>
+          </div>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-section">
-          <h3>About The Admin Panel</h3>
+          <div class="footer-section">
+            <h3>About The Developer</h3>
+            <p>
+              The developer is a passionate builder of scalable and efficient
+              web applications especially in the Backend development side of
+              things. He is proficient in JavaScript, Node.js, Next.js etc, with
+              a solid understanding of Software Development principles and a
+              keen eye for detail and organisation.
+            </p>
+          </div>
+
+          <div class="footer-section footer-contact">
+            <h3>Contact</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
+            <p><i class="fas fa-phone"></i> +123 (916) 697-3321</p>
+            <p>
+              <i class="fas fa-envelope"></i> nelsonhennessiayodeji@gmail.com
+            </p>
+          </div>
+        </div>
+
+        <div class="copyright">
           <p>
-            This Admin Panel is a comprehensive product management system for
-            e-commerce businesses. In it you can Manage all your products.
+            © 2025
+            <a href="https://nelsonhennessiayodeji.github.io/Nelson-Ayodeji/"
+              >Ayodeji Nelson</a
+            >. All rights reserved.
           </p>
         </div>
-
-        <div class="footer-section">
-          <h3>About The Developer</h3>
-          <p>
-            The developer is a passionate builder of scalable and efficient web
-            applications especially in the Backend development side of things.
-            He is proficient in JavaScript, Node.js, Next.js etc, with a solid
-            understanding of Software Development principles and a keen eye for
-            detail and organisation.
-          </p>
-        </div>
-
-        <!-- <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Orders</a></li>
-            <li><a href="#">Customers</a></li>
-            <li><a href="#">Settings</a></li>
-          </ul>
-        </div> -->
-
-        <div class="footer-section footer-contact">
-          <h3>Contact</h3>
-          <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
-          <p><i class="fas fa-phone"></i> +123 (916) 697-3321</p>
-          <p><i class="fas fa-envelope"></i> nelsonhennessiayodeji@gmail.com</p>
-        </div>
-      </div>
-
-      <div class="copyright">
-        <p>
-          © 2025
-          <a href="https://nelsonhennessiayodeji.github.io/Nelson-Ayodeji/"
-            >Ayodeji Nelson</a
-          >. All rights reserved.
-        </p>
-      </div>
-    </footer>
+      </footer>
+    </div>
 
     <script>
+      // Initialize Supabase client FIRST
+      const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co"; // Replace with your Supabase URL
+      const supabaseKey = "sb_publishable_sCNic5ngBsn9O4KmrsJ6aQ_5SEnuOb-"; // Replace with your Supabase anon key
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      // Check if user is already logged in
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("adminToken");
+        if (token) {
+          // Verify token is still valid
+          supabase.auth.getUser(token).then(({ data, error }) => {
+            if (error || !data.user) {
+              localStorage.removeItem("adminToken");
+              showLogin();
+            } else {
+              showAdminContent();
+              renderProducts();
+            }
+          });
+        } else {
+          showLogin();
+        }
+      });
+
+      // Login form handler
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("adminEmail").value;
+          const password = document.getElementById("adminPassword").value;
+          const loginBtn = document.getElementById("loginBtn");
+          const errorDiv = document.getElementById("loginError");
+
+          loginBtn.disabled = true;
+          loginBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+          errorDiv.style.display = "none";
+
+          try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+              email: email,
+              password: password,
+            });
+
+            if (error) {
+              throw error;
+            }
+
+            if (data.user) {
+              localStorage.setItem("adminToken", data.session.access_token);
+              showAdminContent();
+              renderProducts();
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            errorDiv.style.display = "block";
+            errorDiv.textContent =
+              error.message || "Invalid credentials. Please try again.";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+          }
+        });
+
+      // Logout handler
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          localStorage.removeItem("adminToken");
+          showLogin();
+          document.getElementById("loginForm").reset();
+        });
+
+      function showLogin() {
+        document.getElementById("loginContainer").classList.add("active");
+        document.getElementById("adminContent").classList.remove("active");
+      }
+
+      function showAdminContent() {
+        document.getElementById("loginContainer").classList.remove("active");
+        document.getElementById("adminContent").classList.add("active");
+      }
+
+      // Original product management code continues here...
       const baseUrl = "/admin-api";
 
       // Function to show loading spinner
@@ -447,14 +631,26 @@
       }
 
       async function getAllProducts() {
+        const token = localStorage.getItem("adminToken");
+        if (!token) {
+          throw new Error("Authentication required");
+        }
+
         try {
           const response = await fetch(`${baseUrl}/products`, {
             method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           });
 
           if (response.ok) {
             const products = await response.json();
             return products;
+          } else if (response.status === 401) {
+            localStorage.removeItem("adminToken");
+            showLogin();
+            throw new Error("Authentication expired. Please log in again.");
           } else {
             throw new Error("Failed to fetch products");
           }
@@ -509,7 +705,12 @@
           addProductCardListeners();
         } catch (error) {
           console.error("Error rendering products:", error);
-          showError("There was an issue loading products. Please try again.");
+          if (error.message.includes("Authentication")) {
+            showError("Authentication required. Please log in again.");
+            showLogin();
+          } else {
+            showError("There was an issue loading products. Please try again.");
+          }
         }
       }
 

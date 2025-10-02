@@ -1,8 +1,12 @@
 const express = require("express");
 const multer = require("multer");
+const { authenticateAdmin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 const upload = multer();
+
+router.use(authenticateAdmin);
+
 const {
   createProduct,
   getAllProducts,
@@ -24,19 +28,12 @@ router.post(
   createProduct
 );
 
-// Get all products
 router.get("/products", getAllProducts);
-
-// Get single product
 router.get("/products/:id", getSingleProduct);
-
 router.get("/products-sorted/price/:order", sortLowToHigh);
-
 router.get("/products-sorted/date/:order", sortByDate);
-
 router.get("/products-sorted/name/:order", sortByName);
 
-// Update product
 router.put(
   "/products/:id",
   upload.fields([
@@ -46,7 +43,6 @@ router.put(
   updateProduct
 );
 
-// Delete product
 router.delete("/products/:id", deleteProduct);
 
 module.exports = router;

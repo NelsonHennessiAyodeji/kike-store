@@ -13,6 +13,61 @@
       rel="stylesheet"
     />
     <style>
+      /* Add login styles */
+      .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-form .form-group {
+        margin-bottom: 20px;
+      }
+
+      .login-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 12px;
+        background: #4a6fa5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .login-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .login-error {
+        color: #ff4d4f;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .admin-content {
+        display: none;
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -765,396 +820,536 @@
     </style>
   </head>
   <body>
-    <!-- Header -->
-    <header>
-      <div class="container header-container">
-        <div class="logo">ADMIN PANEL</div>
-        <div class="nav-links">
-          <a href="./admin.html">Add Product</a>
-          <a href="#" class="active">Edit Product</a>
-          <a href="admin-products.html">View All Products</a>
-        </div>
-      </div>
-    </header>
-
-    <!-- Page Title -->
+    <!-- Login Container -->
     <div class="container">
-      <div class="page-title">
-        <h1>EDIT PRODUCT</h1>
-        <p>Modify product details and images</p>
+      <div id="loginContainer" class="login-container" style="display: none">
+        <h2 style="text-align: center; margin-bottom: 30px">Admin Login</h2>
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="adminEmail">Email</label>
+            <input
+              type="email"
+              id="adminEmail"
+              required
+              placeholder="Enter admin email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input
+              type="password"
+              id="adminPassword"
+              required
+              placeholder="Enter admin password"
+            />
+          </div>
+          <button type="submit" class="login-btn" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <div id="loginError" class="login-error">
+            Invalid credentials. Please try again.
+          </div>
+        </form>
       </div>
     </div>
 
-    <!-- Success Message -->
-    <div class="container">
-      <div id="successMessage" class="success-message">
-        <i class="fas fa-check-circle"></i> Product updated successfully!
-      </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal-overlay" id="deleteModal">
-      <div class="modal">
-        <div class="modal-header">
-          <h2 id="modalTitle">Confirm Deletion</h2>
-          <button class="modal-close" id="closeModal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div id="modalContent">
-            <!-- Content will be dynamically updated -->
+    <!-- Admin Content (Hidden until login) -->
+    <div id="adminContent" class="admin-content" style="display: none">
+      <!-- Header -->
+      <header>
+        <div class="container header-container">
+          <div class="logo">ADMIN PANEL</div>
+          <div class="nav-links">
+            <a href="./admin.html">Add Product</a>
+            <a href="#" class="active">Edit Product</a>
+            <a href="admin-products.html">View All Products</a>
+            <a
+              href="#"
+              id="logoutBtn"
+              style="background: rgba(255, 255, 255, 0.1)"
+            >
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
           </div>
         </div>
-        <div class="modal-footer" id="modalFooter">
-          <!-- Buttons will be dynamically updated -->
+      </header>
+
+      <!-- Page Title -->
+      <div class="container">
+        <div class="page-title">
+          <h1>EDIT PRODUCT</h1>
+          <p>Modify product details and images</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-      <!-- Back Button -->
-      <button class="btn btn-back" onclick="window.history.back()">
-        <i class="fas fa-arrow-left"></i> Back to Previous Page
-      </button>
-
-      <!-- Loading Spinner -->
-      <div id="loadingSpinner" class="loading-spinner">
-        <div class="spinner"></div>
       </div>
 
-      <div id="formContainer" class="form-container" style="display: none">
-        <!-- Left Column -->
-        <div class="form-side">
-          <div class="form-group">
-            <label for="productName">Product Name</label>
-            <input
-              type="text"
-              id="productName"
-              class="form-control"
-              placeholder="Enter product name"
-            />
-          </div>
+      <!-- Success Message -->
+      <div class="container">
+        <div id="successMessage" class="success-message">
+          <i class="fas fa-check-circle"></i> Product updated successfully!
+        </div>
+      </div>
 
-          <div class="form-group">
-            <label>Category</label>
-            <div class="category-options">
-              <label class="category-option">
-                <input type="radio" name="productCategory" value="women" />
-                <span>Women</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productCategory" value="men" />
-                <span>Men</span>
-              </label>
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productCategory"
-                  value="adireInfusion"
-                />
-                <span>Adire Infusion</span>
-              </label>
+      <!-- Delete Confirmation Modal -->
+      <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+          <div class="modal-header">
+            <h2 id="modalTitle">Confirm Deletion</h2>
+            <button class="modal-close" id="closeModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div id="modalContent">
+              <!-- Content will be dynamically updated -->
             </div>
           </div>
-
-          <!-- NEW LENGTH FIELD -->
-          <div class="form-group">
-            <label>Length</label>
-            <div class="category-options">
-              <label class="category-option">
-                <input type="radio" name="productLength" value="shorts" />
-                <span>Shorts</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productLength" value="medium" />
-                <span>Medium</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productLength" value="long" />
-                <span>Full Length</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productLength" value="extra-long" />
-                <span>Extra Long</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- NEW BRAND FIELD -->
-          <div class="form-group">
-            <label>Brand</label>
-            <div class="category-options">
-              <label class="category-option">
-                <input type="radio" name="productBrand" value="linaben" />
-                <span>LinaBen</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productBrand" value="lizAndCo" />
-                <span>LizandCo</span>
-              </label>
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productBrand"
-                  value="everyStylishMan"
-                />
-                <span>EveryStylishMan</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="productPrice">Price (₦)</label>
-            <input
-              type="number"
-              id="productPrice"
-              class="form-control"
-              placeholder="5000"
-              step="500"
-              min="0"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="productQuantity">Quantity</label>
-            <input
-              type="number"
-              id="productQuantity"
-              class="form-control"
-              placeholder="0"
-              min="0"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="productDescription">Description</label>
-            <textarea
-              id="productDescription"
-              class="form-control"
-              rows="4"
-              placeholder="Enter product description"
-            ></textarea>
+          <div class="modal-footer" id="modalFooter">
+            <!-- Buttons will be dynamically updated -->
           </div>
         </div>
+      </div>
 
-        <!-- Right Column -->
-        <div class="form-side">
-          <div class="form-group">
-            <label>Main Image</label>
-            <div class="file-input-container">
-              <label class="file-input-label">
-                <i class="fas fa-cloud-upload-alt"></i> Change Main Image
-              </label>
-              <input type="file" id="productMainImage" accept="image/*" />
-            </div>
-            <div id="mainImagePreview" class="preview">
-              <!-- Will be populated with current main image -->
-            </div>
-          </div>
+      <!-- Main Content -->
+      <div class="container">
+        <!-- Back Button -->
+        <button class="btn btn-back" onclick="window.history.back()">
+          <i class="fas fa-arrow-left"></i> Back to Previous Page
+        </button>
 
-          <div class="form-group">
-            <label>Other Images (optional)</label>
-            <div class="file-input-container">
-              <label class="file-input-label">
-                <i class="fas fa-images"></i> Change Other Images
-              </label>
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
+
+        <div id="formContainer" class="form-container" style="display: none">
+          <!-- Left Column -->
+          <div class="form-side">
+            <div class="form-group">
+              <label for="productName">Product Name</label>
               <input
-                type="file"
-                id="otherProductImage"
-                accept="image/*"
-                multiple
+                type="text"
+                id="productName"
+                class="form-control"
+                placeholder="Enter product name"
               />
             </div>
-            <div class="file-limit">Maximum 3 images allowed</div>
-            <div id="anglesPreview" class="preview">
-              <!-- Will be populated with other images -->
+
+            <div class="form-group">
+              <label>Category</label>
+              <div class="category-options">
+                <label class="category-option">
+                  <input type="radio" name="productCategory" value="women" />
+                  <span>Women</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productCategory" value="men" />
+                  <span>Men</span>
+                </label>
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productCategory"
+                    value="adireInfusion"
+                  />
+                  <span>Adire Infusion</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- NEW LENGTH FIELD -->
+            <div class="form-group">
+              <label>Length</label>
+              <div class="category-options">
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="shorts" />
+                  <span>Shorts</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="medium" />
+                  <span>Medium</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="long" />
+                  <span>Full Length</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="extra-long" />
+                  <span>Extra Long</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- NEW BRAND FIELD -->
+            <div class="form-group">
+              <label>Brand</label>
+              <div class="category-options">
+                <label class="category-option">
+                  <input type="radio" name="productBrand" value="linaben" />
+                  <span>LinaBen</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productBrand" value="lizAndCo" />
+                  <span>LizandCo</span>
+                </label>
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productBrand"
+                    value="everyStylishMan"
+                  />
+                  <span>EveryStylishMan</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="productPrice">Price (₦)</label>
+              <input
+                type="number"
+                id="productPrice"
+                class="form-control"
+                placeholder="5000"
+                step="500"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="productQuantity">Quantity</label>
+              <input
+                type="number"
+                id="productQuantity"
+                class="form-control"
+                placeholder="0"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="productDescription">Description</label>
+              <textarea
+                id="productDescription"
+                class="form-control"
+                rows="4"
+                placeholder="Enter product description"
+              ></textarea>
             </div>
           </div>
 
-          <!-- NEW PRODUCT TAGS FIELD -->
-          <div class="form-group">
-            <label>Product Tags</label>
-            <div id="productTags" class="options-group">
-              <label
-                ><input type="checkbox" value="shirts" /><span
-                  >Shirts</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="tShirts" /><span
-                  >T-Shirts</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="poloShirts" /><span
-                  >Polo Shirts</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="hoodiesAndJackets" /><span
-                  >Hoodies & Jackets</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="pants" /><span
-                  >Pants</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="sets" /><span>Sets</span></label
-              >
-              <label
-                ><input type="checkbox" value="hats" /><span>Hats</span></label
-              >
-              <label
-                ><input type="checkbox" value="summer" /><span
-                  >Summer Collection</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="winter" /><span
-                  >Winter Collection</span
-                ></label
-              >
+          <!-- Right Column -->
+          <div class="form-side">
+            <div class="form-group">
+              <label>Main Image</label>
+              <div class="file-input-container">
+                <label class="file-input-label">
+                  <i class="fas fa-cloud-upload-alt"></i> Change Main Image
+                </label>
+                <input type="file" id="productMainImage" accept="image/*" />
+              </div>
+              <div id="mainImagePreview" class="preview">
+                <!-- Will be populated with current main image -->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Other Images (optional)</label>
+              <div class="file-input-container">
+                <label class="file-input-label">
+                  <i class="fas fa-images"></i> Change Other Images
+                </label>
+                <input
+                  type="file"
+                  id="otherProductImage"
+                  accept="image/*"
+                  multiple
+                />
+              </div>
+              <div class="file-limit">Maximum 3 images allowed</div>
+              <div id="anglesPreview" class="preview">
+                <!-- Will be populated with other images -->
+              </div>
+            </div>
+
+            <!-- NEW PRODUCT TAGS FIELD -->
+            <div class="form-group">
+              <label>Product Tags</label>
+              <div id="productTags" class="options-group">
+                <label
+                  ><input type="checkbox" value="shirts" /><span
+                    >Shirts</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="tShirts" /><span
+                    >T-Shirts</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="poloShirts" /><span
+                    >Polo Shirts</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="hoodiesAndJackets" /><span
+                    >Hoodies & Jackets</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="pants" /><span
+                    >Pants</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="sets" /><span
+                    >Sets</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="hats" /><span
+                    >Hats</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="summer" /><span
+                    >Summer Collection</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="winter" /><span
+                    >Winter Collection</span
+                  ></label
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Sizes</label>
+              <div id="productSizes" class="options-group">
+                <label><input type="checkbox" value="S" /><span>S</span></label>
+                <label><input type="checkbox" value="M" /><span>M</span></label>
+                <label><input type="checkbox" value="L" /><span>L</span></label>
+                <label
+                  ><input type="checkbox" value="XL" /><span>XL</span></label
+                >
+                <label
+                  ><input type="checkbox" value="XXL" /><span>XXL</span></label
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Colors</label>
+              <div id="colorOptions" class="color-options">
+                <!-- Will be populated with color options -->
+              </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Sizes</label>
-            <div id="productSizes" class="options-group">
-              <label><input type="checkbox" value="S" /><span>S</span></label>
-              <label><input type="checkbox" value="M" /><span>M</span></label>
-              <label><input type="checkbox" value="L" /><span>L</span></label>
-              <label><input type="checkbox" value="XL" /><span>XL</span></label>
-              <label
-                ><input type="checkbox" value="XXL" /><span>XXL</span></label
-              >
+          <!-- Full Width Elements -->
+          <div class="full-width">
+            <div class="btn-group">
+              <button id="updateBtn" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update Product
+              </button>
+              <button id="resetBtn" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Reset Changes
+              </button>
+              <button id="deleteBtn" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Delete Product
+              </button>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label>Colors</label>
-            <div id="colorOptions" class="color-options">
-              <!-- Will be populated with color options -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Full Width Elements -->
-        <div class="full-width">
-          <div class="btn-group">
-            <button id="updateBtn" class="btn btn-primary">
-              <i class="fas fa-save"></i> Update Product
-            </button>
-            <button id="resetBtn" class="btn btn-secondary">
-              <i class="fas fa-times"></i> Reset Changes
-            </button>
-            <button id="deleteBtn" class="btn btn-danger">
-              <i class="fas fa-trash"></i> Delete Product
-            </button>
-          </div>
-
-          <div class="output-container">
-            <h2>Updated Data</h2>
-            <div id="output" class="output-content">
-              <p class="no-data">
-                Updated data will appear here after submission
-              </p>
+            <div class="output-container">
+              <h2>Updated Data</h2>
+              <div id="output" class="output-content">
+                <p class="no-data">
+                  Updated data will appear here after submission
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Footer -->
+      <footer>
+        <div class="container footer-container">
+          <div class="footer-section">
+            <h3>About The Admin Panel</h3>
+            <p>
+              This Admin Panel is a comprehensive product management system for
+              e-commerce businesses. In it you can Manage all your products.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3>About The Developer</h3>
+            <p>
+              The developer is a passionate builder of scalable and efficient
+              web applications especially in the Backend development side of
+              things. He is proficient in JavaScript, Node.js, Next.js etc, with
+              a solid understanding of Software Development principles and a
+              keen eye for detail and organisation.
+            </p>
+          </div>
+
+          <div class="footer-section footer-contact">
+            <h3>Contact</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
+            <p><i class="fas fa-phone"></i> +123 (916) 697-3321</p>
+            <p>
+              <i class="fas fa-envelope"></i> nelsonhennessiayodeji@gmail.com
+            </p>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>
+            © 2025
+            <a href="https://nelsonhennessiayodeji.github.io/Nelson-Ayodeji/"
+              >Ayodeji Nelson</a
+            >. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-section">
-          <h3>About The Admin Panel</h3>
-          <p>
-            This Admin Panel is a comprehensive product management system for
-            e-commerce businesses. In it you can Manage all your products.
-          </p>
-        </div>
-
-        <div class="footer-section">
-          <h3>About The Developer</h3>
-          <p>
-            The developer is a passionate builder of scalable and efficient web
-            applications especially in the Backend development side of things.
-            He is proficient in JavaScript, Node.js, Next.js etc, with a solid
-            understanding of Software Development principles and a keen eye for
-            detail and organisation.
-          </p>
-        </div>
-
-        <div class="footer-section footer-contact">
-          <h3>Contact</h3>
-          <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
-          <p><i class="fas fa-phone"></i> +123 (916) 697-3321</p>
-          <p><i class="fas fa-envelope"></i> nelsonhennessiayodeji@gmail.com</p>
-        </div>
-      </div>
-
-      <div class="copyright">
-        <p>
-          © 2025
-          <a href="https://nelsonhennessiayodeji.github.io/Nelson-Ayodeji/"
-            >Ayodeji Nelson</a
-          >. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // Backend URL
-      const baseUrl = "http://localhost:3000/admin-api";
-      const productId = localStorage.getItem("ProductId");
+      // Initialize Supabase client with PUBLIC/ANON key (not secret key)
+      const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
+      // Replace with your Supabase public/anonymous key (starts with 'ey' not 'sb_secret_')
+      const supabaseKey = "sb_publishable_sCNic5ngBsn9O4KmrsJ6aQ_5SEnuOb-"; // Use your public key here
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-      // Available color options with their hex codes
-      const colorOptionsData = [
-        { name: "Red", hex: "#ff0000" },
-        { name: "Green", hex: "#00ff00" },
-        { name: "Blue", hex: "#0000ff" },
-        { name: "Yellow", hex: "#ffff00" },
-        { name: "Black", hex: "#000000" },
-        { name: "White", hex: "#ffffff" },
-      ];
+      // Check if user is already logged in - this runs immediately
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("adminToken");
 
-      // Store the original product data for reset functionality
-      let originalProductData = null;
-      // Store the current state of other images (original + newly uploaded)
-      let currentOtherImages = [];
-
-      // Modal elements
-      const deleteModal = document.getElementById("deleteModal");
-      const modalTitle = document.getElementById("modalTitle");
-      const modalContent = document.getElementById("modalContent");
-      const modalFooter = document.getElementById("modalFooter");
-      const closeModalBtn = document.getElementById("closeModal");
-
-      // Function to show modal
-      function showModal() {
-        deleteModal.classList.add("active");
-      }
-
-      // Function to hide modal
-      function hideModal() {
-        deleteModal.classList.remove("active");
-      }
-
-      // Close modal when clicking on close button or outside the modal
-      closeModalBtn.addEventListener("click", hideModal);
-      deleteModal.addEventListener("click", function (e) {
-        if (e.target === deleteModal) {
-          hideModal();
+        if (token) {
+          // Verify token is still valid
+          supabase.auth.getUser(token).then(({ data, error }) => {
+            if (error || !data.user) {
+              localStorage.removeItem("adminToken");
+              showLogin();
+            } else {
+              showAdminContent();
+              initializeEditPage();
+            }
+          });
+        } else {
+          // No token found, show login immediately
+          showLogin();
         }
       });
 
-      // Function to show confirmation dialog
-      function showDeleteConfirmation() {
-        modalTitle.textContent = "Confirm Deletion";
-        modalContent.innerHTML = `
+      // Login form handler
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("adminEmail").value;
+          const password = document.getElementById("adminPassword").value;
+          const loginBtn = document.getElementById("loginBtn");
+          const errorDiv = document.getElementById("loginError");
+
+          loginBtn.disabled = true;
+          loginBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+          errorDiv.style.display = "none";
+
+          try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+              email: email,
+              password: password,
+            });
+
+            if (error) {
+              throw error;
+            }
+
+            if (data.user) {
+              localStorage.setItem("adminToken", data.session.access_token);
+              showAdminContent();
+              initializeEditPage();
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            errorDiv.style.display = "block";
+            errorDiv.textContent =
+              error.message || "Invalid credentials. Please try again.";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+          }
+        });
+
+      // Logout handler
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          localStorage.removeItem("adminToken");
+          showLogin();
+          document.getElementById("loginForm").reset();
+        });
+
+      function showLogin() {
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("adminContent").style.display = "none";
+      }
+
+      function showAdminContent() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+      }
+
+      function initializeEditPage() {
+        // Backend URL
+        const baseUrl = "/admin-api";
+        const productId = localStorage.getItem("ProductId");
+
+        // Available color options with their hex codes
+        const colorOptionsData = [
+          { name: "Red", hex: "#ff0000" },
+          { name: "Green", hex: "#00ff00" },
+          { name: "Blue", hex: "#0000ff" },
+          { name: "Yellow", hex: "#ffff00" },
+          { name: "Black", hex: "#000000" },
+          { name: "White", hex: "#ffffff" },
+        ];
+
+        // Store the original product data for reset functionality
+        let originalProductData = null;
+        // Store the current state of other images (original + newly uploaded)
+        let currentOtherImages = [];
+
+        // Modal elements
+        const deleteModal = document.getElementById("deleteModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalContent = document.getElementById("modalContent");
+        const modalFooter = document.getElementById("modalFooter");
+        const closeModalBtn = document.getElementById("closeModal");
+
+        // Function to show modal
+        function showModal() {
+          deleteModal.classList.add("active");
+        }
+
+        // Function to hide modal
+        function hideModal() {
+          deleteModal.classList.remove("active");
+        }
+
+        // Close modal when clicking on close button or outside the modal
+        closeModalBtn.addEventListener("click", hideModal);
+        deleteModal.addEventListener("click", function (e) {
+          if (e.target === deleteModal) {
+            hideModal();
+          }
+        });
+
+        // Function to show confirmation dialog
+        function showDeleteConfirmation() {
+          modalTitle.textContent = "Confirm Deletion";
+          modalContent.innerHTML = `
           <div class="modal-message">
             <div class="modal-icon warning">
               <i class="fas fa-exclamation-circle"></i>
@@ -1164,38 +1359,38 @@
           </div>
         `;
 
-        modalFooter.innerHTML = `
+          modalFooter.innerHTML = `
           <button class="modal-btn modal-btn-secondary" id="cancelDelete">Cancel</button>
           <button class="modal-btn modal-btn-danger" id="confirmDelete">Yes, Delete Product</button>
         `;
 
-        document
-          .getElementById("cancelDelete")
-          .addEventListener("click", hideModal);
-        document
-          .getElementById("confirmDelete")
-          .addEventListener("click", startDeleteProcess);
+          document
+            .getElementById("cancelDelete")
+            .addEventListener("click", hideModal);
+          document
+            .getElementById("confirmDelete")
+            .addEventListener("click", startDeleteProcess);
 
-        showModal();
-      }
+          showModal();
+        }
 
-      // Function to show loading state in modal
-      function showDeleteLoading() {
-        modalTitle.textContent = "Deleting Product";
-        modalContent.innerHTML = `
+        // Function to show loading state in modal
+        function showDeleteLoading() {
+          modalTitle.textContent = "Deleting Product";
+          modalContent.innerHTML = `
           <div class="modal-spinner">
             <div class="spinner"></div>
           </div>
           <p style="text-align: center;">Deleting product, please wait...</p>
         `;
-        modalFooter.innerHTML = "";
-        showModal();
-      }
+          modalFooter.innerHTML = "";
+          showModal();
+        }
 
-      // Function to show result
-      function showDeleteResult(success, message) {
-        modalTitle.textContent = success ? "Success" : "Error";
-        modalContent.innerHTML = `
+        // Function to show result
+        function showDeleteResult(success, message) {
+          modalTitle.textContent = success ? "Success" : "Error";
+          modalContent.innerHTML = `
           <div class="modal-message">
             <div class="modal-icon ${success ? "success" : "error"}">
               <i class="fas ${
@@ -1207,66 +1402,72 @@
           </div>
         `;
 
-        if (success) {
-          modalFooter.innerHTML = `
+          if (success) {
+            modalFooter.innerHTML = `
             <button class="modal-btn modal-btn-primary" id="successOk">OK</button>
           `;
-          document
-            .getElementById("successOk")
-            .addEventListener("click", function () {
-              hideModal();
-              // Redirect to add product page
-              window.location.href = "./admin-products.html";
-            });
-        } else {
-          modalFooter.innerHTML = `
+            document
+              .getElementById("successOk")
+              .addEventListener("click", function () {
+                hideModal();
+                // Redirect to add product page
+                window.location.href = "./admin-products.html";
+              });
+          } else {
+            modalFooter.innerHTML = `
             <button class="modal-btn modal-btn-secondary" id="errorOk">OK</button>
           `;
-          document
-            .getElementById("errorOk")
-            .addEventListener("click", hideModal);
+            document
+              .getElementById("errorOk")
+              .addEventListener("click", hideModal);
+          }
+
+          showModal();
         }
 
-        showModal();
-      }
+        // Function to start the deletion process
+        function startDeleteProcess() {
+          showDeleteLoading();
+          const token = localStorage.getItem("adminToken");
 
-      // Function to start the deletion process
-      function startDeleteProcess() {
-        showDeleteLoading();
-
-        fetch(`${baseUrl}/products/${productId}`, {
-          method: "DELETE",
-        })
-          .then((response) => {
-            // Check if the response is OK (status in the range 200-299)
-            if (response.ok) {
-              return response.json();
-            } else {
-              // If the response is not OK, throw an error
-              throw new Error("Server returned an error");
-            }
+          fetch(`${baseUrl}/products/${productId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           })
-          .then((result) => {
-            // Check if the response contains the success message
-            if (result.message && result.message.includes("successfully")) {
-              showDeleteResult(true, "Product has been successfully deleted.");
-            } else {
+            .then((response) => {
+              // Check if the response is OK (status in the range 200-299)
+              if (response.ok) {
+                return response.json();
+              } else {
+                // If the response is not OK, throw an error
+                throw new Error("Server returned an error");
+              }
+            })
+            .then((result) => {
+              // Check if the response contains the success message
+              if (result.message && result.message.includes("successfully")) {
+                showDeleteResult(
+                  true,
+                  "Product has been successfully deleted."
+                );
+              } else {
+                showDeleteResult(
+                  false,
+                  result.error || "Failed to delete product. Please try again."
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Delete error:", error);
               showDeleteResult(
                 false,
-                result.error || "Failed to delete product. Please try again."
+                "Network error. Please check your connection and try again."
               );
-            }
-          })
-          .catch((error) => {
-            console.error("Delete error:", error);
-            showDeleteResult(
-              false,
-              "Network error. Please check your connection and try again."
-            );
-          });
-      }
+            });
+        }
 
-      document.addEventListener("DOMContentLoaded", function () {
         const loadingSpinner = document.getElementById("loadingSpinner");
         const formContainer = document.getElementById("formContainer");
 
@@ -1275,7 +1476,12 @@
         formContainer.style.display = "none";
 
         // Fetch product data from the API
-        fetch(`${baseUrl}/products/${productId}`)
+        const token = localStorage.getItem("adminToken");
+        fetch(`${baseUrl}/products/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
           .then((response) => {
             if (!response.ok) {
               throw new Error("Failed to fetch product data");
@@ -1489,6 +1695,13 @@
 
         // Handle form submission
         updateBtn.addEventListener("click", async function () {
+          const token = localStorage.getItem("adminToken");
+          if (!token) {
+            alert("Authentication required. Please log in again.");
+            showLogin();
+            return;
+          }
+
           // Get selected category
           let selectedCategory = "";
           for (const radio of categoryRadios) {
@@ -1576,13 +1789,13 @@
           updateBtn.disabled = true;
 
           try {
-            const response = await fetch(
-              `http://localhost:3000/admin-api/products/${productId}`,
-              {
-                method: "PUT",
-                body: formDataForUpload,
-              }
-            );
+            const response = await fetch(`/admin-api/products/${productId}`, {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formDataForUpload,
+            });
 
             const result = await response.json();
 
@@ -1675,7 +1888,7 @@
         deleteBtn.addEventListener("click", function () {
           showDeleteConfirmation();
         });
-      });
+      }
     </script>
   </body>
 </html>

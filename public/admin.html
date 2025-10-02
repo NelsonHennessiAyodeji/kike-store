@@ -12,7 +12,63 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+      /* Add login styles */
+      .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-form .form-group {
+        margin-bottom: 20px;
+      }
+
+      .login-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 12px;
+        background: #4a6fa5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .login-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .login-error {
+        color: #ff4d4f;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .admin-content {
+        display: none;
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -526,370 +582,487 @@
     </style>
   </head>
   <body>
-    <!-- Header -->
-    <header>
-      <div class="container header-container">
-        <div class="logo">ADMIN PANEL</div>
-        <div class="nav-links">
-          <a href="#" class="active">Add Product</a>
-          <a href="./admin-products.html">View All Products</a>
-        </div>
-      </div>
-    </header>
-
-    <!-- Page Title -->
+    <!-- Login Container -->
     <div class="container">
-      <div class="page-title">
-        <h1>Add A PRODUCT</h1>
-        <p>(Make sure you check before you save)</p>
+      <div id="loginContainer" class="login-container" style="display: none">
+        <h2 style="text-align: center; margin-bottom: 30px">Admin Login</h2>
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="adminEmail">Email</label>
+            <input
+              type="email"
+              id="adminEmail"
+              required
+              placeholder="Enter admin email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input
+              type="password"
+              id="adminPassword"
+              required
+              placeholder="Enter admin password"
+            />
+          </div>
+          <button type="submit" class="login-btn" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <div id="loginError" class="login-error">
+            Invalid credentials. Please try again.
+          </div>
+        </form>
       </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container">
-      <div class="form-container">
-        <!-- Left Column -->
-        <div class="form-side">
-          <div class="form-group">
-            <label for="productName">Product Name</label>
-            <input
-              type="text"
-              id="productName"
-              class="form-control"
-              placeholder="Enter product name"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Category</label>
-            <div class="category-options">
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productCategory"
-                  value="women"
-                  checked
-                />
-                <span>Women</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productCategory" value="men" />
-                <span>Men</span>
-              </label>
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productCategory"
-                  value="adireInfusion"
-                />
-                <span>Adire Infusion</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- NEW LENGTH FIELD -->
-          <div class="form-group">
-            <label>Length</label>
-            <div class="category-options">
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productLength"
-                  value="shorts"
-                  checked
-                />
-                <span>Shorts</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productLength" value="medium" />
-                <span>Medium</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productLength" value="long" />
-                <span>Full Length</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productLength" value="extra-long" />
-                <span>Extra Long</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- NEW BRAND FIELD -->
-          <div class="form-group">
-            <label>Brand</label>
-            <div class="category-options">
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productBrand"
-                  value="linaben"
-                  checked
-                />
-                <span>LinaBen</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productBrand" value="lizAndCo" />
-                <span>LizandCo</span>
-              </label>
-              <label class="category-option">
-                <input
-                  type="radio"
-                  name="productBrand"
-                  value="everyStylishMan"
-                />
-                <span>EveryStylishMan</span>
-              </label>
-              <!-- <label class="category-option">
-                <input type="radio" name="productBrand" value="puma" />
-                <span>Puma</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productBrand" value="zara" />
-                <span>Zara</span>
-              </label>
-              <label class="category-option">
-                <input type="radio" name="productBrand" value="hm" />
-                <span>H&M</span>
-              </label> -->
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="productPrice">Price (₦)</label>
-            <input
-              type="number"
-              id="productPrice"
-              class="form-control"
-              placeholder="5000"
-              step="500"
-              min="0"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="productQuantity">Quantity</label>
-            <input
-              type="number"
-              id="productQuantity"
-              class="form-control"
-              placeholder="0"
-              min="0"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="productDescription">Description</label>
-            <textarea
-              id="productDescription"
-              class="form-control"
-              rows="4"
-              placeholder="Enter product description"
-            ></textarea>
+    <!-- Admin Content (Hidden until login) -->
+    <div id="adminContent" class="admin-content" style="display: none">
+      <!-- Header -->
+      <header>
+        <div class="container header-container">
+          <div class="logo">ADMIN PANEL</div>
+          <div class="nav-links">
+            <a href="#" class="active">Add Product</a>
+            <a href="./admin-products.html">View All Products</a>
+            <a
+              href="#"
+              id="logoutBtn"
+              style="background: rgba(255, 255, 255, 0.1)"
+            >
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
           </div>
         </div>
+      </header>
 
-        <!-- Right Column -->
-        <div class="form-side">
-          <div class="form-group">
-            <label>Main Image</label>
-            <div class="file-input-container">
-              <label class="file-input-label">
-                <i class="fas fa-cloud-upload-alt"></i> Choose Main Image
-              </label>
-              <input type="file" id="productMainImage" accept="image/*" />
-            </div>
-            <div id="mainImagePreview" class="preview"></div>
-          </div>
+      <!-- Page Title -->
+      <div class="container">
+        <div class="page-title">
+          <h1>Add A PRODUCT</h1>
+          <p>(Make sure you check before you save)</p>
+        </div>
+      </div>
 
-          <div class="form-group">
-            <label>Other Images (optional)</label>
-            <div class="file-input-container">
-              <label class="file-input-label">
-                <i class="fas fa-images"></i> Choose Other Images
-              </label>
+      <!-- Main Content -->
+      <div class="container">
+        <div class="form-container">
+          <!-- Left Column -->
+          <div class="form-side">
+            <div class="form-group">
+              <label for="productName">Product Name</label>
               <input
-                type="file"
-                id="otherProductImage"
-                accept="image/*"
-                multiple
+                type="text"
+                id="productName"
+                class="form-control"
+                placeholder="Enter product name"
               />
             </div>
-            <div class="file-limit">Maximum 3 images allowed</div>
-            <div id="anglesPreview" class="preview"></div>
-          </div>
 
-          <!-- NEW PRODUCT TAGS FIELD -->
-          <div class="form-group">
-            <label>Product Tags</label>
-            <div id="productTags" class="options-group">
-              <label
-                ><input type="checkbox" value="shirts" checked /><span
-                  >Shirts</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="tShirts" /><span
-                  >T-Shirts</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="poloShirts" /><span
-                  >Polo Shirts</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="hoodiesAndJackets" /><span
-                  >Hoodies & Jackets</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="pants" /><span
-                  >Pants</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="sets" /><span>Sets</span></label
-              >
-              <label
-                ><input type="checkbox" value="hats" /><span>Hats</span></label
-              >
-              <label
-                ><input type="checkbox" value="summer" /><span
-                  >Summer Collection</span
-                ></label
-              >
-              <label
-                ><input type="checkbox" value="winter" /><span
-                  >Winter Collection</span
-                ></label
-              >
+            <div class="form-group">
+              <label>Category</label>
+              <div class="category-options">
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productCategory"
+                    value="women"
+                    checked
+                  />
+                  <span>Women</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productCategory" value="men" />
+                  <span>Men</span>
+                </label>
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productCategory"
+                    value="adireInfusion"
+                  />
+                  <span>Adire Infusion</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- NEW LENGTH FIELD -->
+            <div class="form-group">
+              <label>Length</label>
+              <div class="category-options">
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productLength"
+                    value="shorts"
+                    checked
+                  />
+                  <span>Shorts</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="medium" />
+                  <span>Medium</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="long" />
+                  <span>Full Length</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productLength" value="extra-long" />
+                  <span>Extra Long</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- NEW BRAND FIELD -->
+            <div class="form-group">
+              <label>Brand</label>
+              <div class="category-options">
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productBrand"
+                    value="linaben"
+                    checked
+                  />
+                  <span>LinaBen</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productBrand" value="lizAndCo" />
+                  <span>LizandCo</span>
+                </label>
+                <label class="category-option">
+                  <input
+                    type="radio"
+                    name="productBrand"
+                    value="everyStylishMan"
+                  />
+                  <span>EveryStylishMan</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="productPrice">Price (₦)</label>
+              <input
+                type="number"
+                id="productPrice"
+                class="form-control"
+                placeholder="5000"
+                step="500"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="productQuantity">Quantity</label>
+              <input
+                type="number"
+                id="productQuantity"
+                class="form-control"
+                placeholder="0"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="productDescription">Description</label>
+              <textarea
+                id="productDescription"
+                class="form-control"
+                rows="4"
+                placeholder="Enter product description"
+              ></textarea>
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Sizes</label>
-            <div id="productSizes" class="options-group">
-              <label><input type="checkbox" checked /><span>S</span></label>
-              <label><input type="checkbox" /><span>M</span></label>
-              <label><input type="checkbox" /><span>L</span></label>
-              <label><input type="checkbox" /><span>XL</span></label>
-              <label><input type="checkbox" /><span>XXL</span></label>
+          <!-- Right Column -->
+          <div class="form-side">
+            <div class="form-group">
+              <label>Main Image</label>
+              <div class="file-input-container">
+                <label class="file-input-label">
+                  <i class="fas fa-cloud-upload-alt"></i> Choose Main Image
+                </label>
+                <input type="file" id="productMainImage" accept="image/*" />
+              </div>
+              <div id="mainImagePreview" class="preview"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Other Images (optional)</label>
+              <div class="file-input-container">
+                <label class="file-input-label">
+                  <i class="fas fa-images"></i> Choose Other Images
+                </label>
+                <input
+                  type="file"
+                  id="otherProductImage"
+                  accept="image/*"
+                  multiple
+                />
+              </div>
+              <div class="file-limit">Maximum 3 images allowed</div>
+              <div id="anglesPreview" class="preview"></div>
+            </div>
+
+            <!-- NEW PRODUCT TAGS FIELD -->
+            <div class="form-group">
+              <label>Product Tags</label>
+              <div id="productTags" class="options-group">
+                <label
+                  ><input type="checkbox" value="shirts" checked /><span
+                    >Shirts</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="tShirts" /><span
+                    >T-Shirts</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="poloShirts" /><span
+                    >Polo Shirts</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="hoodiesAndJackets" /><span
+                    >Hoodies & Jackets</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="pants" /><span
+                    >Pants</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="sets" /><span
+                    >Sets</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="hats" /><span
+                    >Hats</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="summer" /><span
+                    >Summer Collection</span
+                  ></label
+                >
+                <label
+                  ><input type="checkbox" value="winter" /><span
+                    >Winter Collection</span
+                  ></label
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Sizes</label>
+              <div id="productSizes" class="options-group">
+                <label><input type="checkbox" checked /><span>S</span></label>
+                <label><input type="checkbox" /><span>M</span></label>
+                <label><input type="checkbox" /><span>L</span></label>
+                <label><input type="checkbox" /><span>XL</span></label>
+                <label><input type="checkbox" /><span>XXL</span></label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Colors</label>
+              <div class="color-options">
+                <div
+                  class="color-option selected"
+                  style="background-color: #ff0000"
+                  data-color="Red"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #00ff00"
+                  data-color="Green"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #0000ff"
+                  data-color="Blue"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #ffff00"
+                  data-color="Yellow"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #000000"
+                  data-color="Black"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #ffffff; border: 1px solid #ccc"
+                  data-color="White"
+                ></div>
+              </div>
             </div>
           </div>
 
-          <!-- Todo: Use the entire color list on the LizandCo webpage including one more color “beige” -->
-          <div class="form-group">
-            <label>Colors</label>
-            <div class="color-options">
-              <div
-                class="color-option selected"
-                style="background-color: #ff0000"
-                data-color="Red"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #00ff00"
-                data-color="Green"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #0000ff"
-                data-color="Blue"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #ffff00"
-                data-color="Yellow"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #000000"
-                data-color="Black"
-              ></div>
-              <div
-                class="color-option"
-                style="background-color: #ffffff; border: 1px solid #ccc"
-                data-color="White"
-              ></div>
+          <!-- Full Width Elements -->
+          <div class="full-width">
+            <div class="btn-group">
+              <button id="submitBtn" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Product
+              </button>
+              <button id="resetBtn" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Reset Form
+              </button>
             </div>
           </div>
-        </div>
 
-        <!-- Full Width Elements -->
-        <div class="full-width">
-          <div class="btn-group">
-            <button id="submitBtn" class="btn btn-primary">
-              <i class="fas fa-save"></i> Save Product
-            </button>
-            <button id="resetBtn" class="btn btn-secondary">
-              <i class="fas fa-times"></i> Reset Form
-            </button>
-          </div>
-        </div>
-
-        <div class="output-container full-width">
-          <h2>Captured Data</h2>
-          <div id="output" class="output-content">
-            <p class="no-data">Form data will appear here after submission</p>
+          <div class="output-container full-width">
+            <h2>Captured Data</h2>
+            <div id="output" class="output-content">
+              <p class="no-data">Form data will appear here after submission</p>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Footer -->
+      <footer>
+        <div class="container footer-container">
+          <div class="footer-section">
+            <h3>About The Admin Panel</h3>
+            <p>
+              This Admin Panel is a comprehensive product management system for
+              e-commerce businesses. In it you can Manage all your products.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3>About The Developer</h3>
+            <p>
+              The developer is a passionate builder of scalable and efficient
+              web applications especially in the Backend development side of
+              things. He is proficient in JavaScript, Node.js, Next.js etc, with
+              a solid understanding of Software Development principles and a
+              keen eye for detail and organisation.
+            </p>
+          </div>
+
+          <div class="footer-section footer-contact">
+            <h3>Contact</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
+            <p><i class="fas fa-phone"></i> +123 (916) 697-3321</p>
+            <p>
+              <i class="fas fa-envelope"></i> nelsonhennessiayodeji@gmail.com
+            </p>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>
+            © 2025
+            <a href="https://nelsonhennessiayodeji.github.io/Nelson-Ayodeji/"
+              >Ayodeji Nelson</a
+            >. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-section">
-          <h3>About The Admin Panel</h3>
-          <p>
-            This Admin Panel is a comprehensive product management system for
-            e-commerce businesses. In it you can Manage all your products.
-          </p>
-        </div>
-
-        <div class="footer-section">
-          <h3>About The Developer</h3>
-          <p>
-            The developer is a passionate builder of scalable and efficient web
-            applications especially in the Backend development side of things.
-            He is proficient in JavaScript, Node.js, Next.js etc, with a solid
-            understanding of Software Development principles and a keen eye for
-            detail and organisation.
-          </p>
-        </div>
-
-        <!-- <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Orders</a></li>
-            <li><a href="#">Customers</a></li>
-            <li><a href="#">Settings</a></li>
-          </ul>
-        </div> -->
-
-        <div class="footer-section footer-contact">
-          <h3>Contact</h3>
-          <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
-          <p><i class="fas fa-phone"></i> +123 (916) 697-3321</p>
-          <p><i class="fas fa-envelope"></i> nelsonhennessiayodeji@gmail.com</p>
-        </div>
-      </div>
-
-      <div class="copyright">
-        <p>
-          © 2025
-          <a href="https://nelsonhennessiayodeji.github.io/Nelson-Ayodeji/"
-            >Ayodeji Nelson</a
-          >. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
     <script>
+      // Initialize Supabase client with PUBLIC/ANON key (not secret key)
+      const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
+      // Replace with your Supabase public/anonymous key (starts with 'ey' not 'sb_secret_')
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4YmFxb3l1c2Rzb3FweWtza3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNTM5MjgsImV4cCI6MjA3MDkyOTkyOH0.mm83Jogz8OrQZNoOC3qkOvnmiATf_eeOoZ1JfObkne0";
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      // Check if user is already logged in - this runs immediately
       document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("adminToken");
+
+        if (token) {
+          // Verify token is still valid
+          supabase.auth.getUser(token).then(({ data, error }) => {
+            if (error || !data.user) {
+              localStorage.removeItem("adminToken");
+              showLogin();
+            } else {
+              showAdminContent();
+            }
+          });
+        } else {
+          // No token found, show login immediately
+          showLogin();
+        }
+      });
+
+      // Login form handler
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("adminEmail").value;
+          const password = document.getElementById("adminPassword").value;
+          const loginBtn = document.getElementById("loginBtn");
+          const errorDiv = document.getElementById("loginError");
+
+          loginBtn.disabled = true;
+          loginBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+          errorDiv.style.display = "none";
+
+          try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+              email: email,
+              password: password,
+            });
+
+            if (error) {
+              throw error;
+            }
+
+            if (data.user) {
+              localStorage.setItem("adminToken", data.session.access_token);
+              showAdminContent();
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            errorDiv.style.display = "block";
+            errorDiv.textContent =
+              error.message || "Invalid credentials. Please try again.";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+          }
+        });
+
+      // Logout handler
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          localStorage.removeItem("adminToken");
+          showLogin();
+          document.getElementById("loginForm").reset();
+        });
+
+      function showLogin() {
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("adminContent").style.display = "none";
+      }
+
+      function showAdminContent() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+
+        // Initialize product management only if user is authenticated
+        const token = localStorage.getItem("adminToken");
+        if (token) {
+          initializeProductManagement();
+        }
+      }
+
+      function initializeProductManagement() {
         // Get all form elements
         const productName = document.getElementById("productName");
         const productPrice = document.getElementById("productPrice");
@@ -1030,6 +1203,13 @@
 
         // Handle form submission
         submitBtn.addEventListener("click", async function () {
+          const token = localStorage.getItem("adminToken");
+          if (!token) {
+            alert("Authentication required. Please log in again.");
+            showLogin();
+            return;
+          }
+
           // Get selected category
           let selectedCategory = "";
           for (const radio of categoryRadios) {
@@ -1258,6 +1438,9 @@
 
             const response = await fetch("/admin-api/products", {
               method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
               body: formDataForUpload,
             });
 
@@ -1267,13 +1450,20 @@
               outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px;">
                 <strong style="color: #52c41a;">Success!</strong> Product has been saved successfully.
                 </div>`;
-              // ${result.id ? `<br>Product ID: ${result.id}` : ""}
             } else {
-              outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-                <strong style="color: #ff4d4f;">Error!</strong> ${
-                  result.error || "Failed to save product"
-                }
-              </div>`;
+              if (response.status === 401) {
+                outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
+                  <strong style="color: #ff4d4f;">Authentication Error!</strong> Please log in again.
+                </div>`;
+                localStorage.removeItem("adminToken");
+                showLogin();
+              } else {
+                outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
+                  <strong style="color: #ff4d4f;">Error!</strong> ${
+                    result.error || "Failed to save product"
+                  }
+                </div>`;
+              }
             }
           } catch (error) {
             console.error("Submission error:", error);
@@ -1331,7 +1521,7 @@
           outputDiv.innerHTML =
             '<p class="no-data">Form data will appear here after submission</p>';
         });
-      });
+      }
     </script>
   </body>
 </html>
