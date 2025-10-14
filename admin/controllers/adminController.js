@@ -142,6 +142,23 @@ const sortByName = async (req, res) => {
   }
 };
 
+// Search products
+const searchProducts = async (req, res) => {
+  try {
+    const searchTerm = req.query.q;
+
+    if (!searchTerm) {
+      return res.status(400).json({ error: "Search term is required" });
+    }
+
+    const products = await ProductService.searchProducts(searchTerm);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error searching products:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
@@ -151,4 +168,5 @@ module.exports = {
   sortLowToHigh,
   sortByDate,
   sortByName,
+  searchProducts,
 };

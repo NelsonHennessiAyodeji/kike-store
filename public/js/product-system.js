@@ -3,6 +3,7 @@ const baseUrl = "/admin-api";
 // Global variables
 let allProducts = [];
 let currentSort = "default";
+let currentSearchTerm = "";
 
 // Shopping Cart Functions
 function getCart() {
@@ -596,9 +597,230 @@ function showEmpty() {
   document.getElementById("loadMoreContainer").style.display = "none";
 }
 
-async function getAllProducts() {
+// Search products function - NOW QUERIES BACKEND
+async function searchProducts(searchTerm) {
+  currentSearchTerm = searchTerm.trim();
+
+  if (!currentSearchTerm) {
+    // If search is empty, show all products with current sort
+    renderProducts(currentSort);
+    return;
+  }
+
+  showLoading();
+
   try {
-    const response = await fetch(`${baseUrl}/products`, {
+    // Query backend for search results
+    const searchResults = await getSearchedProducts(currentSearchTerm);
+    renderProductList(searchResults);
+  } catch (error) {
+    console.error("Error searching products:", error);
+    showError();
+  }
+}
+
+// Query backend for searched products
+async function getSearchedProducts(searchTerm) {
+  try {
+    const response = await fetch(
+      `${baseUrl}/products/search?q=${encodeURIComponent(searchTerm)}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (response.ok) {
+      const products = await response.json();
+      return products;
+    } else {
+      throw new Error("Failed to search products");
+    }
+  } catch (error) {
+    console.error("Error fetching searched products:", error);
+    throw error;
+  }
+}
+
+// Render product list (without fetching)
+function renderProductList(products) {
+  const productsContainer = document.getElementById("productsContainer");
+
+  // Clear existing content
+  productsContainer.innerHTML = "";
+
+  // Check if we have products
+  if (products && products.length > 0) {
+    // Add products to the container
+    products.forEach((product) => {
+      const productElement = document.createElement("div");
+      productElement.className = `col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${product.category}`;
+
+      productElement.innerHTML = `
+                <div class="block2">
+                    <div class="block2-pic hov-img0">
+                        <img src="${product.main_image_url}" alt="${
+        product.product_name
+      }">
+                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-product-id="${
+                          product.id
+                        }">
+                            Quick View
+                        </a>
+                    </div>
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l">
+                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                ${product.product_name}
+                            </a>
+                            <span class="stext-105 cl3">₦${product.price}</span>
+                        </div>
+                        <div class="block2-txt-child2 flex-r p-t-3">
+                            <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" data-product='${JSON.stringify(
+                              product
+                            ).replace(/'/g, "&#39;")}'>
+                                <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
+                                <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+      productsContainer.appendChild(productElement);
+    });
+
+    showProducts();
+
+    // Update results count
+    updateSearchResultsCount(products.length);
+
+    // Initialize wishlist/cart buttons
+    initWishlistHandlers();
+
+    // Update heart icons based on cart contents
+    updateHeartIcons();
+
+    // Reinitialize modal handlers for the new products
+    initModalHandlers();
+
+    // Reinitialize isotope if it exists
+    if (typeof $.fn.isotope === "function") {
+      setTimeout(() => {
+        $(".isotope-grid").isotope("reloadItems").isotope({ filter: "*" });
+      }, 100);
+    }
+  } else {
+    // No products found in search
+    showNoSearchResults();
+  }
+}
+
+// Update search results count
+function updateSearchResultsCount(count) {
+  let resultsCountElement = document.getElementById("searchResultsCount");
+
+  if (!resultsCountElement) {
+    // Create results count element if it doesn't exist
+    resultsCountElement = document.createElement("div");
+    resultsCountElement.id = "searchResultsCount";
+    resultsCountElement.className = "search-results-count";
+    resultsCountElement.style.cssText =
+      "margin: 10px 0; font-size: 14px; color: #666; text-align: center;";
+
+    const productsContainer =
+      document.querySelector(".products-container") ||
+      document.querySelector(".isotope-grid").parentElement;
+    productsContainer.parentNode.insertBefore(
+      resultsCountElement,
+      productsContainer
+    );
+  }
+
+  if (currentSearchTerm) {
+    resultsCountElement.innerHTML = `Found ${count} product${
+      count !== 1 ? "s" : ""
+    } for "${currentSearchTerm}"`;
+    resultsCountElement.style.display = "block";
+  } else {
+    resultsCountElement.style.display = "none";
+  }
+}
+
+// Show no search results
+function showNoSearchResults() {
+  const productsContainer = document.getElementById("productsContainer");
+  productsContainer.innerHTML = `
+        <div class="col-12 text-center p-t-50 p-b-50">
+            <i class="zmdi zmdi-search" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+            <h4 class="mtext-105 cl2 p-b-10">No Products Found</h4>
+            <p class="stext-107 cl7">
+                No products found for "${currentSearchTerm}".<br>
+                Try different keywords or browse all categories.
+            </p>
+            <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-20" onclick="clearSearch()">
+                Clear Search
+            </button>
+        </div>
+    `;
+
+  showProducts();
+  updateSearchResultsCount(0);
+}
+
+// Clear search
+function clearSearch() {
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
+    searchInput.value = "";
+  }
+  currentSearchTerm = "";
+  renderProducts(currentSort);
+}
+
+// Initialize search functionality
+function initSearch() {
+  const searchInput = document.getElementById("searchInput");
+  const searchButton = document.getElementById("searchButton");
+
+  if (searchInput) {
+    // Search on input with debounce
+    let searchTimeout;
+    searchInput.addEventListener("input", function (e) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchProducts(e.target.value);
+      }, 500); // Increased debounce to 500ms for backend queries
+    });
+
+    // Search on enter key
+    searchInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        clearTimeout(searchTimeout);
+        searchProducts(e.target.value);
+      }
+    });
+  }
+
+  if (searchButton) {
+    searchButton.addEventListener("click", function () {
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput) {
+        searchProducts(searchInput.value);
+      }
+    });
+  }
+}
+
+async function getAllProducts(limit = null) {
+  try {
+    let url = `${baseUrl}/products`;
+
+    // Add limit parameter if specified
+    if (limit) {
+      url += `?limit=${limit}`;
+    }
+
+    const response = await fetch(url, {
       method: "GET",
     });
 
@@ -614,7 +836,7 @@ async function getAllProducts() {
   }
 }
 
-async function getSortedProducts(sortType) {
+async function getSortedProducts(sortType, limit = null) {
   try {
     let url = `${baseUrl}/products`; // Default URL
 
@@ -634,6 +856,11 @@ async function getSortedProducts(sortType) {
     }
     // 'default' will use the base URL
 
+    // Add limit parameter if specified (only for default endpoint)
+    if (limit && sortType === "default") {
+      url += `?limit=${limit}`;
+    }
+
     const response = await fetch(url, {
       method: "GET",
     });
@@ -650,14 +877,14 @@ async function getSortedProducts(sortType) {
   }
 }
 
-async function renderProducts(sortType = "default") {
+async function renderProducts(sortType = "default", limit = null) {
   showLoading();
 
   try {
     const products =
       sortType === "default"
-        ? await getAllProducts()
-        : await getSortedProducts(sortType);
+        ? await getAllProducts(limit)
+        : await getSortedProducts(sortType, limit);
 
     allProducts = products; // Store for potential client-side sorting
     const productsContainer = document.getElementById("productsContainer");
@@ -707,6 +934,13 @@ async function renderProducts(sortType = "default") {
       });
 
       showProducts();
+
+      // Update search results count (if searching)
+      if (currentSearchTerm) {
+        updateSearchResultsCount(products.length);
+      } else {
+        updateSearchResultsCount(0);
+      }
 
       // Initialize wishlist/cart buttons
       initWishlistHandlers();
@@ -821,7 +1055,7 @@ function retryLoadingProducts() {
 
 // Initialize when document is ready
 $(document).ready(function () {
-  // Add CSS for button loading state
+  // Add CSS for button loading state and search
   const loadingStyles = `
     .block2-btn.loading {
       pointer-events: none;
@@ -846,6 +1080,53 @@ $(document).ready(function () {
       color: #4a6fa5 !important;
       font-weight: 600;
     }
+    
+    .search-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+    .search-box {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 50px 12px 20px;
+      border: 2px solid #e6e6e6;
+      border-radius: 25px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .search-input:focus {
+      border-color: #4a6fa5;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+    }
+    .search-button {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #4a6fa5;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .search-button:hover {
+      background: #3c5a8a;
+    }
+    .search-results-count {
+      text-align: center;
+      margin: 20px 0;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
   `;
 
   $("head").append("<style>" + loadingStyles + "</style>");
@@ -862,9 +1143,18 @@ $(document).ready(function () {
   // Initialize filter handlers
   initFilterHandlers();
 
+  // Initialize search functionality
+  initSearch();
+
   // Set default active filter (Default)
   $('.filter-link[data-sort="default"]').addClass("filter-link-active");
 
+  // Check if we're on the home page (index.html) and limit to 25 products
+  const isHomePage =
+    window.location.pathname === "/" ||
+    window.location.pathname.includes("index.html");
+  const productLimit = isHomePage ? 25 : null;
+
   // Load products initially with default sort (normal order)
-  renderProducts("default");
+  renderProducts("default", productLimit);
 });

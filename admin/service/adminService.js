@@ -256,4 +256,73 @@ module.exports = class ProductService {
       throw error;
     }
   }
+
+  // Search products
+  static async searchProducts(searchTerm) {
+    try {
+      // Convert search term to lowercase for case-insensitive search
+      const searchTermLower = `%${searchTerm.toLowerCase()}%`;
+
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .or(
+          `product_name.ilike.${searchTermLower},description.ilike.${searchTermLower},brand.ilike.${searchTermLower}`
+        )
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Supabase search error:", error);
+        throw error;
+      }
+
+      // If the above fails, try an alternative approach
+      if (error && error.code === "42883") {
+        console.log("Falling back to alternative search method...");
+        return await this.alternativeSearchProducts(searchTerm);
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error searching products:", error);
+      throw error;
+    }
+  }
+
+  // Alternative search method for databases with type issues
+  static async alternativeSearchProducts(searchTerm) {
+    try {
+      // Get all products and filter client-side (fallback method)
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      // Filter products client-side
+      const searchTermLower = searchTerm.toLowerCase();
+      const filteredProducts = data.filter((product) => {
+        return (
+          (product.product_name &&
+            product.product_name.toLowerCase().includes(searchTermLower)) ||
+          (product.description &&
+            product.description.toLowerCase().includes(searchTermLower)) ||
+          (product.category &&
+            product.category.toLowerCase().includes(searchTermLower)) ||
+          (product.brand &&
+            product.brand.toLowerCase().includes(searchTermLower)) ||
+          (product.tags &&
+            product.tags.some((tag) =>
+              tag.toLowerCase().includes(searchTermLower)
+            ))
+        );
+      });
+
+      return filteredProducts;
+    } catch (error) {
+      console.error("Error in alternative search:", error);
+      throw error;
+    }
+  }
 };
