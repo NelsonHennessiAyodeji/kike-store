@@ -17,6 +17,7 @@ const {
   sortByDate,
   sortByName,
   searchProducts,
+  filterProducts,
 } = require("../controllers/adminController");
 
 // Create product with file uploads
@@ -31,6 +32,7 @@ router.post(
 
 router.get("/products", getAllProducts);
 router.get("/products/search", searchProducts);
+router.get("/products/filter", filterProducts);
 router.get("/products/:id", getSingleProduct);
 router.get("/products-sorted/price/:order", sortLowToHigh);
 router.get("/products-sorted/date/:order", sortByDate);

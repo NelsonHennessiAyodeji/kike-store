@@ -159,6 +159,50 @@ const searchProducts = async (req, res) => {
   }
 };
 
+// Filter products
+const filterProducts = async (req, res) => {
+  try {
+    const filters = {};
+
+    // Parse filter parameters
+    if (req.query.sizes) {
+      filters.sizes = Array.isArray(req.query.sizes)
+        ? req.query.sizes
+        : [req.query.sizes];
+    }
+
+    if (req.query.colors) {
+      filters.colors = Array.isArray(req.query.colors)
+        ? req.query.colors
+        : [req.query.colors];
+    }
+
+    if (req.query.length) {
+      filters.length = Array.isArray(req.query.length)
+        ? req.query.length
+        : [req.query.length];
+    }
+
+    if (req.query.tags) {
+      filters.tags = Array.isArray(req.query.tags)
+        ? req.query.tags
+        : [req.query.tags];
+    }
+
+    if (req.query.brands) {
+      filters.brands = Array.isArray(req.query.brands)
+        ? req.query.brands
+        : [req.query.brands];
+    }
+
+    const products = await ProductService.getFilteredProducts(filters);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error filtering products:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
@@ -169,4 +213,5 @@ module.exports = {
   sortByDate,
   sortByName,
   searchProducts,
+  filterProducts,
 };

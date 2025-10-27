@@ -325,4 +325,43 @@ module.exports = class ProductService {
       throw error;
     }
   }
+
+  // Filter products by multiple criteria
+  static async getFilteredProducts(filters = {}) {
+    try {
+      let query = supabase.from("products").select("*");
+
+      // Apply each filter if it exists
+      if (filters.sizes && filters.sizes.length > 0) {
+        query = query.overlaps("sizes", filters.sizes);
+      }
+
+      if (filters.colors && filters.colors.length > 0) {
+        query = query.overlaps("colors", filters.colors);
+      }
+
+      if (filters.length && filters.length.length > 0) {
+        query = query.in("length", filters.length);
+      }
+
+      if (filters.tags && filters.tags.length > 0) {
+        query = query.overlaps("tags", filters.tags);
+      }
+
+      if (filters.brands && filters.brands.length > 0) {
+        query = query.in("brand", filters.brands);
+      }
+
+      // Order by creation date by default
+      query = query.order("created_at", { ascending: false });
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error("Error fetching filtered products:", error);
+      throw error;
+    }
+  }
 };

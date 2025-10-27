@@ -4,6 +4,13 @@ const baseUrl = "/admin-api";
 let allProducts = [];
 let currentSort = "default";
 let currentSearchTerm = "";
+let currentFilters = {
+  sizes: [],
+  colors: [],
+  length: [],
+  tags: [],
+  brands: [],
+};
 
 // Shopping Cart Functions
 function getCart() {
@@ -641,6 +648,176 @@ async function getSearchedProducts(searchTerm) {
   }
 }
 
+// Filter products function
+async function filterProducts() {
+  showLoading();
+
+  try {
+    // Build query parameters from currentFilters
+    const params = new URLSearchParams();
+
+    Object.keys(currentFilters).forEach((filterType) => {
+      currentFilters[filterType].forEach((value) => {
+        params.append(filterType, value);
+      });
+    });
+
+    const url = `${baseUrl}/products/filter?${params.toString()}`;
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const products = await response.json();
+      renderProductList(products);
+      updateFilterResultsCount(products.length);
+    } else {
+      throw new Error("Failed to filter products");
+    }
+  } catch (error) {
+    console.error("Error filtering products:", error);
+    showError();
+  }
+}
+
+// Toggle filter selection
+function toggleFilter(filterType, filterValue, element) {
+  const index = currentFilters[filterType].indexOf(filterValue);
+
+  if (index > -1) {
+    // Remove filter
+    currentFilters[filterType].splice(index, 1);
+    element.classList.remove("filter-link-active");
+  } else {
+    // Add filter
+    currentFilters[filterType].push(filterValue);
+    element.classList.add("filter-link-active");
+  }
+
+  // Apply filters
+  applyFilters();
+}
+
+// Apply all active filters
+function applyFilters() {
+  const hasActiveFilters = Object.values(currentFilters).some(
+    (filters) => filters.length > 0
+  );
+
+  if (hasActiveFilters) {
+    filterProducts();
+  } else {
+    // If no filters, show all products with current sort
+    renderProducts(currentSort);
+  }
+}
+
+// Clear all filters
+function clearAllFilters() {
+  // Reset filter state
+  currentFilters = {
+    sizes: [],
+    colors: [],
+    length: [],
+    tags: [],
+    brands: [],
+  };
+
+  // Remove active classes from all filter links
+  document.querySelectorAll(".filter-link").forEach((link) => {
+    link.classList.remove("filter-link-active");
+  });
+
+  // Add active class back to "All" links
+  document
+    .querySelectorAll('.filter-link[data-filter-value="all"]')
+    .forEach((link) => {
+      link.classList.add("filter-link-active");
+    });
+
+  // Hide filter results count
+  const filterCountElement = document.getElementById("filterResultsCount");
+  if (filterCountElement) {
+    filterCountElement.style.display = "none";
+  }
+
+  // Show all products
+  renderProducts(currentSort);
+}
+
+// Update filter results count
+function updateFilterResultsCount(count) {
+  let filterCountElement = document.getElementById("filterResultsCount");
+
+  if (!filterCountElement) {
+    filterCountElement = document.createElement("div");
+    filterCountElement.id = "filterResultsCount";
+    filterCountElement.className = "filter-results-count";
+    filterCountElement.style.cssText =
+      "margin: 10px 0; font-size: 14px; color: #666; text-align: center;";
+
+    const productsContainer =
+      document.querySelector(".isotope-grid").parentElement;
+    productsContainer.parentNode.insertBefore(
+      filterCountElement,
+      productsContainer
+    );
+  }
+
+  const activeFilterCount = Object.values(currentFilters).reduce(
+    (total, filters) => total + filters.length,
+    0
+  );
+
+  if (activeFilterCount > 0) {
+    filterCountElement.innerHTML = `Found ${count} product${
+      count !== 1 ? "s" : ""
+    } with ${activeFilterCount} active filter${
+      activeFilterCount !== 1 ? "s" : ""
+    } 
+      <span class="clear-filters" onclick="clearAllFilters()">Clear all filters</span>`;
+    filterCountElement.style.display = "block";
+  } else {
+    filterCountElement.style.display = "none";
+  }
+}
+
+// Initialize filter handlers
+function initProductFilterHandlers() {
+  // Remove any existing handlers
+  $(".filter-link[data-filter-type]").off("click");
+
+  // Add click handlers for filter links
+  $(".filter-link[data-filter-type]").on("click", function (e) {
+    e.preventDefault();
+    const filterType = $(this).data("filter-type");
+    const filterValue = $(this).data("filter-value");
+    const $allLinks = $(`.filter-link[data-filter-type="${filterType}"]`);
+
+    // Handle "All" filter
+    if (filterValue === "all") {
+      // Clear all filters of this type
+      currentFilters[filterType] = [];
+
+      // Remove active class from all filters of this type
+      $allLinks.removeClass("filter-link-active");
+
+      // Add active class to "All" filter
+      $(this).addClass("filter-link-active");
+    } else {
+      // Remove active class from "All" filter in this category
+      $allLinks
+        .filter('[data-filter-value="all"]')
+        .removeClass("filter-link-active");
+
+      // Toggle regular filter
+      toggleFilter(filterType, filterValue, this);
+    }
+
+    applyFilters();
+  });
+}
+
 // Render product list (without fetching)
 function renderProductList(products) {
   const productsContainer = document.getElementById("productsContainer");
@@ -1002,7 +1179,7 @@ function initModalHandlers() {
   });
 }
 
-function initFilterHandlers() {
+function initSortFilterHandlers() {
   // Remove any existing handlers first
   $(".filter-link[data-sort]").off("click");
 
@@ -1055,7 +1232,7 @@ function retryLoadingProducts() {
 
 // Initialize when document is ready
 $(document).ready(function () {
-  // Add CSS for button loading state and search
+  // Add CSS for button loading state, search, and filters
   const loadingStyles = `
     .block2-btn.loading {
       pointer-events: none;
@@ -1127,6 +1304,23 @@ $(document).ready(function () {
       background: #f8f9fa;
       border-radius: 5px;
     }
+    .filter-results-count {
+      text-align: center;
+      margin: 20px 0;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
+    .clear-filters {
+      display: inline-block;
+      margin-left: 10px;
+      color: #4a6fa5;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .clear-filters:hover {
+      color: #3c5a8a;
+    }
   `;
 
   $("head").append("<style>" + loadingStyles + "</style>");
@@ -1140,11 +1334,14 @@ $(document).ready(function () {
     updateCartSidebar();
   });
 
-  // Initialize filter handlers
-  initFilterHandlers();
+  // Initialize sort filter handlers
+  initSortFilterHandlers();
 
   // Initialize search functionality
   initSearch();
+
+  // Initialize product filters
+  initProductFilterHandlers();
 
   // Set default active filter (Default)
   $('.filter-link[data-sort="default"]').addClass("filter-link-active");
