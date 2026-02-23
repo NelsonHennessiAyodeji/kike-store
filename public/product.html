@@ -265,159 +265,159 @@
         bottom: 20px;
       }
     </style>
-
-<style>
-  /* WhatsApp Floating Button Styles */
-  .whatsapp-float {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      bottom: 40px;
-      right: 40px;
-      background-color: #25d366;
-      color: #FFF;
-      border-radius: 50px;
-      text-align: center;
-      font-size: 30px;
-      box-shadow: 2px 2px 3px #999;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      transition: all 0.3s ease;
-  }
-
-  .whatsapp-float:hover {
-      background-color: #128C7E;
-      transform: scale(1.1);
-      color: #FFF;
-  }
-
-  .whatsapp-my-float {
-      margin-top: 0;
-  }
-
-  /* WhatsApp Chat Widget */
-  .whatsapp-widget {
-      position: fixed;
-      width: 300px;
-      height: 400px;
-      bottom: 110px;
-      right: 40px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-      z-index: 99;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid #e0e0e0;
-  }
-
-  .whatsapp-widget-header {
-      background: #25d366;
-      color: white;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-  }
-
-  .whatsapp-widget-header i {
-      font-size: 20px;
-  }
-
-  .whatsapp-widget-body {
-      flex: 1;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow-y: auto;
-  }
-
-  .whatsapp-widget-message {
-      background: #f0f0f0;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 14px;
-      line-height: 1.4;
-  }
-
-  .whatsapp-widget-footer {
-      padding: 15px;
-      border-top: 1px solid #e0e0e0;
-  }
-
-  .whatsapp-input-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-  }
-
-  .whatsapp-widget-input {
-      width: 100%;
-      padding: 10px 45px 10px 15px;
-      border: 1px solid #ddd;
-      border-radius: 25px;
-      font-size: 14px;
-      outline: none;
-  }
-
-  .whatsapp-send-btn {
-      position: absolute;
-      right: 5px;
-      background: #25d366;
-      border: none;
-      border-radius: 50%;
-      color: white;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
-  }
-
-  .whatsapp-send-btn:hover {
-      background: #128C7E;
-  }
-
-  .whatsapp-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border: none;
-      color: white;
-      border-radius: 50%;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
-
-  @media (max-width: 768px) {
+    <style>
+      /* WhatsApp Floating Button Styles */
       .whatsapp-float {
-          width: 50px;
-          height: 50px;
-          bottom: 20px;
-          right: 20px;
-          font-size: 24px;
+          position: fixed;
+          width: 60px;
+          height: 60px;
+          bottom: 40px;
+          right: 40px;
+          background-color: #25d366;
+          color: #FFF;
+          border-radius: 50px;
+          text-align: center;
+          font-size: 30px;
+          box-shadow: 2px 2px 3px #999;
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: all 0.3s ease;
       }
 
-      .whatsapp-widget {
-          width: calc(100% - 40px);
-          right: 20px;
-          bottom: 90px;
+      .whatsapp-float:hover {
+          background-color: #128C7E;
+          transform: scale(1.1);
+          color: #FFF;
       }
-  }
-</style>
+
+      .whatsapp-my-float {
+          margin-top: 0;
+      }
+
+      /* WhatsApp Chat Widget */
+      .whatsapp-widget {
+          position: fixed;
+          width: 300px;
+          height: 400px;
+          bottom: 110px;
+          right: 40px;
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+          z-index: 99;
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+          border: 1px solid #e0e0e0;
+      }
+
+      .whatsapp-widget-header {
+          background: #25d366;
+          color: white;
+          padding: 15px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .whatsapp-widget-header i {
+          font-size: 20px;
+      }
+
+      .whatsapp-widget-body {
+          flex: 1;
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          overflow-y: auto;
+      }
+
+      .whatsapp-widget-message {
+          background: #f0f0f0;
+          padding: 10px;
+          border-radius: 10px;
+          font-size: 14px;
+          line-height: 1.4;
+      }
+
+      .whatsapp-widget-footer {
+          padding: 15px;
+          border-top: 1px solid #e0e0e0;
+      }
+
+      .whatsapp-input-container {
+          position: relative;
+          display: flex;
+          align-items: center;
+      }
+
+      .whatsapp-widget-input {
+          width: 100%;
+          padding: 10px 45px 10px 15px;
+          border: 1px solid #ddd;
+          border-radius: 25px;
+          font-size: 14px;
+          outline: none;
+      }
+
+      .whatsapp-send-btn {
+          position: absolute;
+          right: 5px;
+          background: #25d366;
+          border: none;
+          border-radius: 50%;
+          color: white;
+          width: 32px;
+          height: 32px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.3s ease;
+      }
+
+      .whatsapp-send-btn:hover {
+          background: #128C7E;
+      }
+
+      .whatsapp-close {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(0, 0, 0, 0.2);
+          border: none;
+          color: white;
+          border-radius: 50%;
+          width: 25px;
+          height: 25px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      @media (max-width: 768px) {
+          .whatsapp-float {
+              width: 50px;
+              height: 50px;
+              bottom: 20px;
+              right: 20px;
+              font-size: 24px;
+          }
+
+          .whatsapp-widget {
+              width: calc(100% - 40px);
+              right: 20px;
+              bottom: 90px;
+          }
+      }
+    </style>
   </head>
+
   <body class="animsition">
     <!-- Header -->
     <header class="header-v4">
@@ -654,6 +654,12 @@
               data-filter=".men"
             >
               Men
+            </button>
+            <button
+              class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+              data-filter=".watches"
+            >
+              Ankra Infusion
             </button>
             <button
               class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
@@ -1150,6 +1156,12 @@
 
               <li class="p-b-10">
                 <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                  Ankara Infusion
+                </a>
+              </li>
+
+              <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
                   Custom Order
                 </a>
               </li>
@@ -1190,7 +1202,7 @@
 
             <p class="stext-107 cl7 size-201">
               Any questions? Let us know in store at 10 Balogun Street, Ajao
-              Estate, Anthony, Lagos. Or call us on (+234)706-0558-584
+              Estate, Anthony, Lagos. Or call us on (+234)810-7157-640
             </p>
 
             <div class="p-t-27">
