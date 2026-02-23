@@ -246,7 +246,7 @@
                 </li>
 
                 <li>
-                  <a href="about.html">About</a>
+                  <a href="about.html">About Us</a>
                 </li>
 
                 <li class="active-menu">
@@ -321,7 +321,7 @@
           </li>
 
           <li>
-            <a href="about.html">About</a>
+            <a href="about.html">About Us</a>
           </li>
 
           <li>
@@ -590,8 +590,20 @@
               </li>
 
               <li class="p-b-10">
-                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                <a href="./terms.html" class="stext-107 cl7 hov-cl1 trans-04">
+                  Terms & Conditions
+                </a>
+              </li>
+
+              <li class="p-b-10">
+                <a href="./store-policy.html" class="stext-107 cl7 hov-cl1 trans-04">
                   Store Policy
+                </a>
+              </li>
+
+              <li class="p-b-10">
+                <a href="./return-policy.html" class="stext-107 cl7 hov-cl1 trans-04">
+                  Return Policy
                 </a>
               </li>
             </ul>
@@ -680,6 +692,7 @@
         </div>
       </div>
     </footer>
+
     <!-- Back to top -->
     <!-- <div class="btn-back-to-top" id="myBtn">
       <span class="symbol-btn-back-to-top">
@@ -687,43 +700,43 @@
       </span>
     </div> -->
 
-    <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
-    class="whatsapp-float" 
-    target="_blank"
-    onclick="if(window.innerWidth > 768) { event.preventDefault(); toggleWhatsAppWidget(); }">
-   <i class="fa-brands fa-whatsapp whatsapp-my-float"></i>
- </a>
+    <a href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
+      class="whatsapp-float" 
+      target="_blank"
+      onclick="if(window.innerWidth > 768) { event.preventDefault(); toggleWhatsAppWidget(); }">
+      <i class="fa-brands fa-whatsapp whatsapp-my-float"></i>
+    </a>
 
- <!-- WhatsApp Chat Widget -->
- <div class="whatsapp-widget" id="whatsappWidget">
-   <div class="whatsapp-widget-header">
-     <i class="fa-brands fa-whatsapp"></i>
-     <span>LinaBen Stores</span>
-     <button class="whatsapp-close" onclick="closeWhatsAppWidget()">
-       <i class="fa fa-times"></i>
-     </button>
-   </div>
-   <div class="whatsapp-widget-body">
-     <div class="whatsapp-widget-message">
-       Hi! 👋 Welcome to LinaBen Stores. We're here to help you with any questions about our products, custom orders, or general inquiries. What can we assist you with today?
-     </div>
-   </div>
-   <div class="whatsapp-widget-footer">
-     <div class="whatsapp-input-container">
-       <input type="text" 
-              class="whatsapp-widget-input" 
-              placeholder="Type your message..."
-              onkeypress="if(event.key === 'Enter') sendWhatsAppMessage(this.value)"
-              id="whatsappInput">
-       <button class="whatsapp-send-btn" onclick="sendWhatsAppMessage(document.getElementById('whatsappInput').value)">
-         <i class="fa fa-paper-plane"></i>
-       </button>
-     </div>
-     <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
-       Press Enter to send or <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
-     </small>
-   </div>
- </div>
+    <!-- WhatsApp Chat Widget -->
+    <div class="whatsapp-widget" id="whatsappWidget">
+      <div class="whatsapp-widget-header">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>LinaBen Stores</span>
+        <button class="whatsapp-close" onclick="closeWhatsAppWidget()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="whatsapp-widget-body">
+        <div class="whatsapp-widget-message">
+          Hi! 👋 Welcome to LinaBen Stores. We're here to help you with any questions about our products, custom orders, or general inquiries. What can we assist you with today?
+        </div>
+      </div>
+      <div class="whatsapp-widget-footer">
+        <div class="whatsapp-input-container">
+          <input type="text" 
+                  class="whatsapp-widget-input" 
+                  placeholder="Type your message..."
+                  onkeypress="if(event.key === 'Enter') sendWhatsAppMessage(this.value)"
+                  id="whatsappInput">
+          <button class="whatsapp-send-btn" onclick="sendWhatsAppMessage(document.getElementById('whatsappInput').value)">
+            <i class="fa fa-paper-plane"></i>
+          </button>
+        </div>
+        <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
+          Press Enter to send or <a href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
+        </small>
+      </div>
+    </div>
 
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -798,7 +811,7 @@
           
           // Encode the message for URL
           const encodedMessage = encodeURIComponent(message);
-          const whatsappUrl = `https://wa.me/2347060558584?text=${encodedMessage}`;
+          const whatsappUrl = `https://wa.me/2348107157640?text=${encodedMessage}`;
           
           // Open WhatsApp in a new tab
           window.open(whatsappUrl, '_blank');

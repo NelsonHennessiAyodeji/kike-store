@@ -260,7 +260,7 @@
         margin-top: 20px;
       }
     </style>
-    <style>
+  <style>
       /* Spinner Styles */
       .products-loading {
         display: flex;
@@ -395,7 +395,11 @@
 
       @media (max-width: 575px) {
         .isotope-item {
-          width: 100%;
+          width: 50%;
+        }
+        
+        .block2-pic.hov-img0 {
+          height: 100px; /* Reduced from 340px by 50% */
         }
       }
 
@@ -439,7 +443,7 @@
       .block2-pic.hov-img0:hover .block2-btn {
         bottom: 20px;
       }
-    </style>
+  </style>
   </head>
   <body class="animsition">
     <!-- Header -->
@@ -468,7 +472,7 @@
                 </li>
 
                 <li>
-                  <a href="about.html">About</a>
+                  <a href="about.html">About Us</a>
                 </li>
 
                 <li>
@@ -543,7 +547,7 @@
           </li>
 
           <li>
-            <a href="about.html">About</a>
+            <a href="about.html">About Us</a>
           </li>
 
           <li>
@@ -952,6 +956,7 @@
       </div>
     </section>
 
+    <!-- Custom Order Banner Section -->
     <main>
       <section class="mt-8">
           <div class="container">
@@ -961,18 +966,18 @@
                   data-breakpoints='{"480": {"slidesPerView": 1}, "768": {"slidesPerView": 1}, "1024": {"slidesPerView": 1}}'>
                   <div class="swiper-wrapper pb-8">
                       <div class="swiper-slide"
-                          style="background: url(https://dummyimage.com/1660x625) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center">
+                          style="background: url(./images/Linaben/banner/custom-order.png) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center">
                           <div class="lg:py-32 p-12 lg:pl-12 xl:w-2/5 md:w-3/5">
-                              <span
+                              <!-- <span
                                   class="inline-block p-2 text-sm align-baseline leading-none rounded-lg bg-yellow-500 text-gray-900 font-semibold">Opening
-                                  Sale Discount 50%</span>
+                                  Sale Discount 50%</span> -->
                               <div class="my-7 flex flex-col gap-2">
-                                  <h1 class="text-gray-900 text-xl lg:text-5xl font-bold leading-tight">
+                                  <h1 class="text-white text-xl lg:text-5xl font-bold leading-tight">
                                     Featuring our Custom Order
                                   </h1>
-                                  <p class="text-md font-light">Want to make something unique or print on T shirts?</p>
+                                  <p class="text-md text-white font-light">Want to make something unique or print on T shirts?</p>
                               </div>
-                              <a href="#!"
+                              <a href="custom-editor.html"
                                   class="btn inline-flex items-center gap-x-2 bg-gray-800 text-white border-gray-800 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-900 hover:border-gray-900 active:bg-gray-900 active:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300">
                                   Custom Order
                                   <svg xmlns="http://www.w3.org/2000/svg"
@@ -991,7 +996,6 @@
           </div>
       </section>
     </main>
-
 
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">
@@ -1347,7 +1351,7 @@
       </div>
     </div>
 
-    <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
+    <a href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" 
     class="whatsapp-float" 
     target="_blank"
     onclick="if(window.innerWidth > 768) { event.preventDefault(); toggleWhatsAppWidget(); }">
@@ -1380,7 +1384,7 @@
        </button>
      </div>
      <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
-       Press Enter to send or <a href="https://wa.me/2347060558584?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
+       Press Enter to send or <a href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
      </small>
    </div>
  </div>
@@ -1519,7 +1523,7 @@
           
           // Encode the message for URL
           const encodedMessage = encodeURIComponent(message);
-          const whatsappUrl = `https://wa.me/2347060558584?text=${encodedMessage}`;
+          const whatsappUrl = `https://wa.me/2348107157640?text=${encodedMessage}`;
           
           // Open WhatsApp in a new tab
           window.open(whatsappUrl, '_blank');

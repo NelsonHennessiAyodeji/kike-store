@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Custom Outfit Editor - LinaBen</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="fonts/iconic/css/material-design-iconic-font.min.css"
+    />
+
+    <!-- Vendor CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/bootstrap/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/css-hamburgers/hamburgers.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/animsition/css/animsition.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/select2/select2.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <!-- Fabric.js for Canvas Editing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+    <style>
+      /* Custom Outfit Editor Styles */
+      body {
+        background-color: #f8f9fa;
+        font-family: "Inter", sans-serif;
+      }
+
+      .editor-container {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
+
+      .editor-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+      }
+
+      .editor-header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #1d2671;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 10px;
+      }
+
+      .editor-header h1 span {
+        color: #4a6fa5;
+        position: relative;
+      }
+
+      .editor-header h1 span:after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #4a6fa5, #1d2671);
+        border-radius: 3px;
+      }
+
+      .editor-header p {
+        color: #666;
+        font-size: 16px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .editor-main {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        margin-bottom: 40px;
+      }
+
+      /* Canvas Area */
+      .canvas-wrapper {
+        background: #f5f7fa;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.02);
+      }
+
+      .canvas-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #editorCanvas {
+        border: 2px dashed #e0e0e0;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        max-width: 100%;
+        height: auto;
+      }
+
+      .canvas-tools {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .canvas-tool-btn {
+        padding: 10px 20px;
+        border: 1px solid #e0e0e0;
+        background: white;
+        border-radius: 30px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .canvas-tool-btn:hover {
+        background: #4a6fa5;
+        color: white;
+        border-color: #4a6fa5;
+      }
+
+      .canvas-tool-btn i {
+        font-size: 16px;
+      }
+
+      /* Sidebar Controls */
+      .editor-sidebar {
+        background: #fafbfc;
+        border-radius: 16px;
+        padding: 25px;
+        border: 1px solid #edf2f7;
+      }
+
+      .sidebar-section {
+        margin-bottom: 30px;
+      }
+
+      .sidebar-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1d2671;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #eef2f6;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sidebar-title i {
+        color: #4a6fa5;
+      }
+
+      .garment-selector {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .garment-btn {
+        flex: 1;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 12px;
+        color: #666;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .garment-btn i {
+        font-size: 24px;
+      }
+
+      .garment-btn.active {
+        border-color: #4a6fa5;
+        background: #4a6fa5;
+        color: white;
+      }
+
+      .garment-btn.active i {
+        color: white;
+      }
+
+      .garment-btn:hover:not(.active) {
+        border-color: #4a6fa5;
+        color: #4a6fa5;
+      }
+
+      /* Color Picker */
+      .color-palette {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-bottom: 15px;
+      }
+
+      .color-option {
+        aspect-ratio: 1;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .color-option:hover {
+        transform: scale(1.1);
+      }
+
+      .color-option.active {
+        border-color: #1d2671;
+        transform: scale(1.1);
+      }
+
+      .custom-color-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .custom-color-input input[type="color"] {
+        width: 50px;
+        height: 40px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      /* Pattern Selector */
+      .pattern-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 15px;
+      }
+
+      .pattern-item {
+        aspect-ratio: 1;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        cursor: pointer;
+        background-size: cover;
+        background-position: center;
+        transition: all 0.3s ease;
+      }
+
+      .pattern-item:hover {
+        border-color: #4a6fa5;
+        transform: translateY(-2px);
+      }
+
+      .pattern-item.active {
+        border-color: #1d2671;
+        border-width: 3px;
+      }
+
+      /* Text Controls */
+      .text-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .text-input-group {
+        display: flex;
+        gap: 10px;
+      }
+
+      .text-input-group input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .font-selector {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: white;
+      }
+
+      .add-text-btn {
+        background: #4a6fa5;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .add-text-btn:hover {
+        background: #1d2671;
+      }
+
+      /* Adire Patterns Library */
+      .adire-preview {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .adire-preview::after {
+        content: "✓";
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 20px;
+        height: 20px;
+        background: #4a6fa5;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .adire-preview.active::after {
+        opacity: 1;
+      }
+
+      /* Action Buttons */
+      .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .action-btn {
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: #4a6fa5;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #1d2671;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background: white;
+        color: #333;
+        border: 2px solid #4a6fa5;
+      }
+
+      .btn-secondary:hover {
+        background: #f0f7ff;
+        transform: translateY(-2px);
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .editor-main {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Adire Pattern Backgrounds */
+      .pattern-adire1 {
+        background: linear-gradient(
+          45deg,
+          #1e3c5c 25%,
+          #2a4d6e 25%,
+          #2a4d6e 50%,
+          #1e3c5c 50%,
+          #1e3c5c 75%,
+          #2a4d6e 75%,
+          #2a4d6e 100%
+        );
+        background-size: 20px 20px;
+      }
+      .pattern-adire2 {
+        background: radial-gradient(
+          circle at 30% 30%,
+          #3a6b92 8px,
+          #2a4d6e 9px
+        );
+        background-size: 30px 30px;
+      }
+      .pattern-adire3 {
+        background: repeating-linear-gradient(
+          45deg,
+          #4a6fa5 0px,
+          #4a6fa5 2px,
+          #638bb5 2px,
+          #638bb5 8px
+        );
+      }
+      .pattern-adire4 {
+        background: repeating-linear-gradient(
+          0deg,
+          #1d2671 0px,
+          #1d2671 1px,
+          #4a6fa5 1px,
+          #4a6fa5 5px
+        );
+      }
+      .pattern-adire5 {
+        background: repeating-linear-gradient(
+          90deg,
+          #2c3e50 0px,
+          #2c3e50 2px,
+          #34495e 2px,
+          #34495e 6px
+        );
+      }
+      .pattern-adire6 {
+        background: repeating-linear-gradient(
+          45deg,
+          #606c88 0px,
+          #606c88 2px,
+          #3f4c6b 2px,
+          #3f4c6b 6px
+        );
+      }
+      .pattern-solid {
+        background: #4a6fa5;
+      }
+
+      /* Custom Scrollbar */
+      .sidebar-content {
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+
+      .sidebar-content::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sidebar-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      .sidebar-content::-webkit-scrollbar-thumb {
+        background: #4a6fa5;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="animsition">
+    <!-- Header -->
+    <header>
+      <div class="container-menu-desktop">
+        <div class="wrap-menu-desktop">
+          <nav class="limiter-menu-desktop container">
+            <a href="/" class="logo">
+              <img
+                src="images/Linaben/logo/Lina Ben Logo (secondary).png"
+                alt="LinaBen-LOGO"
+              />
+            </a>
+            <div class="menu-desktop">
+              <ul class="main-menu">
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  <a href="product.html">Shop</a>
+                </li>
+                <li>
+                  <a href="about.html">About</a>
+                </li>
+                <li class="active-menu">
+                  <a href="custom-editor.html">Custom Studio</a>
+                </li>
+                <li>
+                  <a href="contact.html">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+            <div class="wrap-icon-header flex-w flex-r-m">
+              <div
+                class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+                data-notify="0"
+              >
+                <i class="zmdi zmdi-shopping-cart"></i>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Custom Outfit Editor -->
+    <div class="editor-container">
+      <div class="editor-header">
+        <h1>LinaBen <span>Custom Studio</span></h1>
+        <p>
+          Design your unique outfit with Adire infusion patterns, colors, and
+          text. Bring your vision to life.
+        </p>
+      </div>
+
+      <div class="editor-main">
+        <!-- Left Side - Canvas Editor -->
+        <div class="canvas-wrapper">
+          <div class="canvas-container">
+            <canvas id="editorCanvas" width="600" height="600"></canvas>
+
+            <div class="canvas-tools">
+              <button class="canvas-tool-btn" onclick="deleteSelectedObject()">
+                <i class="fa fa-trash"></i> Delete
+              </button>
+              <button class="canvas-tool-btn" onclick="clearCanvas()">
+                <i class="fa fa-eraser"></i> Clear
+              </button>
+              <button class="canvas-tool-btn" onclick="bringForward()">
+                <i class="fa fa-arrow-up"></i> Bring Forward
+              </button>
+              <button class="canvas-tool-btn" onclick="sendBackward()">
+                <i class="fa fa-arrow-down"></i> Send Backward
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side - Controls -->
+        <div class="editor-sidebar">
+          <div class="sidebar-content">
+            <!-- Garment Selection -->
+            <div class="sidebar-section">
+              <div class="sidebar-title">
+                <i class="fa fa-tshirt"></i> Select Garment
+              </div>
+              <div class="garment-selector">
+                <button
+                  id="btnShirt"
+                  class="garment-btn active"
+                  onclick="selectGarment('shirt')"
+                >
+                  <i class="fa fa-tshirt"></i>
+                  Shirt
+                </button>
+                <button
+                  id="btnPants"
+                  class="garment-btn"
+                  onclick="selectGarment('pants')"
+                >
+                  <i class="fa fa-shopping-bag"></i>
+                  Pants
+                </button>
+              </div>
+            </div>
+
+            <!-- Color Controls -->
+            <div class="sidebar-section">
+              <div class="sidebar-title">
+                <i class="fa fa-palette"></i> Colors
+              </div>
+              <div class="color-palette">
+                <div
+                  class="color-option active"
+                  style="background: #4a6fa5"
+                  onclick="setColor('#4a6fa5')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #1d2671"
+                  onclick="setColor('#1d2671')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #2c3e50"
+                  onclick="setColor('#2c3e50')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #8e44ad"
+                  onclick="setColor('#8e44ad')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #d35400"
+                  onclick="setColor('#d35400')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #c0392b"
+                  onclick="setColor('#c0392b')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #27ae60"
+                  onclick="setColor('#27ae60')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #2980b9"
+                  onclick="setColor('#2980b9')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #f39c12"
+                  onclick="setColor('#f39c12')"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: #7f8c8d"
+                  onclick="setColor('#7f8c8d')"
+                ></div>
+              </div>
+              <div class="custom-color-input">
+                <input
+                  type="color"
+                  id="customColorPicker"
+                  onchange="setColor(this.value)"
+                />
+                <span>Custom Color</span>
+              </div>
+            </div>
+
+            <!-- Adire Infusion Patterns -->
+            <div class="sidebar-section">
+              <div class="sidebar-title">
+                <i class="fa fa-paint-brush"></i> Adire Infusion
+              </div>
+              <div class="pattern-grid">
+                <div
+                  class="pattern-item pattern-adire1"
+                  onclick="applyPattern('adire1')"
+                  title="Indigo Wave"
+                ></div>
+                <div
+                  class="pattern-item pattern-adire2"
+                  onclick="applyPattern('adire2')"
+                  title="Eleko Dots"
+                ></div>
+                <div
+                  class="pattern-item pattern-adire3"
+                  onclick="applyPattern('adire3')"
+                  title="Striped Heritage"
+                ></div>
+                <div
+                  class="pattern-item pattern-adire4"
+                  onclick="applyPattern('adire4')"
+                  title="Fine Lines"
+                ></div>
+                <div
+                  class="pattern-item pattern-adire5"
+                  onclick="applyPattern('adire5')"
+                  title="Geometric"
+                ></div>
+                <div
+                  class="pattern-item pattern-adire6"
+                  onclick="applyPattern('adire6')"
+                  title="Cross Weave"
+                ></div>
+                <div
+                  class="pattern-item"
+                  style="background: #4a6fa5"
+                  onclick="applyPattern('solid')"
+                  title="Solid Color"
+                ></div>
+                <div
+                  class="pattern-item"
+                  style="background: #1d2671"
+                  onclick="applyPattern('solid2')"
+                  title="Deep Indigo"
+                ></div>
+                <div
+                  class="pattern-item"
+                  style="
+                    background: linear-gradient(
+                      45deg,
+                      #4a6fa5 25%,
+                      #1d2671 75%
+                    );
+                  "
+                  onclick="applyPattern('gradient')"
+                  title="Gradient"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Text Customization -->
+            <div class="sidebar-section">
+              <div class="sidebar-title">
+                <i class="fa fa-font"></i> Add Text
+              </div>
+              <div class="text-controls">
+                <div class="text-input-group">
+                  <input
+                    type="text"
+                    id="customText"
+                    placeholder="Enter your text"
+                    value="LinaBen"
+                  />
+                  <select id="fontFamily" class="font-selector">
+                    <option value="Arial">Arial</option>
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Inter">Inter</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New">Courier New</option>
+                  </select>
+                </div>
+                <div class="text-input-group">
+                  <input
+                    type="number"
+                    id="fontSize"
+                    placeholder="Font Size"
+                    value="24"
+                    min="12"
+                    max="72"
+                  />
+                  <input type="color" id="textColor" value="#1d2671" />
+                </div>
+                <button class="add-text-btn" onclick="addText()">
+                  <i class="fa fa-plus-circle"></i> Add Text to Design
+                </button>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <button class="action-btn btn-primary" onclick="saveDesign()">
+                <i class="fa fa-save"></i> Save Design
+              </button>
+              <button
+                class="action-btn btn-secondary"
+                onclick="downloadDesign()"
+              >
+                <i class="fa fa-download"></i> Download
+              </button>
+            </div>
+
+            <div style="margin-top: 20px; text-align: center">
+              <button
+                class="action-btn btn-primary"
+                style="width: 100%"
+                onclick="submitCustomOrder()"
+              >
+                <i class="fa fa-shopping-cart"></i> Submit Custom Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inspiration Gallery -->
+      <div style="margin-top: 60px">
+        <h3
+          style="
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d2671;
+            margin-bottom: 30px;
+            text-align: center;
+          "
+        >
+          <i class="fa fa-star" style="color: #4a6fa5; margin-right: 10px"></i>
+          Adire Infusion Inspiration
+        </h3>
+        <div class="row">
+          <div class="col-md-3 col-sm-6 p-b-35">
+            <div class="block2" onclick="loadInspiration('indigo')">
+              <div class="block2-pic hov-img0" style="height: 250px">
+                <img src="images/Linaben/banner-05.png" alt="Indigo Pattern" />
+              </div>
+              <div class="block2-txt p-t-14">
+                <h4 class="stext-104 cl4 p-b-6">Indigo Wave</h4>
+                <span class="stext-107 cl7">Traditional Adire</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 p-b-35">
+            <div class="block2" onclick="loadInspiration('geometric')">
+              <div class="block2-pic hov-img0" style="height: 250px">
+                <img src="images/Linaben/banner-06.png" alt="Geometric" />
+              </div>
+              <div class="block2-txt p-t-14">
+                <h4 class="stext-104 cl4 p-b-6">Geometric Fusion</h4>
+                <span class="stext-107 cl7">Modern Twist</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 p-b-35">
+            <div class="block2" onclick="loadInspiration('stripes')">
+              <div class="block2-pic hov-img0" style="height: 250px">
+                <img src="images/Linaben/banner-07.png" alt="Stripes" />
+              </div>
+              <div class="block2-txt p-t-14">
+                <h4 class="stext-104 cl4 p-b-6">Stripe Heritage</h4>
+                <span class="stext-107 cl7">Classic Design</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 p-b-35">
+            <div class="block2" onclick="loadInspiration('custom')">
+              <div class="block2-pic hov-img0" style="height: 250px">
+                <img src="images/Linaben/slide-01.png" alt="Custom" />
+              </div>
+              <div class="block2-txt p-t-14">
+                <h4 class="stext-104 cl4 p-b-6">Your Design</h4>
+                <span class="stext-107 cl7">Start Fresh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg3 p-t-75 p-b-32">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 col-lg-3 p-b-50">
+            <h4 class="stext-301 cl0 p-b-30">Categories</h4>
+            <ul>
+              <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">Men</a>
+              </li>
+              <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">Women</a>
+              </li>
+              <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04"
+                  >Adire Infusion</a
+                >
+              </li>
+              <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04"
+                  >Custom Order</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-lg-3 p-b-50">
+            <h4 class="stext-301 cl0 p-b-30">Help</h4>
+            <ul>
+              <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04"
+                  >Track Order</a
+                >
+              </li>
+              <li class="p-b-10">
+                <a href="./terms.html" class="stext-107 cl7 hov-cl1 trans-04"
+                  >Terms & Conditions</a
+                >
+              </li>
+              <li class="p-b-10">
+                <a
+                  href="./store-policy.html"
+                  class="stext-107 cl7 hov-cl1 trans-04"
+                  >Store Policy</a
+                >
+              </li>
+              <li class="p-b-10">
+                <a
+                  href="./return-policy.html"
+                  class="stext-107 cl7 hov-cl1 trans-04"
+                  >Return Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-lg-3 p-b-50">
+            <h4 class="stext-301 cl0 p-b-30">GET IN TOUCH</h4>
+            <p class="stext-107 cl7 size-201">
+              Any questions? Let us know in store at 10 Balogun Street, Ajao
+              Estate, Anthony, Lagos. Or call us on (+234)706-0558-584
+            </p>
+            <div class="p-t-27">
+              <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/linabenstores/"
+                class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <p class="stext-107 cl6 txt-center">
+          Copyright &copy;
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+          , LinaBen All rights reserved
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Canvas Editor -->
+    <script>
+      // Initialize Fabric Canvas
+      var canvas = new fabric.Canvas("editorCanvas");
+      canvas.setWidth(600);
+      canvas.setHeight(600);
+
+      var currentGarment = "shirt";
+      var currentColor = "#4a6fa5";
+      var currentPattern = null;
+
+      // Shirt Template
+      function drawShirt(color) {
+        // Remove existing shirt
+        var existingShirt = canvas
+          .getObjects()
+          .filter((obj) => obj.name === "garment-shirt");
+        existingShirt.forEach((obj) => canvas.remove(obj));
+
+        // Create shirt shape
+        var shirt = new fabric.Path(
+          "M150,200 L450,200 L500,400 L400,500 L200,500 L100,400 Z",
+          {
+            left: 100,
+            top: 100,
+            fill: color,
+            stroke: "#333",
+            strokeWidth: 2,
+            objectCaching: false,
+            name: "garment-shirt",
+            selectable: true,
+            hasControls: true,
+            hasBorders: true,
+          }
+        );
+
+        // Collar
+        var collar = new fabric.Path("M250,200 L300,150 L350,200", {
+          left: 100,
+          top: 100,
+          fill: color,
+          stroke: "#333",
+          strokeWidth: 2,
+          objectCaching: false,
+          name: "garment-shirt-collar",
+          selectable: true,
+          hasControls: true,
+          hasBorders: true,
+        });
+
+        // Sleeves
+        var leftSleeve = new fabric.Path("M100,250 L50,350 L100,400", {
+          left: 100,
+          top: 100,
+          fill: color,
+          stroke: "#333",
+          strokeWidth: 2,
+          name: "garment-shirt-sleeve-left",
+        });
+
+        var rightSleeve = new fabric.Path("M500,250 L550,350 L500,400", {
+          left: 100,
+          top: 100,
+          fill: color,
+          stroke: "#333",
+          strokeWidth: 2,
+          name: "garment-shirt-sleeve-right",
+        });
+
+        canvas.add(shirt);
+        canvas.add(collar);
+        canvas.add(leftSleeve);
+        canvas.add(rightSleeve);
+        canvas.renderAll();
+      }
+
+      // Pants Template
+      function drawPants(color) {
+        // Remove existing pants
+        var existingPants = canvas
+          .getObjects()
+          .filter((obj) => obj.name && obj.name.includes("garment-pants"));
+        existingPants.forEach((obj) => canvas.remove(obj));
+
+        // Create pants shape
+        var pants = new fabric.Path(
+          "M200,300 L400,300 L450,500 L350,500 L300,400 L250,500 L150,500 Z",
+          {
+            left: 100,
+            top: 200,
+            fill: color,
+            stroke: "#333",
+            strokeWidth: 2,
+            name: "garment-pants",
+            selectable: true,
+            hasControls: true,
+            hasBorders: true,
+          }
+        );
+
+        // Belt/Waist
+        var belt = new fabric.Path("M200,300 L400,300", {
+          left: 100,
+          top: 200,
+          stroke: "#333",
+          strokeWidth: 4,
+          name: "garment-pants-belt",
+        });
+
+        // Pockets
+        var leftPocket = new fabric.Rect({
+          left: 220,
+          top: 350,
+          width: 30,
+          height: 40,
+          fill: "transparent",
+          stroke: "#333",
+          strokeWidth: 1,
+          name: "garment-pants-pocket-left",
+        });
+
+        var rightPocket = new fabric.Rect({
+          left: 350,
+          top: 350,
+          width: 30,
+          height: 40,
+          fill: "transparent",
+          stroke: "#333",
+          strokeWidth: 1,
+          name: "garment-pants-pocket-right",
+        });
+
+        canvas.add(pants);
+        canvas.add(belt);
+        canvas.add(leftPocket);
+        canvas.add(rightPocket);
+        canvas.renderAll();
+      }
+
+      // Select Garment
+      function selectGarment(garment) {
+        currentGarment = garment;
+
+        // Update UI
+        document.getElementById("btnShirt").classList.remove("active");
+        document.getElementById("btnPants").classList.remove("active");
+        document
+          .getElementById(
+            `btn${garment.charAt(0).toUpperCase() + garment.slice(1)}`
+          )
+          .classList.add("active");
+
+        // Draw selected garment
+        if (garment === "shirt") {
+          drawShirt(currentColor);
+        } else {
+          drawPants(currentColor);
+        }
+      }
+
+      // Set Color
+      function setColor(color) {
+        currentColor = color;
+
+        // Update active state
+        document.querySelectorAll(".color-option").forEach((el) => {
+          el.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        // Update selected garment color
+        var garmentParts = canvas
+          .getObjects()
+          .filter(
+            (obj) => obj.name && obj.name.includes(`garment-${currentGarment}`)
+          );
+
+        garmentParts.forEach((part) => {
+          if (part.type === "path" || part.type === "rect") {
+            part.set("fill", color);
+          }
+        });
+
+        canvas.renderAll();
+      }
+
+      // Apply Pattern
+      function applyPattern(pattern) {
+        // Update active state
+        document.querySelectorAll(".pattern-item").forEach((el) => {
+          el.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        var patternCanvas = document.createElement("canvas");
+        var ctx = patternCanvas.getContext("2d");
+        patternCanvas.width = 100;
+        patternCanvas.height = 100;
+
+        switch (pattern) {
+          case "adire1":
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            for (var i = 0; i < 100; i += 20) {
+              ctx.fillRect(i, 0, 10, 100);
+            }
+            break;
+          case "adire2":
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = "rgba(255,255,255,0.2)";
+            for (var i = 0; i < 100; i += 25) {
+              for (var j = 0; j < 100; j += 25) {
+                ctx.beginPath();
+                ctx.arc(i + 12, j + 12, 8, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+            break;
+          case "adire3":
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = "rgba(255,255,255,0.15)";
+            for (var i = 0; i < 100; i += 15) {
+              ctx.fillRect(i, 0, 3, 100);
+            }
+            break;
+          case "adire4":
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = "rgba(255,255,255,0.1)";
+            for (var i = 0; i < 100; i += 8) {
+              ctx.fillRect(i, 0, 2, 100);
+            }
+            break;
+          case "adire5":
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = "rgba(255,255,255,0.2)";
+            for (var i = 0; i < 100; i += 30) {
+              for (var j = 0; j < 100; j += 30) {
+                ctx.fillRect(i, j, 15, 15);
+              }
+            }
+            break;
+          case "adire6":
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = "rgba(255,255,255,0.15)";
+            for (var i = 0; i < 100; i += 20) {
+              ctx.beginPath();
+              ctx.moveTo(i, 0);
+              ctx.lineTo(i + 10, 100);
+              ctx.lineWidth = 3;
+              ctx.strokeStyle = "rgba(255,255,255,0.15)";
+              ctx.stroke();
+            }
+            break;
+          case "solid":
+          case "solid2":
+            ctx.fillStyle = pattern === "solid2" ? "#1d2671" : currentColor;
+            ctx.fillRect(0, 0, 100, 100);
+            break;
+          case "gradient":
+            var gradient = ctx.createLinearGradient(0, 0, 100, 100);
+            gradient.addColorStop(0, "#4a6fa5");
+            gradient.addColorStop(1, "#1d2671");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 100, 100);
+            break;
+        }
+
+        var patternObj = new fabric.Pattern({
+          source: patternCanvas,
+          repeat: "repeat",
+        });
+
+        var garmentParts = canvas
+          .getObjects()
+          .filter(
+            (obj) =>
+              obj.name &&
+              obj.name.includes(`garment-${currentGarment}`) &&
+              obj.type === "path" &&
+              !obj.name.includes("collar") &&
+              !obj.name.includes("sleeve") &&
+              !obj.name.includes("belt") &&
+              !obj.name.includes("pocket")
+          );
+
+        garmentParts.forEach((part) => {
+          part.set("fill", patternObj);
+        });
+
+        canvas.renderAll();
+      }
+
+      // Add Text
+      function addText() {
+        var textString =
+          document.getElementById("customText").value || "LinaBen";
+        var fontSize =
+          parseInt(document.getElementById("fontSize").value) || 24;
+        var fontFamily = document.getElementById("fontFamily").value;
+        var textColor = document.getElementById("textColor").value;
+
+        var text = new fabric.IText(textString, {
+          left: 250,
+          top: 300,
+          fontFamily: fontFamily,
+          fontSize: fontSize,
+          fill: textColor,
+          fontWeight: "bold",
+          selectable: true,
+          hasControls: true,
+          hasBorders: true,
+        });
+
+        canvas.add(text);
+        canvas.setActiveObject(text);
+        canvas.renderAll();
+      }
+
+      // Canvas Tools
+      function deleteSelectedObject() {
+        var activeObject = canvas.getActiveObject();
+        if (activeObject) {
+          canvas.remove(activeObject);
+          canvas.renderAll();
+        }
+      }
+
+      function clearCanvas() {
+        canvas.clear();
+        // Redraw current garment
+        if (currentGarment === "shirt") {
+          drawShirt(currentColor);
+        } else {
+          drawPants(currentColor);
+        }
+      }
+
+      function bringForward() {
+        var activeObject = canvas.getActiveObject();
+        if (activeObject) {
+          canvas.bringForward(activeObject);
+          canvas.renderAll();
+        }
+      }
+
+      function sendBackward() {
+        var activeObject = canvas.getActiveObject();
+        if (activeObject) {
+          canvas.sendBackwards(activeObject);
+          canvas.renderAll();
+        }
+      }
+
+      // Save Design
+      function saveDesign() {
+        var designData = canvas.toJSON();
+        localStorage.setItem("customDesign", JSON.stringify(designData));
+        alert("Design saved successfully!");
+      }
+
+      // Download Design
+      function downloadDesign() {
+        var link = document.createElement("a");
+        link.download = "linaben-custom-design.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+
+      // Submit Custom Order
+      function submitCustomOrder() {
+        var designImage = canvas.toDataURL("image/png");
+        // Store in localStorage for checkout
+        localStorage.setItem("customOrderImage", designImage);
+        localStorage.setItem("customOrderGarment", currentGarment);
+
+        // Redirect to contact or order page
+        window.location.href = "contact.html?order=custom";
+      }
+
+      // Load Inspiration
+      function loadInspiration(type) {
+        switch (type) {
+          case "indigo":
+            selectGarment("shirt");
+            setTimeout(() => setColor("#4a6fa5"), 100);
+            setTimeout(() => applyPattern("adire1"), 200);
+            break;
+          case "geometric":
+            selectGarment("shirt");
+            setTimeout(() => setColor("#1d2671"), 100);
+            setTimeout(() => applyPattern("adire5"), 200);
+            break;
+          case "stripes":
+            selectGarment("pants");
+            setTimeout(() => setColor("#2c3e50"), 100);
+            setTimeout(() => applyPattern("adire3"), 200);
+            break;
+          case "custom":
+            clearCanvas();
+            break;
+        }
+      }
+
+      // Initialize with shirt
+      window.onload = function () {
+        drawShirt("#4a6fa5");
+
+        // Set default active states
+        document.querySelector(".color-option").classList.add("active");
+        document.querySelector(".pattern-item").classList.add("active");
+      };
+    </script>
+
+    <!-- Vendor Scripts -->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
