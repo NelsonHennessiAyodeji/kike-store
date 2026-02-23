@@ -723,17 +723,15 @@ function clearAllFilters() {
     brands: [],
   };
 
-  // Remove active classes from all filter links
-  document.querySelectorAll(".filter-link").forEach((link) => {
+  // Remove active classes from all filter links (now using [data-filter-type] to include brands & tags)
+  document.querySelectorAll("[data-filter-type]").forEach((link) => {
     link.classList.remove("filter-link-active");
   });
 
   // Add active class back to "All" links
-  document
-    .querySelectorAll('.filter-link[data-filter-value="all"]')
-    .forEach((link) => {
-      link.classList.add("filter-link-active");
-    });
+  document.querySelectorAll('[data-filter-value="all"]').forEach((link) => {
+    link.classList.add("filter-link-active");
+  });
 
   // Hide filter results count
   const filterCountElement = document.getElementById("filterResultsCount");
@@ -782,17 +780,18 @@ function updateFilterResultsCount(count) {
   }
 }
 
-// Initialize filter handlers
+// Initialize filter handlers (updated to include all elements with data-filter-type)
 function initProductFilterHandlers() {
   // Remove any existing handlers
-  $(".filter-link[data-filter-type]").off("click");
+  $("[data-filter-type]").off("click");
 
   // Add click handlers for filter links
-  $(".filter-link[data-filter-type]").on("click", function (e) {
+  $("[data-filter-type]").on("click", function (e) {
     e.preventDefault();
     const filterType = $(this).data("filter-type");
     const filterValue = $(this).data("filter-value");
-    const $allLinks = $(`.filter-link[data-filter-type="${filterType}"]`);
+    // Select ALL elements of this filter type (including those without .filter-link)
+    const $allLinks = $(`[data-filter-type="${filterType}"]`);
 
     // Handle "All" filter
     if (filterValue === "all") {
@@ -1340,7 +1339,7 @@ $(document).ready(function () {
   // Initialize search functionality
   initSearch();
 
-  // Initialize product filters
+  // Initialize product filters (updated to include brands & tags)
   initProductFilterHandlers();
 
   // Set default active filter (Default)
