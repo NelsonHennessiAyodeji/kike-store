@@ -33,21 +33,21 @@ const getSingleProduct = async (req, res) => {
 // Update product
 const updateProduct = async (req, res) => {
   try {
-    // Parse array fields from comma-separated strings to arrays
+    // Parse array fields from FormData strings
     const updates = { ...req.body };
 
-    if (updates.sizes && typeof updates.sizes === "string") {
-      updates.sizes = updates.sizes.split(",");
-    }
+    // Helper: convert comma-separated string to array, handle empty
+    const parseArrayField = (value) => {
+      if (typeof value !== "string") return value; // keep as is (maybe already array)
+      const trimmed = value.trim();
+      if (trimmed === "") return []; // empty string → empty array
+      return trimmed.split(",").map((item) => item.trim()); // split and clean
+    };
 
-    if (updates.colors && typeof updates.colors === "string") {
-      updates.colors = updates.colors.split(",");
-    }
-
-    // NEW: Parse tags from comma-separated string to array
-    if (updates.tags && typeof updates.tags === "string") {
-      updates.tags = updates.tags.split(",");
-    }
+    // Apply parsing to array fields (only if present in updates)
+    if ("sizes" in updates) updates.sizes = parseArrayField(updates.sizes);
+    if ("colors" in updates) updates.colors = parseArrayField(updates.colors);
+    if ("tags" in updates) updates.tags = parseArrayField(updates.tags);
 
     // Handle file uploads if they exist
     if (req.files) {
@@ -56,7 +56,7 @@ const updateProduct = async (req, res) => {
         const mainImageUrl = await ProductService.uploadImage(
           req.files.mainImage[0],
           req.files.mainImage[0].originalname,
-          "products" // Use the same folder as create
+          "products"
         );
         updates.main_image_url = mainImageUrl;
       }
@@ -68,7 +68,7 @@ const updateProduct = async (req, res) => {
           const imageUrl = await ProductService.uploadImage(
             file,
             file.originalname,
-            "products" // Use the same folder as create
+            "products"
           );
           otherImageUrls.push(imageUrl);
         }

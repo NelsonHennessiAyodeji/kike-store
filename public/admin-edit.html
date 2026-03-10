@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel | Edit Product</title>
+    <title>Admin-Edit</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -982,20 +982,20 @@
               <label>Brand</label>
               <div class="category-options">
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="linaben" />
-                  <span>LinaBen</span>
-                </label>
-                <label class="category-option">
-                  <input type="radio" name="productBrand" value="lizAndCo" />
-                  <span>LizandCo</span>
-                </label>
-                <label class="category-option">
                   <input
                     type="radio"
                     name="productBrand"
-                    value="everyStylishMan"
+                    value="Indigo Infusion"
                   />
-                  <span>EveryStylishMan</span>
+                  <span>Indigo Infusion</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productBrand" value="Liz&Co" />
+                  <span>Liz&Co</span>
+                </label>
+                <label class="category-option">
+                  <input type="radio" name="productBrand" value="Others" />
+                  <span>Others</span>
                 </label>
               </div>
             </div>
@@ -1073,48 +1073,28 @@
               <label>Product Tags</label>
               <div id="productTags" class="options-group">
                 <label
-                  ><input type="checkbox" value="shirts" /><span
-                    >Shirts</span
+                  ><input type="checkbox" value="Fashion" /><span
+                    >Fashion</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="tShirts" /><span
-                    >T-Shirts</span
+                  ><input type="checkbox" value="Lifestyle" /><span
+                    >Lifestyle</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="poloShirts" /><span
-                    >Polo Shirts</span
+                  ><input type="checkbox" value="Denim" /><span
+                    >Denim</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="hoodiesAndJackets" /><span
-                    >Hoodies & Jackets</span
+                  ><input type="checkbox" value="Streetstyle" /><span
+                    >Streetstyle</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="pants" /><span
-                    >Pants</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="sets" /><span
-                    >Sets</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="hats" /><span
-                    >Hats</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="summer" /><span
-                    >Summer Collection</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="winter" /><span
-                    >Winter Collection</span
+                  ><input type="checkbox" value="Crafts" /><span
+                    >Crafts</span
                   ></label
                 >
               </div>
@@ -1218,7 +1198,10 @@
       const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
       // Replace with your Supabase public/anonymous key (starts with 'ey' not 'sb_secret_')
       const supabaseKey = "sb_publishable_sCNic5ngBsn9O4KmrsJ6aQ_5SEnuOb-"; // Use your public key here
-      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey
+      );
 
       // Check if user is already logged in - this runs immediately
       document.addEventListener("DOMContentLoaded", function () {
@@ -1226,7 +1209,7 @@
 
         if (token) {
           // Verify token is still valid
-          supabase.auth.getUser(token).then(({ data, error }) => {
+          supabaseClient.auth.getUser(token).then(({ data, error }) => {
             if (error || !data.user) {
               localStorage.removeItem("adminToken");
               showLogin();
@@ -1258,10 +1241,11 @@
           errorDiv.style.display = "none";
 
           try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-              email: email,
-              password: password,
-            });
+            const { data, error } =
+              await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password,
+              });
 
             if (error) {
               throw error;
@@ -1350,19 +1334,19 @@
         function showDeleteConfirmation() {
           modalTitle.textContent = "Confirm Deletion";
           modalContent.innerHTML = `
-          <div class="modal-message">
-            <div class="modal-icon warning">
-              <i class="fas fa-exclamation-circle"></i>
+            <div class="modal-message">
+              <div class="modal-icon warning">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <h3>Are you sure?</h3>
+              <p>You are about to delete this product. This action cannot be undone.</p>
             </div>
-            <h3>Are you sure?</h3>
-            <p>You are about to delete this product. This action cannot be undone.</p>
-          </div>
-        `;
+          `;
 
           modalFooter.innerHTML = `
-          <button class="modal-btn modal-btn-secondary" id="cancelDelete">Cancel</button>
-          <button class="modal-btn modal-btn-danger" id="confirmDelete">Yes, Delete Product</button>
-        `;
+            <button class="modal-btn modal-btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="modal-btn modal-btn-danger" id="confirmDelete">Yes, Delete Product</button>
+          `;
 
           document
             .getElementById("cancelDelete")
@@ -1378,11 +1362,11 @@
         function showDeleteLoading() {
           modalTitle.textContent = "Deleting Product";
           modalContent.innerHTML = `
-          <div class="modal-spinner">
-            <div class="spinner"></div>
-          </div>
-          <p style="text-align: center;">Deleting product, please wait...</p>
-        `;
+            <div class="modal-spinner">
+              <div class="spinner"></div>
+            </div>
+            <p style="text-align: center;">Deleting product, please wait...</p>
+          `;
           modalFooter.innerHTML = "";
           showModal();
         }
@@ -1391,21 +1375,21 @@
         function showDeleteResult(success, message) {
           modalTitle.textContent = success ? "Success" : "Error";
           modalContent.innerHTML = `
-          <div class="modal-message">
-            <div class="modal-icon ${success ? "success" : "error"}">
-              <i class="fas ${
-                success ? "fa-check-circle" : "fa-exclamation-circle"
-              }"></i>
+            <div class="modal-message">
+              <div class="modal-icon ${success ? "success" : "error"}">
+                <i class="fas ${
+                  success ? "fa-check-circle" : "fa-exclamation-circle"
+                }"></i>
+              </div>
+              <h3>${success ? "Product Deleted" : "Deletion Failed"}</h3>
+              <p>${message}</p>
             </div>
-            <h3>${success ? "Product Deleted" : "Deletion Failed"}</h3>
-            <p>${message}</p>
-          </div>
-        `;
+          `;
 
           if (success) {
             modalFooter.innerHTML = `
-            <button class="modal-btn modal-btn-primary" id="successOk">OK</button>
-          `;
+              <button class="modal-btn modal-btn-primary" id="successOk">OK</button>
+            `;
             document
               .getElementById("successOk")
               .addEventListener("click", function () {
@@ -1415,8 +1399,8 @@
               });
           } else {
             modalFooter.innerHTML = `
-            <button class="modal-btn modal-btn-secondary" id="errorOk">OK</button>
-          `;
+              <button class="modal-btn modal-btn-secondary" id="errorOk">OK</button>
+            `;
             document
               .getElementById("errorOk")
               .addEventListener("click", hideModal);

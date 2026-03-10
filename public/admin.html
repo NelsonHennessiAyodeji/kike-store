@@ -721,22 +721,18 @@
                   <input
                     type="radio"
                     name="productBrand"
-                    value="linaben"
+                    value="Indigo Infusion"
                     checked
                   />
-                  <span>LinaBen</span>
+                  <span>Indigo Infusion</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="lizAndCo" />
-                  <span>LizandCo</span>
+                  <input type="radio" name="productBrand" value="Liz&Co" />
+                  <span>Liz&Co</span>
                 </label>
                 <label class="category-option">
-                  <input
-                    type="radio"
-                    name="productBrand"
-                    value="everyStylishMan"
-                  />
-                  <span>EveryStylishMan</span>
+                  <input type="radio" name="productBrand" value="Others" />
+                  <span>Others</span>
                 </label>
               </div>
             </div>
@@ -810,48 +806,28 @@
               <label>Product Tags</label>
               <div id="productTags" class="options-group">
                 <label
-                  ><input type="checkbox" value="shirts" checked /><span
-                    >Shirts</span
+                  ><input type="checkbox" value="Fashion" checked /><span
+                    >Fashion</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="tShirts" /><span
-                    >T-Shirts</span
+                  ><input type="checkbox" value="Lifestyle" /><span
+                    >Lifestyle</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="poloShirts" /><span
-                    >Polo Shirts</span
+                  ><input type="checkbox" value="Denim" /><span
+                    >Denim</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="hoodiesAndJackets" /><span
-                    >Hoodies & Jackets</span
+                  ><input type="checkbox" value="Streetstyle" /><span
+                    >Streetstyle</span
                   ></label
                 >
                 <label
-                  ><input type="checkbox" value="pants" /><span
-                    >Pants</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="sets" /><span
-                    >Sets</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="hats" /><span
-                    >Hats</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="summer" /><span
-                    >Summer Collection</span
-                  ></label
-                >
-                <label
-                  ><input type="checkbox" value="winter" /><span
-                    >Winter Collection</span
+                  ><input type="checkbox" value="Crafts" /><span
+                    >Crafts</span
                   ></label
                 >
               </div>
@@ -970,12 +946,14 @@
     </div>
 
     <script>
-      // Initialize Supabase client with PUBLIC/ANON key (not secret key)
+      // Initialize Supabase client with PUBLIC/ANON key
       const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
-      // Replace with your Supabase public/anonymous key (starts with 'ey' not 'sb_secret_')
       const supabaseKey =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4YmFxb3l1c2Rzb3FweWtza3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNTM5MjgsImV4cCI6MjA3MDkyOTkyOH0.mm83Jogz8OrQZNoOC3qkOvnmiATf_eeOoZ1JfObkne0";
-      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey
+      );
 
       // Check if user is already logged in - this runs immediately
       document.addEventListener("DOMContentLoaded", function () {
@@ -983,7 +961,7 @@
 
         if (token) {
           // Verify token is still valid
-          supabase.auth.getUser(token).then(({ data, error }) => {
+          supabaseClient.auth.getUser(token).then(({ data, error }) => {
             if (error || !data.user) {
               localStorage.removeItem("adminToken");
               showLogin();
@@ -1014,10 +992,11 @@
           errorDiv.style.display = "none";
 
           try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-              email: email,
-              password: password,
-            });
+            const { data, error } =
+              await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password,
+              });
 
             if (error) {
               throw error;
@@ -1335,9 +1314,9 @@
             outputHTML += "<p><strong>Other Images:</strong></p>";
             formData.otherProductImage.forEach((file) => {
               outputHTML += `<div class="file-info">
-                            <div>${file.name}</div>
-                            <div>${Math.round(file.size / 1024)} KB</div>
-                        </div>`;
+                                <div>${file.name}</div>
+                                <div>${Math.round(file.size / 1024)} KB</div>
+                            </div>`;
             });
           } else {
             outputHTML += "<p><strong>Other Images:</strong> None uploaded</p>";
@@ -1448,28 +1427,28 @@
 
             if (response.ok) {
               outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px;">
-                <strong style="color: #52c41a;">Success!</strong> Product has been saved successfully.
-                </div>`;
+                    <strong style="color: #52c41a;">Success!</strong> Product has been saved successfully.
+                    </div>`;
             } else {
               if (response.status === 401) {
                 outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-                  <strong style="color: #ff4d4f;">Authentication Error!</strong> Please log in again.
-                </div>`;
+                      <strong style="color: #ff4d4f;">Authentication Error!</strong> Please log in again.
+                    </div>`;
                 localStorage.removeItem("adminToken");
                 showLogin();
               } else {
                 outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-                  <strong style="color: #ff4d4f;">Error!</strong> ${
-                    result.error || "Failed to save product"
-                  }
-                </div>`;
+                      <strong style="color: #ff4d4f;">Error!</strong> ${
+                        result.error || "Failed to save product"
+                      }
+                    </div>`;
               }
             }
           } catch (error) {
             console.error("Submission error:", error);
             outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-              <strong style="color: #ff4d4f;">Network Error!</strong> Could not connect to the server. Please try again.
-            </div>`;
+                  <strong style="color: #ff4d4f;">Network Error!</strong> Could not connect to the server. Please try again.
+                </div>`;
           } finally {
             // Restore button state
             submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Product';
