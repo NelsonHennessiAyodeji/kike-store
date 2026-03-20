@@ -59,7 +59,7 @@ module.exports = class ProductService {
         }
       }
 
-      // Prepare product data with NEW fields
+      // Prepare product data with array fields
       const product = {
         product_name: productData.productName,
         description: productData.description,
@@ -71,10 +71,15 @@ module.exports = class ProductService {
         colors: Array.isArray(productData.colors)
           ? productData.colors
           : [productData.colors],
-        category: productData.category,
-        // NEW FIELDS
+        // category as array
+        category: Array.isArray(productData.category)
+          ? productData.category
+          : [productData.category],
         length: productData.length,
-        brand: productData.brand,
+        // brand as array
+        brand: Array.isArray(productData.brand)
+          ? productData.brand
+          : [productData.brand],
         tags: Array.isArray(productData.tags)
           ? productData.tags
           : productData.tags
@@ -167,23 +172,6 @@ module.exports = class ProductService {
     }
   }
 
-  // Update product
-  // static async updateProduct(id, updates) {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("products")
-  //       .update({ ...updates, updated_at: new Date().toISOString() })
-  //       .eq("id", id)
-  //       .select();
-
-  //     if (error) throw error;
-  //     return data[0];
-  //   } catch (error) {
-  //     console.error("Error updating product:", error);
-  //     throw error;
-  //   }
-  // }
-
   // Delete product
   static async deleteProduct(id) {
     try {
@@ -237,7 +225,7 @@ module.exports = class ProductService {
     }
   }
 
-  // Sort by Alphabetical Order
+  // Sort by name
   static async getProductsSortedByName(order = "asc") {
     try {
       const { data, error } = await supabase
@@ -260,28 +248,22 @@ module.exports = class ProductService {
   // Search products
   static async searchProducts(searchTerm) {
     try {
-      // Convert search term to lowercase for case-insensitive search
       const searchTermLower = `%${searchTerm.toLowerCase()}%`;
 
       const { data, error } = await supabase
         .from("products")
         .select("*")
         .or(
-          `product_name.ilike.${searchTermLower},description.ilike.${searchTermLower},brand.ilike.${searchTermLower}`
+          `product_name.ilike.${searchTermLower},description.ilike.${searchTermLower},brand.cs.{"${searchTerm.toLowerCase()}"}`
         )
         .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Supabase search error:", error);
-        throw error;
-      }
-
-      // If the above fails, try an alternative approach
       if (error && error.code === "42883") {
-        console.log("Falling back to alternative search method...");
+        // Fallback to client-side search
         return await this.alternativeSearchProducts(searchTerm);
       }
 
+      if (error) throw error;
       return data;
     } catch (error) {
       console.error("Error searching products:", error);
@@ -289,10 +271,9 @@ module.exports = class ProductService {
     }
   }
 
-  // Alternative search method for databases with type issues
+  // Alternative search method
   static async alternativeSearchProducts(searchTerm) {
     try {
-      // Get all products and filter client-side (fallback method)
       const { data, error } = await supabase
         .from("products")
         .select("*")
@@ -300,7 +281,6 @@ module.exports = class ProductService {
 
       if (error) throw error;
 
-      // Filter products client-side
       const searchTermLower = searchTerm.toLowerCase();
       const filteredProducts = data.filter((product) => {
         return (
@@ -309,9 +289,13 @@ module.exports = class ProductService {
           (product.description &&
             product.description.toLowerCase().includes(searchTermLower)) ||
           (product.category &&
-            product.category.toLowerCase().includes(searchTermLower)) ||
+            product.category.some((cat) =>
+              cat.toLowerCase().includes(searchTermLower)
+            )) ||
           (product.brand &&
-            product.brand.toLowerCase().includes(searchTermLower)) ||
+            product.brand.some((b) =>
+              b.toLowerCase().includes(searchTermLower)
+            )) ||
           (product.tags &&
             product.tags.some((tag) =>
               tag.toLowerCase().includes(searchTermLower)
@@ -331,7 +315,6 @@ module.exports = class ProductService {
     try {
       let query = supabase.from("products").select("*");
 
-      // Apply each filter if it exists
       if (filters.sizes && filters.sizes.length > 0) {
         query = query.overlaps("sizes", filters.sizes);
       }
@@ -349,10 +332,14 @@ module.exports = class ProductService {
       }
 
       if (filters.brands && filters.brands.length > 0) {
-        query = query.in("brand", filters.brands);
+        query = query.overlaps("brand", filters.brands);
       }
 
-      // Order by creation date by default
+      // Optional: add category filter
+      if (filters.category && filters.category.length > 0) {
+        query = query.overlaps("category", filters.category);
+      }
+
       query = query.order("created_at", { ascending: false });
 
       const { data, error } = await query;

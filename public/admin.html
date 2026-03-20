@@ -323,7 +323,7 @@
         height: 18px;
       }
 
-      /* Category Options */
+      /* Category/Brand Options (now checkboxes) */
       .category-options {
         display: flex;
         flex-wrap: wrap;
@@ -344,7 +344,7 @@
         background: #e9ecef;
       }
 
-      .category-option input[type="radio"] {
+      .category-option input[type="checkbox"] {
         margin-right: 8px;
         width: 18px;
         height: 18px;
@@ -662,25 +662,24 @@
               <label>Category</label>
               <div class="category-options">
                 <label class="category-option">
-                  <input
-                    type="radio"
-                    name="productCategory"
-                    value="women"
-                    checked
-                  />
+                  <input type="checkbox" name="productCategory" value="women" />
                   <span>Women</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productCategory" value="men" />
+                  <input type="checkbox" name="productCategory" value="men" />
                   <span>Men</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productCategory" value="ankara" />
+                  <input
+                    type="checkbox"
+                    name="productCategory"
+                    value="ankara"
+                  />
                   <span>Ankara Infusion</span>
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productCategory"
                     value="adireinfusion"
                   />
@@ -689,7 +688,7 @@
               </div>
             </div>
 
-            <!-- NEW LENGTH FIELD -->
+            <!-- Length Field -->
             <div class="form-group">
               <label>Length</label>
               <div class="category-options">
@@ -717,22 +716,17 @@
               </div>
             </div>
 
-            <!-- NEW BRAND FIELD -->
+            <!-- Brand Field (Checkboxes) -->
             <div class="form-group">
               <label>Brand</label>
               <div class="category-options">
                 <label class="category-option">
-                  <input
-                    type="radio"
-                    name="productBrand"
-                    value="Lina Ben"
-                    checked
-                  />
+                  <input type="checkbox" name="productBrand" value="Lina Ben" />
                   <span>Lina Ben</span>
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productBrand"
                     value="Adire Infusion"
                   />
@@ -740,7 +734,7 @@
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productBrand"
                     value="Ankara Infusion"
                   />
@@ -748,18 +742,18 @@
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productBrand"
                     value="Indigo Infusion"
                   />
                   <span>Indigo Infusion</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="Liz&Co" />
+                  <input type="checkbox" name="productBrand" value="Liz&Co" />
                   <span>Liz&Co</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="Others" />
+                  <input type="checkbox" name="productBrand" value="Others" />
                   <span>Others</span>
                 </label>
               </div>
@@ -829,7 +823,7 @@
               <div id="anglesPreview" class="preview"></div>
             </div>
 
-            <!-- NEW PRODUCT TAGS FIELD -->
+            <!-- Product Tags -->
             <div class="form-group">
               <label>Product Tags</label>
               <div id="productTags" class="options-group">
@@ -983,12 +977,11 @@
         supabaseKey
       );
 
-      // Check if user is already logged in - this runs immediately
+      // Check if user is already logged in
       document.addEventListener("DOMContentLoaded", function () {
         const token = localStorage.getItem("adminToken");
 
         if (token) {
-          // Verify token is still valid
           supabaseClient.auth.getUser(token).then(({ data, error }) => {
             if (error || !data.user) {
               localStorage.removeItem("adminToken");
@@ -998,7 +991,6 @@
             }
           });
         } else {
-          // No token found, show login immediately
           showLogin();
         }
       });
@@ -1062,7 +1054,6 @@
         document.getElementById("loginContainer").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
 
-        // Initialize product management only if user is authenticated
         const token = localStorage.getItem("adminToken");
         if (token) {
           initializeProductManagement();
@@ -1076,18 +1067,15 @@
         const productQuantity = document.getElementById("productQuantity");
         const productDescription =
           document.getElementById("productDescription");
-        const categoryRadios = document.querySelectorAll(
+        const categoryCheckboxes = document.querySelectorAll(
           'input[name="productCategory"]'
         );
-        // NEW: Get length radios
         const lengthRadios = document.querySelectorAll(
           'input[name="productLength"]'
         );
-        // NEW: Get brand radios
-        const brandRadios = document.querySelectorAll(
+        const brandCheckboxes = document.querySelectorAll(
           'input[name="productBrand"]'
         );
-        // NEW: Get tag checkboxes
         const tagCheckboxes = document.querySelectorAll(
           '#productTags input[type="checkbox"]'
         );
@@ -1103,25 +1091,19 @@
         const resetBtn = document.getElementById("resetBtn");
         const outputDiv = document.getElementById("output");
 
-        // Store selected colors
         let selectedColors = ["Red"];
 
-        // Handle main image selection and preview
+        // Handle main image preview
         mainImageInput.addEventListener("change", function () {
           mainImagePreview.innerHTML = "";
-
           if (this.files && this.files[0]) {
             const file = this.files[0];
             const reader = new FileReader();
-
             reader.onload = function (e) {
               const previewItem = document.createElement("div");
               previewItem.className = "preview-item";
-
               const img = document.createElement("img");
               img.src = e.target.result;
-              img.alt = file.name;
-
               const removeBtn = document.createElement("span");
               removeBtn.className = "remove";
               removeBtn.innerHTML = "×";
@@ -1129,21 +1111,17 @@
                 previewItem.remove();
                 mainImageInput.value = "";
               };
-
               previewItem.appendChild(img);
               previewItem.appendChild(removeBtn);
               mainImagePreview.appendChild(previewItem);
             };
-
             reader.readAsDataURL(file);
           }
         });
 
-        // Handle other images selection and preview with 3 file limit
+        // Handle other images preview
         otherImagesInput.addEventListener("change", function () {
-          // Check if more than 3 files are selected
           if (this.files.length > 3) {
-            // Keep only the first 3 files
             const dataTransfer = new DataTransfer();
             for (let i = 0; i < 3; i++) {
               dataTransfer.items.add(this.files[i]);
@@ -1152,28 +1130,21 @@
           }
 
           otherImagesPreview.innerHTML = "";
-
           if (this.files && this.files.length > 0) {
             for (let i = 0; i < this.files.length; i++) {
               const file = this.files[i];
               const reader = new FileReader();
-
               reader.onload = function (e) {
                 const previewItem = document.createElement("div");
                 previewItem.className = "preview-item";
-
                 const img = document.createElement("img");
                 img.src = e.target.result;
-                img.alt = file.name;
-
                 const removeBtn = document.createElement("span");
                 removeBtn.className = "remove";
                 removeBtn.innerHTML = "×";
                 removeBtn.onclick = function (event) {
                   event.stopPropagation();
                   previewItem.remove();
-
-                  // Create a new FileList without the removed file
                   const dataTransfer = new DataTransfer();
                   for (let j = 0; j < otherImagesInput.files.length; j++) {
                     if (j !== i) {
@@ -1182,12 +1153,10 @@
                   }
                   otherImagesInput.files = dataTransfer.files;
                 };
-
                 previewItem.appendChild(img);
                 previewItem.appendChild(removeBtn);
                 otherImagesPreview.appendChild(previewItem);
               };
-
               reader.readAsDataURL(file);
             }
           }
@@ -1197,7 +1166,6 @@
         colorOptions.forEach((option) => {
           option.addEventListener("click", function () {
             const color = this.getAttribute("data-color");
-
             if (this.classList.contains("selected")) {
               this.classList.remove("selected");
               selectedColors = selectedColors.filter((c) => c !== color);
@@ -1217,16 +1185,13 @@
             return;
           }
 
-          // Get selected category
-          let selectedCategory = "";
-          for (const radio of categoryRadios) {
-            if (radio.checked) {
-              selectedCategory = radio.value;
-              break;
-            }
-          }
+          // Get selected categories
+          let selectedCategories = [];
+          categoryCheckboxes.forEach((checkbox) => {
+            if (checkbox.checked) selectedCategories.push(checkbox.value);
+          });
 
-          // NEW: Get selected length
+          // Get selected length
           let selectedLength = "";
           for (const radio of lengthRadios) {
             if (radio.checked) {
@@ -1235,189 +1200,52 @@
             }
           }
 
-          // NEW: Get selected brand
-          let selectedBrand = "";
-          for (const radio of brandRadios) {
-            if (radio.checked) {
-              selectedBrand = radio.value;
-              break;
-            }
-          }
+          // Get selected brands
+          let selectedBrands = [];
+          brandCheckboxes.forEach((checkbox) => {
+            if (checkbox.checked) selectedBrands.push(checkbox.value);
+          });
 
-          // NEW: Get selected tags
+          // Get selected tags
           const selectedTags = [];
           tagCheckboxes.forEach((checkbox) => {
-            if (checkbox.checked) {
-              selectedTags.push(checkbox.value);
-            }
+            if (checkbox.checked) selectedTags.push(checkbox.value);
           });
-
-          // Get all form values
-          const formData = {
-            productName: productName.value,
-            productCategory: selectedCategory,
-            productLength: selectedLength, // NEW: Add length to form data
-            productBrand: selectedBrand, // NEW: Add brand to form data
-            productTags: selectedTags, // NEW: Add tags to form data
-            productPrice: parseFloat(productPrice.value) || 0,
-            productQuantity: parseInt(productQuantity.value) || 0,
-            productDescription: productDescription.value,
-            productMainImage: mainImageInput.files[0]
-              ? {
-                  name: mainImageInput.files[0].name,
-                  type: mainImageInput.files[0].type,
-                  size: mainImageInput.files[0].size,
-                }
-              : null,
-            otherProductImage: [],
-            productSizes: [],
-            productColours: selectedColors,
-          };
-
-          // Get other images data
-          if (otherImagesInput.files.length > 0) {
-            for (let i = 0; i < otherImagesInput.files.length; i++) {
-              formData.otherProductImage.push({
-                name: otherImagesInput.files[i].name,
-                type: otherImagesInput.files[i].type,
-                size: otherImagesInput.files[i].size,
-                file: otherImagesInput.files[i], // Include the actual file object
-              });
-            }
-          }
 
           // Get selected sizes
+          const selectedSizes = [];
           sizeCheckboxes.forEach((checkbox) => {
             if (checkbox.checked) {
-              formData.productSizes.push(
-                checkbox.nextElementSibling.textContent
-              );
+              selectedSizes.push(checkbox.nextElementSibling.textContent);
             }
           });
 
-          // Display the captured data
-          let outputHTML = "";
-
-          outputHTML += `<p><strong>Product Name:</strong> ${
-            formData.productName || "Not provided"
-          }</p>`;
-          outputHTML += `<p><strong>Category:</strong> <span class="category-info">${
-            formData.productCategory || "Not selected"
-          }</span></p>`;
-          // NEW: Display length
-          outputHTML += `<p><strong>Length:</strong> <span class="length-info">${
-            formData.productLength || "Not selected"
-          }</span></p>`;
-          // NEW: Display brand
-          outputHTML += `<p><strong>Brand:</strong> <span class="brand-info">${
-            formData.productBrand || "Not selected"
-          }</span></p>`;
-          // NEW: Display tags
-          if (formData.productTags.length > 0) {
-            outputHTML += "<p><strong>Product Tags:</strong> ";
-            formData.productTags.forEach((tag) => {
-              outputHTML += `<span class="tag-info">${tag}</span>`;
-            });
-            outputHTML += "</p>";
-          } else {
-            outputHTML += "<p><strong>Product Tags:</strong> None selected</p>";
-          }
-          outputHTML += `<p><strong>Price:</strong> ₦${formData.productPrice.toFixed(
-            2
-          )}</p>`;
-          outputHTML += `<p><strong>Quantity:</strong> ${formData.productQuantity}</p>`;
-          outputHTML += `<p><strong>Description:</strong> ${
-            formData.productDescription || "Not provided"
-          }</p>`;
-
-          if (formData.productMainImage) {
-            outputHTML += `<p><strong>Main Image:</strong> ${
-              formData.productMainImage.name
-            } (${Math.round(formData.productMainImage.size / 1024)} KB)</p>`;
-          } else {
-            outputHTML += "<p><strong>Main Image:</strong> Not provided</p>";
-          }
-
-          if (formData.otherProductImage.length > 0) {
-            outputHTML += "<p><strong>Other Images:</strong></p>";
-            formData.otherProductImage.forEach((file) => {
-              outputHTML += `<div class="file-info">
-                                <div>${file.name}</div>
-                                <div>${Math.round(file.size / 1024)} KB</div>
-                            </div>`;
-            });
-          } else {
-            outputHTML += "<p><strong>Other Images:</strong> None uploaded</p>";
-          }
-
-          if (formData.productSizes.length > 0) {
-            outputHTML += "<p><strong>Selected Sizes:</strong> ";
-            formData.productSizes.forEach((size) => {
-              outputHTML += `<span class="size-info">${size}</span>`;
-            });
-            outputHTML += "</p>";
-          } else {
-            outputHTML +=
-              "<p><strong>Selected Sizes:</strong> None selected</p>";
-          }
-
-          if (formData.productColours.length > 0) {
-            outputHTML += "<p><strong>Selected Colors:</strong> ";
-            formData.productColours.forEach((color) => {
-              outputHTML += `<span class="color-info">${color}</span>`;
-            });
-            outputHTML += "</p>";
-          } else {
-            outputHTML +=
-              "<p><strong>Selected Colors:</strong> None selected</p>";
-          }
-
-          outputDiv.innerHTML = outputHTML;
-
-          // Also output to console as JSON (without the file objects which can't be serialized)
-          const consoleData = { ...formData };
-          // Remove file objects for console output as they can't be serialized to JSON
-          if (
-            consoleData.productMainImage &&
-            consoleData.productMainImage.file
-          ) {
-            delete consoleData.productMainImage.file;
-          }
-          consoleData.otherProductImage = consoleData.otherProductImage.map(
-            (item) => {
-              const { file, ...rest } = item;
-              return rest;
-            }
-          );
-
-          console.log(
-            "Product Form Data:",
-            JSON.stringify(consoleData, null, 2)
-          );
-
-          // Prepare FormData for backend submission
+          // Build FormData
           const formDataForUpload = new FormData();
-          formDataForUpload.append("productName", formData.productName);
-          formDataForUpload.append(
-            "category",
-            formData.productCategory.toLowerCase()
+          formDataForUpload.append("productName", productName.value);
+          // Append each category separately
+          selectedCategories.forEach((cat) =>
+            formDataForUpload.append("category", cat)
           );
-          // NEW: Append length, brand, and tags to FormData
-          formDataForUpload.append("length", formData.productLength);
-          formDataForUpload.append("brand", formData.productBrand);
-          formData.productTags.forEach((tag) => {
-            formDataForUpload.append("tags", tag);
-          });
-          formDataForUpload.append("price", formData.productPrice);
-          formDataForUpload.append("quantity", formData.productQuantity);
-          formDataForUpload.append("description", formData.productDescription);
+          formDataForUpload.append("length", selectedLength);
+          selectedBrands.forEach((brand) =>
+            formDataForUpload.append("brand", brand)
+          );
+          selectedTags.forEach((tag) => formDataForUpload.append("tags", tag));
+          formDataForUpload.append(
+            "price",
+            parseFloat(productPrice.value) || 0
+          );
+          formDataForUpload.append(
+            "quantity",
+            parseInt(productQuantity.value) || 0
+          );
+          formDataForUpload.append("description", productDescription.value);
 
-          // Add main image
           if (mainImageInput.files[0]) {
             formDataForUpload.append("mainImage", mainImageInput.files[0]);
           }
 
-          // Add other images
           if (otherImagesInput.files.length > 0) {
             for (let i = 0; i < otherImagesInput.files.length; i++) {
               formDataForUpload.append(
@@ -1427,22 +1255,19 @@
             }
           }
 
-          // Add sizes and colors as arrays
-          formData.productSizes.forEach((size) => {
-            formDataForUpload.append("sizes", size);
-          });
+          selectedSizes.forEach((size) =>
+            formDataForUpload.append("sizes", size)
+          );
+          selectedColors.forEach((color) =>
+            formDataForUpload.append("colors", color)
+          );
 
-          formData.productColours.forEach((color) => {
-            formDataForUpload.append("colors", color);
-          });
+          // Show loading
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Saving...';
+          submitBtn.disabled = true;
 
-          // Send data to backend
           try {
-            // Show loading state
-            submitBtn.innerHTML =
-              '<i class="fas fa-spinner fa-spin"></i> Saving...';
-            submitBtn.disabled = true;
-
             const response = await fetch("/admin-api/products", {
               method: "POST",
               headers: {
@@ -1453,39 +1278,94 @@
 
             const result = await response.json();
 
+            let outputHTML = "";
+
             if (response.ok) {
               outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px;">
-                    <strong style="color: #52c41a;">Success!</strong> Product has been saved successfully.
-                    </div>`;
-            } else {
-              if (response.status === 401) {
-                outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-                      <strong style="color: #ff4d4f;">Authentication Error!</strong> Please log in again.
-                    </div>`;
-                localStorage.removeItem("adminToken");
-                showLogin();
+                <strong style="color: #52c41a;">Success!</strong> Product has been saved successfully.
+              </div>`;
+
+              // Display captured data
+              outputHTML += `<p><strong>Product Name:</strong> ${
+                productName.value || "Not provided"
+              }</p>`;
+              outputHTML += `<p><strong>Categories:</strong> `;
+              if (selectedCategories.length > 0) {
+                selectedCategories.forEach(
+                  (cat) =>
+                    (outputHTML += `<span class="category-info">${cat}</span>`)
+                );
               } else {
-                outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-                      <strong style="color: #ff4d4f;">Error!</strong> ${
-                        result.error || "Failed to save product"
-                      }
-                    </div>`;
+                outputHTML += "None selected";
               }
+              outputHTML += `</p>`;
+              outputHTML += `<p><strong>Length:</strong> <span class="length-info">${
+                selectedLength || "Not selected"
+              }</span></p>`;
+              outputHTML += `<p><strong>Brands:</strong> `;
+              if (selectedBrands.length > 0) {
+                selectedBrands.forEach(
+                  (b) => (outputHTML += `<span class="brand-info">${b}</span>`)
+                );
+              } else {
+                outputHTML += "None selected";
+              }
+              outputHTML += `</p>`;
+              outputHTML += `<p><strong>Product Tags:</strong> `;
+              if (selectedTags.length > 0) {
+                selectedTags.forEach(
+                  (t) => (outputHTML += `<span class="tag-info">${t}</span>`)
+                );
+              } else {
+                outputHTML += "None selected";
+              }
+              outputHTML += `</p>`;
+              outputHTML += `<p><strong>Price:</strong> ₦${(
+                parseFloat(productPrice.value) || 0
+              ).toFixed(2)}</p>`;
+              outputHTML += `<p><strong>Quantity:</strong> ${
+                parseInt(productQuantity.value) || 0
+              }</p>`;
+              outputHTML += `<p><strong>Description:</strong> ${
+                productDescription.value || "Not provided"
+              }</p>`;
+              if (selectedSizes.length > 0) {
+                outputHTML += "<p><strong>Selected Sizes:</strong> ";
+                selectedSizes.forEach(
+                  (size) =>
+                    (outputHTML += `<span class="size-info">${size}</span>`)
+                );
+                outputHTML += "</p>";
+              }
+              if (selectedColors.length > 0) {
+                outputHTML += "<p><strong>Selected Colors:</strong> ";
+                selectedColors.forEach(
+                  (color) =>
+                    (outputHTML += `<span class="color-info">${color}</span>`)
+                );
+                outputHTML += "</p>";
+              }
+            } else {
+              outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
+                <strong style="color: #ff4d4f;">Error!</strong> ${
+                  result.error || "Failed to save product"
+                }
+              </div>`;
             }
+
+            outputDiv.innerHTML = outputHTML;
           } catch (error) {
             console.error("Submission error:", error);
-            outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
-                  <strong style="color: #ff4d4f;">Network Error!</strong> Could not connect to the server. Please try again.
-                </div>`;
+            outputDiv.innerHTML = `<div style="margin-top: 20px; padding: 15px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 5px;">
+              <strong style="color: #ff4d4f;">Network Error!</strong> Could not connect to the server. Please try again.
+            </div>`;
           } finally {
-            // Restore button state
             submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Product';
             submitBtn.disabled = false;
-            outputDiv.innerHTML = outputHTML;
           }
         });
 
-        // Handle form reset
+        // Reset form
         resetBtn.addEventListener("click", function () {
           productName.value = "";
           productPrice.value = "";
@@ -1496,31 +1376,22 @@
           otherImagesInput.value = "";
           otherImagesPreview.innerHTML = "";
 
-          // Reset checkboxes - check first one only
-          sizeCheckboxes.forEach((checkbox, index) => {
-            checkbox.checked = index === 0;
-          });
-
-          // Reset category - select Women by default
-          categoryRadios[0].checked = true;
-
-          // NEW: Reset length - select Short by default
+          // Reset category checkboxes (uncheck all)
+          categoryCheckboxes.forEach((cb) => (cb.checked = false));
+          // Reset length radios
           lengthRadios[0].checked = true;
-
-          // NEW: Reset brand - select LinaBen by default
-          brandRadios[0].checked = true;
-
-          // NEW: Reset tags - check first one only
-          tagCheckboxes.forEach((checkbox, index) => {
-            checkbox.checked = index === 0;
-          });
-
+          // Reset brand checkboxes (uncheck all)
+          brandCheckboxes.forEach((cb) => (cb.checked = false));
+          // Reset tags (check first one only)
+          tagCheckboxes.forEach((cb, idx) => (cb.checked = idx === 0));
+          // Reset sizes (check first one only)
+          sizeCheckboxes.forEach((cb, idx) => (cb.checked = idx === 0));
           // Reset colors - select first one only
-          colorOptions.forEach((option, index) => {
-            if (index === 0) {
-              option.classList.add("selected");
+          colorOptions.forEach((opt, idx) => {
+            if (idx === 0) {
+              opt.classList.add("selected");
             } else {
-              option.classList.remove("selected");
+              opt.classList.remove("selected");
             }
           });
           selectedColors = ["Red"];

@@ -936,20 +936,24 @@
               <label>Category</label>
               <div class="category-options">
                 <label class="category-option">
-                  <input type="radio" name="productCategory" value="women" />
+                  <input type="checkbox" name="productCategory" value="women" />
                   <span>Women</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productCategory" value="men" />
+                  <input type="checkbox" name="productCategory" value="men" />
                   <span>Men</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productCategory" value="ankara" />
+                  <input
+                    type="checkbox"
+                    name="productCategory"
+                    value="ankara"
+                  />
                   <span>Ankara Infusion</span>
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productCategory"
                     value="adireinfusion"
                   />
@@ -986,12 +990,12 @@
               <label>Brand</label>
               <div class="category-options">
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="Lina Ben" />
+                  <input type="checkbox" name="productBrand" value="Lina Ben" />
                   <span>Lina Ben</span>
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productBrand"
                     value="Adire Infusion"
                   />
@@ -999,7 +1003,7 @@
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productBrand"
                     value="Ankara Infusion"
                   />
@@ -1007,18 +1011,18 @@
                 </label>
                 <label class="category-option">
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="productBrand"
                     value="Indigo Infusion"
                   />
                   <span>Indigo Infusion</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="Liz&Co" />
+                  <input type="checkbox" name="productBrand" value="Liz&Co" />
                   <span>Liz&Co</span>
                 </label>
                 <label class="category-option">
-                  <input type="radio" name="productBrand" value="Others" />
+                  <input type="checkbox" name="productBrand" value="Others" />
                   <span>Others</span>
                 </label>
               </div>
@@ -1218,21 +1222,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // Initialize Supabase client with PUBLIC/ANON key (not secret key)
+      // Initialize Supabase client with PUBLIC/ANON key
       const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
-      // Replace with your Supabase public/anonymous key (starts with 'ey' not 'sb_secret_')
-      const supabaseKey = "sb_publishable_sCNic5ngBsn9O4KmrsJ6aQ_5SEnuOb-"; // Use your public key here
+      const supabaseKey = "sb_publishable_sCNic5ngBsn9O4KmrsJ6aQ_5SEnuOb-";
       const supabaseClient = window.supabase.createClient(
         supabaseUrl,
         supabaseKey
       );
 
-      // Check if user is already logged in - this runs immediately
+      // Check if user is already logged in
       document.addEventListener("DOMContentLoaded", function () {
         const token = localStorage.getItem("adminToken");
 
         if (token) {
-          // Verify token is still valid
           supabaseClient.auth.getUser(token).then(({ data, error }) => {
             if (error || !data.user) {
               localStorage.removeItem("adminToken");
@@ -1243,7 +1245,6 @@
             }
           });
         } else {
-          // No token found, show login immediately
           showLogin();
         }
       });
@@ -1326,7 +1327,6 @@
 
         // Store the original product data for reset functionality
         let originalProductData = null;
-        // Store the current state of other images (original + newly uploaded)
         let currentOtherImages = [];
 
         // Modal elements
@@ -1336,17 +1336,14 @@
         const modalFooter = document.getElementById("modalFooter");
         const closeModalBtn = document.getElementById("closeModal");
 
-        // Function to show modal
         function showModal() {
           deleteModal.classList.add("active");
         }
 
-        // Function to hide modal
         function hideModal() {
           deleteModal.classList.remove("active");
         }
 
-        // Close modal when clicking on close button or outside the modal
         closeModalBtn.addEventListener("click", hideModal);
         deleteModal.addEventListener("click", function (e) {
           if (e.target === deleteModal) {
@@ -1354,7 +1351,6 @@
           }
         });
 
-        // Function to show confirmation dialog
         function showDeleteConfirmation() {
           modalTitle.textContent = "Confirm Deletion";
           modalContent.innerHTML = `
@@ -1366,23 +1362,19 @@
               <p>You are about to delete this product. This action cannot be undone.</p>
             </div>
           `;
-
           modalFooter.innerHTML = `
             <button class="modal-btn modal-btn-secondary" id="cancelDelete">Cancel</button>
             <button class="modal-btn modal-btn-danger" id="confirmDelete">Yes, Delete Product</button>
           `;
-
           document
             .getElementById("cancelDelete")
             .addEventListener("click", hideModal);
           document
             .getElementById("confirmDelete")
             .addEventListener("click", startDeleteProcess);
-
           showModal();
         }
 
-        // Function to show loading state in modal
         function showDeleteLoading() {
           modalTitle.textContent = "Deleting Product";
           modalContent.innerHTML = `
@@ -1395,7 +1387,6 @@
           showModal();
         }
 
-        // Function to show result
         function showDeleteResult(success, message) {
           modalTitle.textContent = success ? "Success" : "Error";
           modalContent.innerHTML = `
@@ -1409,52 +1400,35 @@
               <p>${message}</p>
             </div>
           `;
-
           if (success) {
-            modalFooter.innerHTML = `
-              <button class="modal-btn modal-btn-primary" id="successOk">OK</button>
-            `;
+            modalFooter.innerHTML = `<button class="modal-btn modal-btn-primary" id="successOk">OK</button>`;
             document
               .getElementById("successOk")
               .addEventListener("click", function () {
                 hideModal();
-                // Redirect to add product page
                 window.location.href = "./admin-products.html";
               });
           } else {
-            modalFooter.innerHTML = `
-              <button class="modal-btn modal-btn-secondary" id="errorOk">OK</button>
-            `;
+            modalFooter.innerHTML = `<button class="modal-btn modal-btn-secondary" id="errorOk">OK</button>`;
             document
               .getElementById("errorOk")
               .addEventListener("click", hideModal);
           }
-
           showModal();
         }
 
-        // Function to start the deletion process
         function startDeleteProcess() {
           showDeleteLoading();
           const token = localStorage.getItem("adminToken");
-
           fetch(`${baseUrl}/products/${productId}`, {
             method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           })
             .then((response) => {
-              // Check if the response is OK (status in the range 200-299)
-              if (response.ok) {
-                return response.json();
-              } else {
-                // If the response is not OK, throw an error
-                throw new Error("Server returned an error");
-              }
+              if (response.ok) return response.json();
+              else throw new Error("Server returned an error");
             })
             .then((result) => {
-              // Check if the response contains the success message
               if (result.message && result.message.includes("successfully")) {
                 showDeleteResult(
                   true,
@@ -1479,21 +1453,15 @@
         const loadingSpinner = document.getElementById("loadingSpinner");
         const formContainer = document.getElementById("formContainer");
 
-        // Show loading spinner initially
         loadingSpinner.style.display = "flex";
         formContainer.style.display = "none";
 
-        // Fetch product data from the API
         const token = localStorage.getItem("adminToken");
         fetch(`${baseUrl}/products/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         })
           .then((response) => {
-            if (!response.ok) {
-              throw new Error("Failed to fetch product data");
-            }
+            if (!response.ok) throw new Error("Failed to fetch product data");
             return response.json();
           })
           .then((data) => {
@@ -1515,18 +1483,15 @@
         const productQuantity = document.getElementById("productQuantity");
         const productDescription =
           document.getElementById("productDescription");
-        const categoryRadios = document.querySelectorAll(
+        const categoryCheckboxes = document.querySelectorAll(
           'input[name="productCategory"]'
         );
-        // NEW: Get length radios
         const lengthRadios = document.querySelectorAll(
           'input[name="productLength"]'
         );
-        // NEW: Get brand radios
-        const brandRadios = document.querySelectorAll(
+        const brandCheckboxes = document.querySelectorAll(
           'input[name="productBrand"]'
         );
-        // NEW: Get tag checkboxes
         const tagCheckboxes = document.querySelectorAll(
           '#productTags input[type="checkbox"]'
         );
@@ -1544,53 +1509,50 @@
         const outputDiv = document.getElementById("output");
         const successMessage = document.getElementById("successMessage");
 
-        // Store selected colors
         let selectedColors = [];
 
-        // Function to populate the form with product data
         function populateForm(productData) {
-          // Set basic form values
           productName.value = productData.product_name;
           productPrice.value = productData.price;
           productQuantity.value = productData.quantity;
           productDescription.value = productData.description;
 
-          // Set category
-          document.querySelector(
-            `input[name="productCategory"][value="${productData.category}"]`
-          ).checked = true;
+          // Set categories
+          if (productData.category && Array.isArray(productData.category)) {
+            categoryCheckboxes.forEach(
+              (cb) => (cb.checked = productData.category.includes(cb.value))
+            );
+          }
 
-          // NEW: Set length
+          // Set length
           if (productData.length) {
             document.querySelector(
               `input[name="productLength"][value="${productData.length}"]`
             ).checked = true;
           }
 
-          // NEW: Set brand
-          if (productData.brand) {
-            document.querySelector(
-              `input[name="productBrand"][value="${productData.brand}"]`
-            ).checked = true;
+          // Set brands
+          if (productData.brand && Array.isArray(productData.brand)) {
+            brandCheckboxes.forEach(
+              (cb) => (cb.checked = productData.brand.includes(cb.value))
+            );
           }
 
-          // NEW: Set tags
+          // Set tags
           if (productData.tags && Array.isArray(productData.tags)) {
-            tagCheckboxes.forEach((checkbox) => {
-              checkbox.checked = productData.tags.includes(checkbox.value);
-            });
+            tagCheckboxes.forEach(
+              (cb) => (cb.checked = productData.tags.includes(cb.value))
+            );
           }
 
           // Set sizes
-          sizeCheckboxes.forEach((checkbox) => {
-            checkbox.checked = productData.sizes.includes(checkbox.value);
+          sizeCheckboxes.forEach((cb) => {
+            cb.checked = productData.sizes.includes(cb.value);
           });
 
-          // Clear existing color options before adding new ones
+          // Set colors
           colorOptionsContainer.innerHTML = "";
           selectedColors = [];
-
-          // Create color options
           colorOptionsData.forEach((color) => {
             const colorOption = document.createElement("div");
             colorOption.className = "color-option";
@@ -1600,15 +1562,10 @@
             }
             colorOption.style.backgroundColor = color.hex;
             colorOption.setAttribute("data-color", color.name);
-
-            // Add border for white color to make it visible
-            if (color.name === "White") {
+            if (color.name === "White")
               colorOption.style.border = "1px solid #ccc";
-            }
-
             colorOption.addEventListener("click", function () {
               const colorName = this.getAttribute("data-color");
-
               if (this.classList.contains("selected")) {
                 this.classList.remove("selected");
                 selectedColors = selectedColors.filter((c) => c !== colorName);
@@ -1617,7 +1574,6 @@
                 selectedColors.push(colorName);
               }
             });
-
             colorOptionsContainer.appendChild(colorOption);
           });
 
@@ -1632,33 +1588,27 @@
           mainImagePreview.appendChild(mainPreviewItem);
 
           // Set other images preview
+          function updateOtherImagesPreview() {
+            otherImagesPreview.innerHTML = "";
+            currentOtherImages.forEach((imageUrl, index) => {
+              const previewItem = document.createElement("div");
+              previewItem.className = "preview-item";
+              previewItem.innerHTML = `
+                <img src="${imageUrl}" alt="Product angle ${index + 1}" />
+                <span class="remove" onclick="removeOtherImage(this, ${index})">×</span>
+              `;
+              otherImagesPreview.appendChild(previewItem);
+            });
+          }
+          window.removeOtherImage = function (element, index) {
+            currentOtherImages.splice(index, 1);
+            updateOtherImagesPreview();
+          };
+          window.removeMainImage = function (element) {
+            mainImagePreview.innerHTML = "";
+          };
           updateOtherImagesPreview();
         }
-
-        // Function to update other images preview
-        function updateOtherImagesPreview() {
-          otherImagesPreview.innerHTML = "";
-          currentOtherImages.forEach((imageUrl, index) => {
-            const previewItem = document.createElement("div");
-            previewItem.className = "preview-item";
-            previewItem.innerHTML = `
-              <img src="${imageUrl}" alt="Product angle ${index + 1}" />
-              <span class="remove" onclick="removeOtherImage(this, ${index})">×</span>
-            `;
-            otherImagesPreview.appendChild(previewItem);
-          });
-        }
-
-        // Function to remove main image
-        window.removeMainImage = function (element) {
-          mainImagePreview.innerHTML = "";
-        };
-
-        // Function to remove other image
-        window.removeOtherImage = function (element, index) {
-          currentOtherImages.splice(index, 1);
-          updateOtherImagesPreview();
-        };
 
         // Handle main image upload
         mainImageInput.addEventListener("change", function (e) {
@@ -1682,18 +1632,27 @@
         otherImagesInput.addEventListener("change", function (e) {
           if (this.files) {
             const files = Array.from(this.files);
-
-            // Limit to 3 images total
             if (currentOtherImages.length + files.length > 3) {
               alert("You can only upload up to 3 additional images.");
               this.value = "";
               return;
             }
-
             files.forEach((file) => {
               const reader = new FileReader();
               reader.onload = function (e) {
                 currentOtherImages.push(e.target.result);
+                const updateOtherImagesPreview = () => {
+                  otherImagesPreview.innerHTML = "";
+                  currentOtherImages.forEach((imageUrl, index) => {
+                    const previewItem = document.createElement("div");
+                    previewItem.className = "preview-item";
+                    previewItem.innerHTML = `
+                      <img src="${imageUrl}" alt="Product angle ${index + 1}" />
+                      <span class="remove" onclick="removeOtherImage(this, ${index})">×</span>
+                    `;
+                    otherImagesPreview.appendChild(previewItem);
+                  });
+                };
                 updateOtherImagesPreview();
               };
               reader.readAsDataURL(file);
@@ -1701,7 +1660,7 @@
           }
         });
 
-        // Handle form submission
+        // Update button
         updateBtn.addEventListener("click", async function () {
           const token = localStorage.getItem("adminToken");
           if (!token) {
@@ -1710,49 +1669,49 @@
             return;
           }
 
-          // Get selected category
-          let selectedCategory = "";
-          for (const radio of categoryRadios) {
-            if (radio.checked) {
-              selectedCategory = radio.value;
-              break;
-            }
-          }
+          // Get selected categories
+          let selectedCategories = [];
+          categoryCheckboxes.forEach((cb) => {
+            if (cb.checked) selectedCategories.push(cb.value);
+          });
 
-          // NEW: Get selected length
+          // Get selected length
           let selectedLength = "";
-          for (const radio of lengthRadios) {
+          for (const radio of lengthRadios)
             if (radio.checked) {
               selectedLength = radio.value;
               break;
             }
-          }
 
-          // NEW: Get selected brand
-          let selectedBrand = "";
-          for (const radio of brandRadios) {
-            if (radio.checked) {
-              selectedBrand = radio.value;
-              break;
-            }
-          }
-
-          // NEW: Get selected tags
-          const selectedTags = [];
-          tagCheckboxes.forEach((checkbox) => {
-            if (checkbox.checked) {
-              selectedTags.push(checkbox.value);
-            }
+          // Get selected brands
+          let selectedBrands = [];
+          brandCheckboxes.forEach((cb) => {
+            if (cb.checked) selectedBrands.push(cb.value);
           });
 
-          // Prepare FormData for backend submission
+          // Get selected tags
+          const selectedTags = [];
+          tagCheckboxes.forEach((cb) => {
+            if (cb.checked) selectedTags.push(cb.value);
+          });
+
+          // Get selected sizes
+          const selectedSizes = [];
+          sizeCheckboxes.forEach((cb) => {
+            if (cb.checked) selectedSizes.push(cb.value);
+          });
+
+          // Prepare FormData
           const formDataForUpload = new FormData();
           formDataForUpload.append("id", productId);
           formDataForUpload.append("product_name", productName.value);
-          formDataForUpload.append("category", selectedCategory.toLowerCase());
-          // NEW: Append length, brand, and tags
+          selectedCategories.forEach((cat) =>
+            formDataForUpload.append("category", cat)
+          );
           formDataForUpload.append("length", selectedLength);
-          formDataForUpload.append("brand", selectedBrand);
+          selectedBrands.forEach((brand) =>
+            formDataForUpload.append("brand", brand)
+          );
           formDataForUpload.append("tags", selectedTags.join(","));
           formDataForUpload.append(
             "price",
@@ -1764,12 +1723,9 @@
           );
           formDataForUpload.append("description", productDescription.value);
 
-          // Add main image if changed
           if (mainImageInput.files[0]) {
             formDataForUpload.append("mainImage", mainImageInput.files[0]);
           }
-
-          // Add other images if changed
           if (otherImagesInput.files.length > 0) {
             for (let i = 0; i < otherImagesInput.files.length; i++) {
               formDataForUpload.append(
@@ -1778,20 +1734,10 @@
               );
             }
           }
-
-          // Collect sizes and colors as arrays first, then append as comma-separated strings
-          const selectedSizes = [];
-          sizeCheckboxes.forEach((checkbox) => {
-            if (checkbox.checked) {
-              selectedSizes.push(checkbox.value);
-            }
-          });
           formDataForUpload.append("sizes", selectedSizes.join(","));
-
-          // Add colors as comma-separated string
           formDataForUpload.append("colors", selectedColors.join(","));
 
-          // Show loading state
+          // Show loading
           updateBtn.innerHTML =
             '<i class="fas fa-spinner fa-spin"></i> Updating...';
           updateBtn.disabled = true;
@@ -1799,65 +1745,61 @@
           try {
             const response = await fetch(`/admin-api/products/${productId}`, {
               method: "PUT",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+              headers: { Authorization: `Bearer ${token}` },
               body: formDataForUpload,
             });
-
             const result = await response.json();
-
             let outputHTML = "";
-
             if (response.ok) {
               outputHTML += `<div style="margin-top: 20px; padding: 15px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px;">
                 <strong style="color: #52c41a;">Success!</strong> Product has been updated successfully.
-                </div>`;
-
-              // Show success message
+              </div>`;
               successMessage.classList.add("show");
+              setTimeout(() => successMessage.classList.remove("show"), 8000);
 
-              // Hide success message after 8 seconds
-              setTimeout(() => {
-                successMessage.classList.remove("show");
-              }, 8000);
-
-              // Update output with current data
               outputHTML += `<p><strong>Product Name:</strong> ${productName.value}</p>`;
-              outputHTML += `<p><strong>Category:</strong> <span class="category-info">${selectedCategory}</span></p>`;
+              outputHTML += `<p><strong>Categories:</strong> `;
+              if (selectedCategories.length)
+                selectedCategories.forEach(
+                  (c) =>
+                    (outputHTML += `<span class="category-info">${c}</span>`)
+                );
+              else outputHTML += "None selected";
+              outputHTML += `</p>`;
               outputHTML += `<p><strong>Length:</strong> <span class="length-info">${selectedLength}</span></p>`;
-              outputHTML += `<p><strong>Brand:</strong> <span class="brand-info">${selectedBrand}</span></p>`;
-
-              if (selectedTags.length > 0) {
-                outputHTML += "<p><strong>Product Tags:</strong> ";
-                selectedTags.forEach((tag) => {
-                  outputHTML += `<span class="tag-info">${tag}</span>`;
-                });
-                outputHTML += "</p>";
-              } else {
-                outputHTML +=
-                  "<p><strong>Product Tags:</strong> None selected</p>";
-              }
-
+              outputHTML += `<p><strong>Brands:</strong> `;
+              if (selectedBrands.length)
+                selectedBrands.forEach(
+                  (b) => (outputHTML += `<span class="brand-info">${b}</span>`)
+                );
+              else outputHTML += "None selected";
+              outputHTML += `</p>`;
+              outputHTML += `<p><strong>Product Tags:</strong> `;
+              if (selectedTags.length)
+                selectedTags.forEach(
+                  (t) => (outputHTML += `<span class="tag-info">${t}</span>`)
+                );
+              else outputHTML += "None selected";
+              outputHTML += `</p>`;
               outputHTML += `<p><strong>Price:</strong> ₦${parseFloat(
                 productPrice.value
               ).toFixed(2)}</p>`;
               outputHTML += `<p><strong>Quantity:</strong> ${productQuantity.value}</p>`;
               outputHTML += `<p><strong>Description:</strong> ${productDescription.value}</p>`;
-
-              if (selectedSizes.length > 0) {
+              if (selectedSizes.length) {
                 outputHTML += "<p><strong>Selected Sizes:</strong> ";
-                selectedSizes.forEach((size) => {
-                  outputHTML += `<span class="size-info">${size}</span>`;
-                });
+                selectedSizes.forEach(
+                  (size) =>
+                    (outputHTML += `<span class="size-info">${size}</span>`)
+                );
                 outputHTML += "</p>";
               }
-
-              if (selectedColors.length > 0) {
+              if (selectedColors.length) {
                 outputHTML += "<p><strong>Selected Colors:</strong> ";
-                selectedColors.forEach((color) => {
-                  outputHTML += `<span class="color-info">${color}</span>`;
-                });
+                selectedColors.forEach(
+                  (color) =>
+                    (outputHTML += `<span class="color-info">${color}</span>`)
+                );
                 outputHTML += "</p>";
               }
             } else {
@@ -1867,7 +1809,6 @@
                 }
               </div>`;
             }
-
             outputDiv.innerHTML = outputHTML;
           } catch (error) {
             console.error("Submission error:", error);
@@ -1875,13 +1816,12 @@
               <strong style="color: #ff4d4f;">Network Error!</strong> Could not connect to the server. Please try again.
             </div>`;
           } finally {
-            // Restore button state
             updateBtn.innerHTML = '<i class="fas fa-save"></i> Update Product';
             updateBtn.disabled = false;
           }
         });
 
-        // Handle reset button
+        // Reset button
         resetBtn.addEventListener("click", function () {
           if (originalProductData) {
             populateForm(originalProductData);
@@ -1892,7 +1832,7 @@
           }
         });
 
-        // Handle delete button
+        // Delete button
         deleteBtn.addEventListener("click", function () {
           showDeleteConfirmation();
         });
