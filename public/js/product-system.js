@@ -1,5 +1,16 @@
 const baseUrl = "/admin-api";
 
+// Get initial filter from URL query parameter
+let initialFilter = null;
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get("category");
+if (
+  category &&
+  ["women", "men", "ankara", "adireinfusion"].includes(category)
+) {
+  initialFilter = "." + category;
+}
+
 // Global variables
 let allProducts = [];
 let currentSort = "default";
@@ -85,7 +96,7 @@ function updateCartSidebar() {
   cart.forEach((item) => {
     total += parseInt(item.price);
     const cartItemHTML = `
-      <li class="header-cart-item flex-w flex-t m-b-12">
+      <li class="header-cart-item flex-w flex-t m-b-12" data-product-id="${item.id}">
         <div class="header-cart-item-img">
           <img src="${item.image}" alt="${item.name}">
         </div>
@@ -95,11 +106,24 @@ function updateCartSidebar() {
           </a>
           <span class="header-cart-item-info">₦${item.price}</span>
         </div>
+        <div class="header-cart-item-remove p-t-8">
+          <span class="remove-cart-item" data-product-id="${item.id}" style="cursor: pointer; font-size: 20px; color: #999;">×</span>
+        </div>
       </li>
     `;
     cartItemsContainer.append(cartItemHTML);
   });
   cartTotalElement.text(`Total: ₦${total}`);
+
+  // Attach remove event listeners
+  $(".remove-cart-item")
+    .off("click")
+    .on("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const productId = $(this).data("product-id");
+      removeFromCart(productId);
+    });
 }
 
 function updateHeartIcons() {
@@ -361,12 +385,13 @@ function updateColorOptions($modal, colors) {
   }
 }
 
+// FIXED: Construct cart item with correct property names (product_name, main_image_url)
 function addToCartWithOptions(product, size, color, quantity = 1) {
   const cartItem = {
     id: product.id,
-    name: product.product_name,
+    product_name: product.product_name,
     price: product.price,
-    image: product.main_image_url,
+    main_image_url: product.main_image_url,
     size: size,
     color: color,
     quantity: quantity,
@@ -629,6 +654,19 @@ function renderProductList(products) {
     updateHeartIcons();
     initModalHandlers();
     reinitializeIsotope();
+
+    // Apply initial filter if set
+    if (initialFilter) {
+      setTimeout(() => {
+        const filterButton = document.querySelector(
+          `.filter-tope-group button[data-filter="${initialFilter}"]`
+        );
+        if (filterButton) {
+          filterButton.click();
+        }
+        initialFilter = null; // prevent multiple triggers
+      }, 100);
+    }
   } else {
     showNoSearchResults();
   }
@@ -804,6 +842,19 @@ async function renderProducts(sortType = "default", limit = null) {
       updateHeartIcons();
       initModalHandlers();
       reinitializeIsotope();
+
+      // Apply initial filter if set
+      if (initialFilter) {
+        setTimeout(() => {
+          const filterButton = document.querySelector(
+            `.filter-tope-group button[data-filter="${initialFilter}"]`
+          );
+          if (filterButton) {
+            filterButton.click();
+          }
+          initialFilter = null;
+        }, 100);
+      }
     } else {
       showEmpty();
     }
