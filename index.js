@@ -5,6 +5,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const adminRoute = require("./admin/routes/adminRoute");
+const { ensureAdminUser } = require("./admin/setupAdmin");
+
+// Ensure admin user exists in Supabase Auth (run once on startup)
+ensureAdminUser().catch(console.error);
 
 // Serve static files (CSS, JS, images) from 'public'
 app.use(express.static(path.join(__dirname, "public")));
