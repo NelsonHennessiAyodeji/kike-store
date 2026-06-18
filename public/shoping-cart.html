@@ -54,7 +54,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
 
     <style>
-      /* WhatsApp Floating Button Styles */
+      /* WhatsApp Floating Button Styles (unchanged) */
       .whatsapp-float {
         position: fixed;
         width: 60px;
@@ -204,7 +204,7 @@
         }
       }
 
-      /* Responsive table styles */
+      /* Responsive table styles (unchanged) */
       .table-shopping-cart {
         width: 100%;
       }
@@ -306,7 +306,6 @@
         }
       }
 
-      /* Empty cart message */
       .empty-cart-message {
         text-align: center;
         padding: 40px 20px;
@@ -327,10 +326,146 @@
         color: #999;
         margin-bottom: 20px;
       }
+
+      /* -------- NEW CHECKOUT MODAL STYLES -------- */
+      .checkout-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow-y: auto;
+      }
+
+      .checkout-modal-overlay.active {
+        display: flex;
+      }
+
+      .checkout-modal {
+        background: #fff;
+        max-width: 600px;
+        width: 100%;
+        border-radius: 10px;
+        padding: 30px 40px;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      }
+
+      .checkout-modal .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 28px;
+        cursor: pointer;
+        color: #999;
+        transition: 0.3s;
+        background: none;
+        border: none;
+      }
+
+      .checkout-modal .close-modal:hover {
+        color: #333;
+      }
+
+      .checkout-modal h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .checkout-modal .form-group {
+        margin-bottom: 18px;
+      }
+
+      .checkout-modal label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .checkout-modal input,
+      .checkout-modal select,
+      .checkout-modal textarea {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .checkout-modal input:focus,
+      .checkout-modal select:focus,
+      .checkout-modal textarea:focus {
+        border-color: #4a6fa5;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(74,111,165,0.2);
+      }
+
+      .checkout-modal .row-fields {
+        display: flex;
+        gap: 15px;
+      }
+
+      .checkout-modal .row-fields .form-group {
+        flex: 1;
+      }
+
+      .checkout-modal .btn-submit-checkout {
+        width: 100%;
+        padding: 14px;
+        background: #4a6fa5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+      }
+
+      .checkout-modal .btn-submit-checkout:hover {
+        background: #3c5a8a;
+      }
+
+      .checkout-modal .btn-submit-checkout:disabled {
+        background: #aaa;
+        cursor: not-allowed;
+      }
+
+      .checkout-modal .error-message {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 8px;
+        display: none;
+      }
+
+      @media (max-width: 576px) {
+        .checkout-modal {
+          padding: 20px;
+        }
+        .checkout-modal .row-fields {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+      /* -------- END NEW CHECKOUT MODAL STYLES -------- */
     </style>
   </head>
   <body class="animsition">
-    <!-- Header -->
+    <!-- Header (unchanged) -->
     <header class="header-v4">
       <!-- Header desktop -->
       <div class="container-menu-desktop">
@@ -373,14 +508,6 @@
               >
                 <i class="zmdi zmdi-shopping-cart"></i>
               </div>
-
-              <!-- <a
-				  href="#"
-				  class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-				  data-notify="0"
-				>
-				  <i class="zmdi zmdi-favorite-outline"></i>
-				</a> -->
             </div>
           </nav>
         </div>
@@ -405,14 +532,6 @@
           >
             <i class="zmdi zmdi-shopping-cart"></i>
           </div>
-
-          <!-- <a
-			  href="#"
-			  class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-			  data-notify="0"
-			>
-			  <i class="zmdi zmdi-favorite-outline"></i>
-			</a> -->
         </div>
 
         <!-- Button show menu -->
@@ -450,7 +569,7 @@
       ></div>
     </header>
 
-    <!-- Cart -->
+    <!-- Cart (unchanged) -->
     <div class="wrap-header-cart js-panel-cart">
       <div class="s-full js-hide-cart"></div>
 
@@ -542,7 +661,7 @@
       </div>
     </div>
 
-    <!-- Shoping Cart -->
+    <!-- Shoping Cart Section (main content) -->
     <section class="bg0 p-t-75 p-b-85">
       <div class="container">
         <div class="row">
@@ -582,13 +701,6 @@
                     Apply coupon
                   </div>
                 </div>
-
-                <!-- <div
-                  class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-                  id="updateCart"
-                >
-                  Update Cart
-                </div> -->
               </div>
             </div>
           </div>
@@ -655,15 +767,6 @@
                         id="shippingPostcode"
                       />
                     </div>
-
-                    <!-- <div class="flex-w">
-                      <div
-                        class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer"
-                        id="updateShipping"
-                      >
-                        Update Totals
-                      </div>
-                    </div> -->
                   </div>
                 </div>
               </div>
@@ -690,7 +793,85 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ============ CHECKOUT MODAL (NEW) ============ -->
+    <div class="checkout-modal-overlay" id="checkoutModal">
+      <div class="checkout-modal">
+        <button class="close-modal" id="closeCheckoutModal">&times;</button>
+        <h3>Shipping &amp; Payment</h3>
+        <p style="color: #666; margin-bottom: 20px;">Please fill in your details to complete the order.</p>
+
+        <form id="checkoutForm">
+          <!-- Email -->
+          <div class="form-group">
+            <label for="checkoutEmail">Email Address *</label>
+            <input type="email" id="checkoutEmail" placeholder="you@example.com" required />
+          </div>
+
+          <!-- Full Name -->
+          <div class="form-group">
+            <label for="checkoutFullName">Full Name *</label>
+            <input type="text" id="checkoutFullName" placeholder="John Doe" required />
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="checkoutPhone">Phone Number *</label>
+            <input type="tel" id="checkoutPhone" placeholder="08012345678" required />
+          </div>
+
+          <!-- Address (street) -->
+          <div class="form-group">
+            <label for="checkoutStreet">Street Address *</label>
+            <input type="text" id="checkoutStreet" placeholder="10 Balogun Street" required />
+          </div>
+
+          <!-- City / State / Country row -->
+          <div class="row-fields">
+            <div class="form-group">
+              <label for="checkoutCity">City *</label>
+              <input type="text" id="checkoutCity" placeholder="Lagos" required />
+            </div>
+            <div class="form-group">
+              <label for="checkoutState">State *</label>
+              <input type="text" id="checkoutState" placeholder="Lagos" required />
+            </div>
+          </div>
+
+          <div class="row-fields">
+            <div class="form-group">
+              <label for="checkoutCountry">Country *</label>
+              <select id="checkoutCountry" required>
+                <option value="">Select country</option>
+                <option value="Nigeria" selected>Nigeria</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Canada">Canada</option>
+                <option value="Ghana">Ghana</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="checkoutPostcode">Postcode</label>
+              <input type="text" id="checkoutPostcode" placeholder="100001" />
+            </div>
+          </div>
+
+          <!-- Order notes (optional) -->
+          <div class="form-group">
+            <label for="checkoutNotes">Order Notes (optional)</label>
+            <textarea id="checkoutNotes" rows="2" placeholder="Special instructions..."></textarea>
+          </div>
+
+          <div id="checkoutError" class="error-message"></div>
+
+          <button type="submit" class="btn-submit-checkout" id="checkoutSubmitBtn">
+            Pay Now
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- ============ END CHECKOUT MODAL ============ -->
+
+    <!-- Footer (unchanged) -->
     <footer class="bg3 p-t-75 p-b-32">
       <div class="container">
         <div class="row">
@@ -740,9 +921,6 @@
           <div class="col-sm-6 col-lg-3 p-b-50">
             <h4 class="stext-301 cl0 p-b-30">Help</h4>
             <ul>
-              <!-- <li class="p-b-10">
-                <a href="#" class="stext-107 cl7 hov-cl1 trans-04"> Track Order </a>
-              </li> -->
               <li class="p-b-10">
                 <a href="./terms.html" class="stext-107 cl7 hov-cl1 trans-04">
                   Terms & Conditions
@@ -800,7 +978,7 @@
       </div>
     </footer>
 
-    <!-- WhatsApp Widget -->
+    <!-- WhatsApp Widget (unchanged) -->
     <a
       href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry"
       class="whatsapp-float"
@@ -868,9 +1046,10 @@
     <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/product-system.js"></script>
-    <!-- Shopping Cart Script -->
+
+    <!-- Shopping Cart Script (original + payment integration) -->
     <script>
-      // WhatsApp Widget Functions
+      // ----- WhatsApp Widget Functions (unchanged) -----
       function toggleWhatsAppWidget() {
         const widget = document.getElementById("whatsappWidget");
         if (widget.style.display === "flex") {
@@ -896,22 +1075,17 @@
 
       function sendWhatsAppMessage(message) {
         if (message.trim() === "") return;
-
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/2348107157640?text=${encodedMessage}`;
-
         window.open(whatsappUrl, "_blank");
         closeWhatsAppWidget();
-
         const input = document.getElementById("whatsappInput");
         if (input) input.value = "";
       }
 
-      // Close widget when clicking outside
       document.addEventListener("click", function (event) {
         const widget = document.getElementById("whatsappWidget");
         const floatButton = document.querySelector(".whatsapp-float");
-
         if (
           widget.style.display === "flex" &&
           !widget.contains(event.target) &&
@@ -921,21 +1095,19 @@
         }
       });
 
-      // Handle Escape key to close widget
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
           closeWhatsAppWidget();
         }
       });
 
-      // Auto-close widget on mobile when orientation changes
       window.addEventListener("orientationchange", function () {
         if (window.innerWidth <= 768) {
           closeWhatsAppWidget();
         }
       });
 
-      // Shopping Cart Functions
+      // ----- CART FUNCTIONS (original, with minor tweaks for payment) -----
       function getCart() {
         const cart = localStorage.getItem("shoppingCart");
         return cart ? JSON.parse(cart) : [];
@@ -1016,7 +1188,7 @@
           cartItemsContainer.appendChild(row);
         });
 
-        // Add event listeners for quantity controls
+        // Quantity controls (unchanged)
         document.querySelectorAll(".btn-num-product-down").forEach((button) => {
           button.addEventListener("click", function () {
             const index = parseInt(this.getAttribute("data-index"));
@@ -1084,7 +1256,6 @@
           subtotal += item.price * quantity;
         });
 
-        // Calculate shipping (free over ₦10,000, otherwise ₦1,500)
         const shipping = subtotal >= 10000 ? 0 : 1500;
         const total = subtotal + shipping;
 
@@ -1092,13 +1263,143 @@
         document.getElementById("total").textContent = `₦${total}`;
       }
 
-      function clearCart() {
-        localStorage.removeItem("shoppingCart");
-        renderCartItems();
-        updateCartIcon();
+      // ----- NEW: CHECKOUT MODAL & PAYMENT -----
+      const checkoutModal = document.getElementById('checkoutModal');
+      const closeModalBtn = document.getElementById('closeCheckoutModal');
+      const checkoutForm = document.getElementById('checkoutForm');
+      const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+      const checkoutError = document.getElementById('checkoutError');
+
+      // Open modal when "Proceed to Checkout" is clicked
+      document.getElementById('checkoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const cart = getCart();
+        if (cart.length === 0) {
+          alert('Your cart is empty. Please add products before checking out.');
+          return;
+        }
+        // Pre-populate country from the shipping dropdown (if any)
+        const countrySelect = document.getElementById('shippingCountry');
+        if (countrySelect) {
+          document.getElementById('checkoutCountry').value = countrySelect.value || 'Nigeria';
+        }
+        // Pre-populate state if available
+        const stateInput = document.getElementById('shippingState');
+        if (stateInput && stateInput.value) {
+          document.getElementById('checkoutState').value = stateInput.value;
+        }
+        // Pre-populate postcode if available
+        const postcodeInput = document.getElementById('shippingPostcode');
+        if (postcodeInput && postcodeInput.value) {
+          document.getElementById('checkoutPostcode').value = postcodeInput.value;
+        }
+        checkoutModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        checkoutError.style.display = 'none';
+      });
+
+      // Close modal
+      function closeCheckoutModal() {
+        checkoutModal.classList.remove('active');
+        document.body.style.overflow = '';
       }
 
-      // Initialize the page
+      closeModalBtn.addEventListener('click', closeCheckoutModal);
+
+      // Click outside to close
+      checkoutModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeCheckoutModal();
+        }
+      });
+
+      // Handle form submission
+      checkoutForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Gather form data
+        const email = document.getElementById('checkoutEmail').value.trim();
+        const fullName = document.getElementById('checkoutFullName').value.trim();
+        const phone = document.getElementById('checkoutPhone').value.trim();
+        const street = document.getElementById('checkoutStreet').value.trim();
+        const city = document.getElementById('checkoutCity').value.trim();
+        const state = document.getElementById('checkoutState').value.trim();
+        const country = document.getElementById('checkoutCountry').value;
+        const postcode = document.getElementById('checkoutPostcode').value.trim();
+        const notes = document.getElementById('checkoutNotes').value.trim();
+
+        // Validate all required fields
+        if (!email || !fullName || !phone || !street || !city || !state || !country) {
+          checkoutError.textContent = 'Please fill in all required fields.';
+          checkoutError.style.display = 'block';
+          return;
+        }
+        checkoutError.style.display = 'none';
+
+        // Get cart items
+        const cart = getCart();
+        if (cart.length === 0) {
+          alert('Your cart is empty.');
+          return;
+        }
+
+        // Calculate totals
+        let subtotal = 0;
+        cart.forEach(item => {
+          subtotal += item.price * (item.quantity || 1);
+        });
+        const shipping = subtotal >= 10000 ? 0 : 1500;
+        const total = subtotal + shipping;
+
+        // Prepare payload
+        const payload = {
+          email,
+          fullName,
+          phone,
+          address: { street, city, state, country, postcode },
+          cartItems: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity || 1,
+            image: item.image
+          })),
+          subtotal,
+          shippingCost: shipping,
+          total,
+          notes
+        };
+
+        // Disable button and show loading
+        checkoutSubmitBtn.disabled = true;
+        checkoutSubmitBtn.textContent = 'Processing...';
+
+        try {
+          const response = await fetch('/payment/initiate-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.error || 'Payment initialization failed');
+          }
+
+          // Redirect to Paystack payment page
+          window.location.href = result.authorization_url;
+
+        } catch (error) {
+          console.error('Checkout error:', error);
+          checkoutError.textContent = error.message || 'An error occurred. Please try again.';
+          checkoutError.style.display = 'block';
+          checkoutSubmitBtn.disabled = false;
+          checkoutSubmitBtn.textContent = 'Pay Now';
+        }
+      });
+
+      // ----- ORIGINAL EVENT LISTENERS (unchanged) -----
       document.addEventListener("DOMContentLoaded", function () {
         // Initialize select2
         $(".js-select2").each(function () {
@@ -1108,47 +1409,12 @@
           });
         });
 
-        // Render cart items
         renderCartItems();
         updateCartIcon();
 
-        // Update cart button
-        document
-          .getElementById("updateCart")
-          .addEventListener("click", function () {
-            renderCartItems();
-          });
-
-        // Update shipping button
-        document
-          .getElementById("updateShipping")
-          .addEventListener("click", function () {
-            updateTotals();
-          });
-
-        // Checkout button
-        document
-          .getElementById("checkoutBtn")
-          .addEventListener("click", function () {
-            if (getCart().length === 0) {
-              alert(
-                "Your cart is empty. Please add products before checking out."
-              );
-              return;
-            }
-
-            // In a real application, this would redirect to a checkout page
-            alert(
-              "Proceeding to checkout. This would normally redirect to a payment page."
-            );
-          });
-
-        // Apply coupon button
-        document
-          .getElementById("applyCoupon")
-          .addEventListener("click", function () {
-            alert("Coupon functionality would be implemented here.");
-          });
+        document.getElementById("applyCoupon").addEventListener("click", function () {
+          alert("Coupon functionality would be implemented here.");
+        });
       });
     </script>
   </body>
