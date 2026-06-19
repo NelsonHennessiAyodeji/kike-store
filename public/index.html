@@ -165,7 +165,7 @@
               bottom: 90px;
           }
       }
-  </style>
+    </style>
 
     <link rel="icon" type="image/png" href="images/icons/favicon.png" />
     <link
@@ -184,7 +184,7 @@
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
-  />
+    />
     <link
       rel="stylesheet"
       type="text/css"
@@ -260,191 +260,192 @@
         margin-top: 20px;
       }
     </style>
-  <style>
-      /* Spinner Styles */
-      .products-loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 300px;
-        width: 100%;
-      }
-
-      .spinner {
-        width: 50px;
-        height: 50px;
-        position: relative;
-      }
-
-      .spinner .dot {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        justify-content: center;
-      }
-
-      .spinner .dot::after {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #4a6fa5;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
+    <style>
+        /* Spinner Styles */
+        .products-loading {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 300px;
+          width: 100%;
         }
-      }
 
-      .spinner .dot {
-        animation: spin 1.8s infinite linear;
-      }
+        .spinner {
+          width: 50px;
+          height: 50px;
+          position: relative;
+        }
 
-      .spinner .dot:nth-child(2) {
-        animation-delay: 0.3s;
-      }
+        .spinner .dot {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          justify-content: center;
+        }
 
-      .spinner .dot:nth-child(3) {
-        animation-delay: 0.6s;
-      }
+        .spinner .dot::after {
+          content: "";
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: #4a6fa5;
+        }
 
-      .spinner .dot:nth-child(4) {
-        animation-delay: 0.9s;
-      }
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
 
-      .spinner .dot:nth-child(5) {
-        animation-delay: 1.2s;
-      }
+        .spinner .dot {
+          animation: spin 1.8s infinite linear;
+        }
 
-      /* Error Message Styles */
-      .products-error {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 300px;
-        text-align: center;
-        padding: 30px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        margin: 20px 0;
-      }
+        .spinner .dot:nth-child(2) {
+          animation-delay: 0.3s;
+        }
 
-      .products-error i {
-        font-size: 48px;
-        color: #e74c3c;
-        margin-bottom: 20px;
-      }
+        .spinner .dot:nth-child(3) {
+          animation-delay: 0.6s;
+        }
 
-      .products-error h4 {
-        color: #333;
-        font-size: 20px;
-        margin-bottom: 10px;
-        font-weight: 600;
-        font-family: "Montserrat", sans-serif;
-      }
+        .spinner .dot:nth-child(4) {
+          animation-delay: 0.9s;
+        }
 
-      .products-error p {
-        color: #666;
-        margin-bottom: 20px;
-        max-width: 500px;
-        font-family: "Poppins", sans-serif;
-      }
+        .spinner .dot:nth-child(5) {
+          animation-delay: 1.2s;
+        }
 
-      .retry-button {
-        background-color: #4a6fa5;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        font-family: "Poppins", sans-serif;
-      }
+        /* Error Message Styles */
+        .products-error {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          min-height: 300px;
+          text-align: center;
+          padding: 30px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+          margin: 20px 0;
+        }
 
-      .retry-button:hover {
-        background-color: #3c5a8a;
-      }
+        .products-error i {
+          font-size: 48px;
+          color: #e74c3c;
+          margin-bottom: 20px;
+        }
 
-      /* Ensure product grid alignment */
-      .isotope-grid {
-        display: flex;
-        flex-wrap: wrap;
-        margin: -15px;
-      }
+        .products-error h4 {
+          color: #333;
+          font-size: 20px;
+          margin-bottom: 10px;
+          font-weight: 600;
+          font-family: "Montserrat", sans-serif;
+        }
 
-      .isotope-item {
-        padding: 15px;
-        width: 25%;
-        box-sizing: border-box;
-      }
+        .products-error p {
+          color: #666;
+          margin-bottom: 20px;
+          max-width: 500px;
+          font-family: "Poppins", sans-serif;
+        }
 
-      @media (max-width: 991px) {
+        .retry-button {
+          background-color: #4a6fa5;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          font-family: "Poppins", sans-serif;
+        }
+
+        .retry-button:hover {
+          background-color: #3c5a8a;
+        }
+
+        /* Ensure product grid alignment */
+        .isotope-grid {
+          display: flex;
+          flex-wrap: wrap;
+          margin: -15px;
+        }
+
         .isotope-item {
-          width: 33.33%;
+          padding: 15px;
+          width: 25%;
+          box-sizing: border-box;
         }
-      }
 
-      @media (max-width: 767px) {
-        .isotope-item {
-          width: 50%;
+        @media (max-width: 991px) {
+          .isotope-item {
+            width: 33.33%;
+          }
         }
-      }
 
-      @media (max-width: 575px) {
-        .isotope-item {
-          width: 50%;
+        @media (max-width: 767px) {
+          .isotope-item {
+            width: 50%;
+          }
         }
-        
+
+        @media (max-width: 575px) {
+          .isotope-item {
+            width: 50%;
+          }
+          
+          .block2-pic.hov-img0 {
+            height: 100px; /* Reduced from 340px by 50% */
+          }
+        }
+
+        /* Ensure product cards are properly styled */
+        .block2 {
+          width: 100%;
+          margin-bottom: 0;
+        }
+
+        /* Consistent image sizing - TALLER VERSION */
         .block2-pic.hov-img0 {
-          height: 100px; /* Reduced from 340px by 50% */
+          height: 340px; /* Increased from 280px to 340px */
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #f5f5f5;
+          position: relative;
         }
-      }
 
-      /* Ensure product cards are properly styled */
-      .block2 {
-        width: 100%;
-        margin-bottom: 0;
-      }
+        .block2-pic.hov-img0 img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
 
-      /* Consistent image sizing - TALLER VERSION */
-      .block2-pic.hov-img0 {
-        height: 340px; /* Increased from 280px to 340px */
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f5f5f5;
-        position: relative;
-      }
+        .block2:hover .block2-pic.hov-img0 img {
+          transform: scale(1.05);
+        }
 
-      .block2-pic.hov-img0 img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-      }
+        .block2-btn {
+          position: absolute;
+          bottom: -50px;
+          left: 50%;
+          transform: translateX(-50%);
+          transition: bottom 0.3s ease;
+          z-index: 10;
+        }
 
-      .block2:hover .block2-pic.hov-img0 img {
-        transform: scale(1.05);
-      }
-
-      .block2-btn {
-        position: absolute;
-        bottom: -50px;
-        left: 50%;
-        transform: translateX(-50%);
-        transition: bottom 0.3s ease;
-        z-index: 10;
-      }
-
-      .block2-pic.hov-img0:hover .block2-btn {
-        bottom: 20px;
-      }
-  </style>
+        .block2-pic.hov-img0:hover .block2-btn {
+          bottom: 20px;
+        }
+    </style>
   </head>
+
   <body class="animsition">
     <!-- Header -->
     <header>
@@ -1288,38 +1289,38 @@
     target="_blank"
     onclick="if(window.innerWidth > 768) { event.preventDefault(); toggleWhatsAppWidget(); }">
    <i class="fa-brands fa-whatsapp whatsapp-my-float"></i>
-  </a>
+    </a>
 
- <!-- WhatsApp Chat Widget -->
- <div class="whatsapp-widget" id="whatsappWidget">
-   <div class="whatsapp-widget-header">
-     <i class="fa-brands fa-whatsapp"></i>
-     <span>LinaBen Stores</span>
-     <button class="whatsapp-close" onclick="closeWhatsAppWidget()">
-       <i class="fa fa-times"></i>
-     </button>
-   </div>
-   <div class="whatsapp-widget-body">
-     <div class="whatsapp-widget-message">
-       Hi! 👋 Welcome to LinaBen Stores. We're here to help you with any questions about our products, custom orders, or general inquiries. What can we assist you with today?
-     </div>
-   </div>
-   <div class="whatsapp-widget-footer">
-     <div class="whatsapp-input-container">
-       <input type="text" 
-              class="whatsapp-widget-input" 
-              placeholder="Type your message..."
-              onkeypress="if(event.key === 'Enter') sendWhatsAppMessage(this.value)"
-              id="whatsappInput">
-       <button class="whatsapp-send-btn" onclick="sendWhatsAppMessage(document.getElementById('whatsappInput').value)">
-         <i class="fa fa-paper-plane"></i>
-       </button>
-     </div>
-     <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
-       Press Enter to send or <a href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
-     </small>
-   </div>
- </div>
+    <!-- WhatsApp Chat Widget -->
+    <div class="whatsapp-widget" id="whatsappWidget">
+      <div class="whatsapp-widget-header">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>LinaBen Stores</span>
+        <button class="whatsapp-close" onclick="closeWhatsAppWidget()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="whatsapp-widget-body">
+        <div class="whatsapp-widget-message">
+          Hi! 👋 Welcome to LinaBen Stores. We're here to help you with any questions about our products, custom orders, or general inquiries. What can we assist you with today?
+        </div>
+      </div>
+      <div class="whatsapp-widget-footer">
+        <div class="whatsapp-input-container">
+          <input type="text" 
+                  class="whatsapp-widget-input" 
+                  placeholder="Type your message..."
+                  onkeypress="if(event.key === 'Enter') sendWhatsAppMessage(this.value)"
+                  id="whatsappInput">
+          <button class="whatsapp-send-btn" onclick="sendWhatsAppMessage(document.getElementById('whatsappInput').value)">
+            <i class="fa fa-paper-plane"></i>
+          </button>
+        </div>
+        <small style="display: block; margin-top: 5px; color: #666; text-align: center;">
+          Press Enter to send or <a href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry" target="_blank">click here to open WhatsApp</a>
+        </small>
+      </div>
+    </div>
 
     <!-- Scripts -->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -1494,7 +1495,7 @@
           }
       });
 
-      // ----- NEW: Handle "Send to WhatsApp" button click -----
+      // ----- Handle "Send to WhatsApp" button click -----
       document.addEventListener('DOMContentLoaded', function() {
         const whatsappBtn = document.getElementById('whatsappCartBtn');
         if (whatsappBtn) {
