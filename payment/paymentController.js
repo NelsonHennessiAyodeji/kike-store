@@ -1,4 +1,3 @@
-// src/payment/paymentController.js
 const axios = require('axios');
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
