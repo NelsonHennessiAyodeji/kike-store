@@ -905,5 +905,78 @@
         }
       });
     </script>
+    <script>
+            // ----- NEW: Contact form AJAX submission -----
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('contactSubmit');
+        const feedback = document.getElementById('contactFeedback');
+
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          // Clear previous feedback
+          feedback.className = 'contact-feedback';
+          feedback.textContent = '';
+
+          // Gather data
+          const name = document.getElementById('contactName').value.trim();
+          const phone = document.getElementById('contactPhone').value.trim();
+          const email = document.getElementById('contactEmail').value.trim();
+          const message = document.getElementById('contactMessage').value.trim();
+
+          // Basic validation (already required by HTML, but double-check)
+          if (!name || !phone || !email || !message) {
+            feedback.className = 'contact-feedback error';
+            feedback.innerHTML = '<span class="icon">⚠️</span> Please fill in all fields.';
+            return;
+          }
+
+          // Email format validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            feedback.className = 'contact-feedback error';
+            feedback.innerHTML = '<span class="icon">⚠️</span> Please enter a valid email address.';
+            return;
+          }
+
+          // Disable button and show loading
+          submitBtn.classList.add('loading');
+          submitBtn.disabled = true;
+
+          try {
+            const response = await fetch('/contact/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ name, phone, email, message }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // Success
+              feedback.className = 'contact-feedback success';
+              feedback.innerHTML = `<span class="icon">✅</span> ${result.message || 'Your message has been sent. We will get back to you shortly.'}`;
+              // Optionally reset form
+              form.reset();
+            } else {
+              // Error from server
+              feedback.className = 'contact-feedback error';
+              feedback.innerHTML = `<span class="icon">❌</span> ${result.error || 'Something went wrong. Please try again.'}`;
+            }
+          } catch (error) {
+            console.error('Contact form error:', error);
+            feedback.className = 'contact-feedback error';
+            feedback.innerHTML = '<span class="icon">❌</span> Network error. Please check your connection and try again.';
+          } finally {
+            // Re-enable button
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+          }
+        });
+      });
+    </script>
   </body>
 </html>
