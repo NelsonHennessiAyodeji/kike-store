@@ -68,7 +68,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
     <style>
-      /* WhatsApp Floating Button Styles */
+      /* WhatsApp Floating Button Styles (unchanged) */
       .whatsapp-float {
         position: fixed;
         width: 60px;
@@ -217,8 +217,63 @@
           bottom: 90px;
         }
       }
+
+      /* ----- NEW: Contact form feedback styles ----- */
+      .contact-feedback {
+        margin-top: 20px;
+        padding: 15px 20px;
+        border-radius: 6px;
+        font-size: 15px;
+        display: none;
+        text-align: center;
+      }
+
+      .contact-feedback.success {
+        display: block;
+        background: #f0faf0;
+        border: 1px solid #b7eb8f;
+        color: #2e7d32;
+      }
+
+      .contact-feedback.error {
+        display: block;
+        background: #fdf0f0;
+        border: 1px solid #ffccc7;
+        color: #c62828;
+      }
+
+      .contact-feedback .icon {
+        font-size: 24px;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+
+      .submit-btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+      .submit-btn .spinner {
+        display: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top: 2px solid #fff;
+        animation: spin 0.8s linear infinite;
+        margin-right: 6px;
+      }
+      .submit-btn.loading .spinner {
+        display: inline-block;
+      }
+      .submit-btn.loading .btn-text {
+        display: none;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
     </style>
   </head>
+
   <body class="animsition">
     <!-- Header -->
     <header class="header-v4">
@@ -413,7 +468,7 @@
             <div class="header-cart-total w-full p-tb-40">Total: $75.00</div>
 
             <div class="header-cart-buttons flex-w w-full">
-              <!-- "Send to WhatsApp" with new ID -->
+              <!-- "Send to WhatsApp" -->
               <a
                 href="#"
                 class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"
@@ -449,7 +504,8 @@
           <div
             class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md"
           >
-            <form>
+            <!-- UPDATED FORM: added IDs, removed default action, added feedback container -->
+            <form id="contactForm">
               <h4 class="mtext-105 cl2 txt-center p-b-30">Send Us A Message</h4>
 
               <div class="bor8 m-b-20 how-pos4-parent">
@@ -457,7 +513,9 @@
                   class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30"
                   type="text"
                   name="name"
+                  id="contactName"
                   placeholder="Your Full Name"
+                  required
                 />
                 <img
                   class="how-pos4 pointer-none"
@@ -468,9 +526,11 @@
               <div class="bor8 m-b-20 how-pos4-parent">
                 <input
                   class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30"
-                  type="number"
+                  type="tel"
                   name="phone"
+                  id="contactPhone"
                   placeholder="Your Phone Number"
+                  required
                 />
                 <img
                   class="how-pos4 pointer-none"
@@ -481,9 +541,11 @@
               <div class="bor8 m-b-20 how-pos4-parent">
                 <input
                   class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30"
-                  type="text"
+                  type="email"
                   name="email"
+                  id="contactEmail"
                   placeholder="Your Email Address"
+                  required
                 />
                 <img
                   class="how-pos4 pointer-none"
@@ -496,14 +558,22 @@
                 <textarea
                   class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25"
                   name="msg"
+                  id="contactMessage"
                   placeholder="How Can We Help?"
+                  required
                 ></textarea>
               </div>
 
+              <!-- Feedback area -->
+              <div id="contactFeedback" class="contact-feedback"></div>
+
               <button
-                class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
+                type="submit"
+                class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer submit-btn"
+                id="contactSubmit"
               >
-                Submit
+                <span class="spinner"></span>
+                <span class="btn-text">Submit</span>
               </button>
             </form>
           </div>
@@ -665,13 +735,7 @@
       </div>
     </footer>
 
-    <!-- Back to top -->
-    <!-- <div class="btn-back-to-top" id="myBtn">
-      <span class="symbol-btn-back-to-top">
-        <i class="zmdi zmdi-chevron-up"></i>
-      </span>
-    </div> -->
-
+    <!-- WhatsApp Widget -->
     <a
       href="https://wa.me/2348107157640?text=Hi%2C%20I%20would%20like%20to%20make%20an%20inquiry"
       class="whatsapp-float"
@@ -681,7 +745,6 @@
       <i class="fa-brands fa-whatsapp whatsapp-my-float"></i>
     </a>
 
-    <!-- WhatsApp Chat Widget -->
     <div class="whatsapp-widget" id="whatsappWidget">
       <div class="whatsapp-widget-header">
         <i class="fa-brands fa-whatsapp"></i>
@@ -773,85 +836,71 @@
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
     <script src="js/product-system.js"></script>
+    <!--===============================================================================================-->
     <script>
-      // WhatsApp Widget Functions
+      // ----- WhatsApp Widget Functions -----
       function toggleWhatsAppWidget() {
-          const widget = document.getElementById('whatsappWidget');
-          if (widget.style.display === 'flex') {
-              closeWhatsAppWidget();
-          } else {
-              openWhatsAppWidget();
-          }
+        const widget = document.getElementById('whatsappWidget');
+        if (widget.style.display === 'flex') {
+          closeWhatsAppWidget();
+        } else {
+          openWhatsAppWidget();
+        }
       }
 
       function openWhatsAppWidget() {
-          const widget = document.getElementById('whatsappWidget');
-          widget.style.display = 'flex';
-          // Auto-focus on input when opened
-          setTimeout(() => {
-              const input = document.getElementById('whatsappInput');
-              if (input) input.focus();
-          }, 300);
+        const widget = document.getElementById('whatsappWidget');
+        widget.style.display = 'flex';
+        setTimeout(() => {
+          const input = document.getElementById('whatsappInput');
+          if (input) input.focus();
+        }, 300);
       }
 
       function closeWhatsAppWidget() {
-          const widget = document.getElementById('whatsappWidget');
-          widget.style.display = 'none';
+        const widget = document.getElementById('whatsappWidget');
+        widget.style.display = 'none';
       }
 
       function sendWhatsAppMessage(message) {
-          if (message.trim() === '') return;
-          
-          // Encode the message for URL
-          const encodedMessage = encodeURIComponent(message);
-          const whatsappUrl = `https://wa.me/2348107157640?text=${encodedMessage}`;
-          
-          // Open WhatsApp in a new tab
-          window.open(whatsappUrl, '_blank');
-          
-          // Close the widget
-          closeWhatsAppWidget();
-          
-          // Clear the input
-          const input = document.getElementById('whatsappInput');
-          if (input) input.value = '';
+        if (message.trim() === '') return;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/2348107157640?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
+        closeWhatsAppWidget();
+        const input = document.getElementById('whatsappInput');
+        if (input) input.value = '';
       }
 
-      // Close widget when clicking outside (on mobile)
       document.addEventListener('click', function(event) {
-          const widget = document.getElementById('whatsappWidget');
-          const floatButton = document.querySelector('.whatsapp-float');
-          
-          if (widget.style.display === 'flex' && 
-              !widget.contains(event.target) && 
-              !floatButton.contains(event.target)) {
-              closeWhatsAppWidget();
-          }
+        const widget = document.getElementById('whatsappWidget');
+        const floatButton = document.querySelector('.whatsapp-float');
+        if (widget.style.display === 'flex' && 
+            !widget.contains(event.target) && 
+            !floatButton.contains(event.target)) {
+          closeWhatsAppWidget();
+        }
       });
 
-      // Handle Escape key to close widget
       document.addEventListener('keydown', function(event) {
-          if (event.key === 'Escape') {
-              closeWhatsAppWidget();
-          }
+        if (event.key === 'Escape') {
+          closeWhatsAppWidget();
+        }
       });
 
-      // Auto-close widget on mobile when orientation changes
       window.addEventListener('orientationchange', function() {
-          if (window.innerWidth <= 768) {
-              closeWhatsAppWidget();
-          }
+        if (window.innerWidth <= 768) {
+          closeWhatsAppWidget();
+        }
       });
 
-      // ----- Handle "Send to WhatsApp" button click -----
+      // ----- Handle "Send to WhatsApp" button -----
       document.addEventListener('DOMContentLoaded', function() {
         const whatsappBtn = document.getElementById('whatsappCartBtn');
         if (whatsappBtn) {
           whatsappBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-
-            // Get cart from localStorage
             let cart = [];
             try {
               const stored = localStorage.getItem('shoppingCart');
@@ -859,13 +908,10 @@
             } catch (err) {
               cart = [];
             }
-
             if (!cart || cart.length === 0) {
               alert('Your cart is empty. Add some products first.');
               return;
             }
-
-            // Build a human-readable order summary
             let message = '🛒 *Order from LinaBen*%0A%0A';
             let subtotal = 0;
             cart.forEach((item, index) => {
@@ -876,23 +922,90 @@
               message += `${index+1}. *${item.name}*%0A`;
               message += `   Quantity: ${qty} × ₦${price} = ₦${total}%0A`;
             });
-
-            // Shipping (free over ₦10,000)
             const shipping = subtotal >= 10000 ? 0 : 1500;
             const grandTotal = subtotal + shipping;
-
             message += `%0A📦 *Subtotal:* ₦${subtotal}%0A`;
             message += `🚚 *Shipping:* ${shipping === 0 ? 'FREE' : '₦' + shipping}%0A`;
             message += `💳 *Total:* ₦${grandTotal}%0A%0A`;
             message += `📍 *Please provide your delivery address when you reply.*%0A`;
             message += `Thank you! 🙏`;
-
-            // Open WhatsApp with the message
-            const phone = '2348107157640'; // vendor number
+            const phone = '2348107157640';
             const url = `https://wa.me/${phone}?text=${message}`;
             window.open(url, '_blank');
           });
         }
+      });
+
+      // ----- NEW: Contact form AJAX submission -----
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('contactSubmit');
+        const feedback = document.getElementById('contactFeedback');
+
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          // Clear previous feedback
+          feedback.className = 'contact-feedback';
+          feedback.textContent = '';
+
+          // Gather data
+          const name = document.getElementById('contactName').value.trim();
+          const phone = document.getElementById('contactPhone').value.trim();
+          const email = document.getElementById('contactEmail').value.trim();
+          const message = document.getElementById('contactMessage').value.trim();
+
+          // Basic validation (already required by HTML, but double-check)
+          if (!name || !phone || !email || !message) {
+            feedback.className = 'contact-feedback error';
+            feedback.innerHTML = '<span class="icon">⚠️</span> Please fill in all fields.';
+            return;
+          }
+
+          // Email format validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            feedback.className = 'contact-feedback error';
+            feedback.innerHTML = '<span class="icon">⚠️</span> Please enter a valid email address.';
+            return;
+          }
+
+          // Disable button and show loading
+          submitBtn.classList.add('loading');
+          submitBtn.disabled = true;
+
+          try {
+            const response = await fetch('/contact/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ name, phone, email, message }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // Success
+              feedback.className = 'contact-feedback success';
+              feedback.innerHTML = `<span class="icon">✅</span> ${result.message || 'Your message has been sent. We will get back to you shortly.'}`;
+              // Optionally reset form
+              form.reset();
+            } else {
+              // Error from server
+              feedback.className = 'contact-feedback error';
+              feedback.innerHTML = `<span class="icon">❌</span> ${result.error || 'Something went wrong. Please try again.'}`;
+            }
+          } catch (error) {
+            console.error('Contact form error:', error);
+            feedback.className = 'contact-feedback error';
+            feedback.innerHTML = '<span class="icon">❌</span> Network error. Please check your connection and try again.';
+          } finally {
+            // Re-enable button
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+          }
+        });
       });
     </script>
   </body>

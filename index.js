@@ -5,6 +5,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const adminRoute = require("./admin/routes/adminRoute");
+const contactRoutes = require('./contact/contactRoutes');
 const paymentRoutes = require('./payment/paymentRoutes');
 const { ensureAdminUser } = require("./admin/setupAdmin");
 
@@ -15,6 +16,7 @@ ensureAdminUser().catch(console.error);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin-api", adminRoute);
+app.use('/contact', contactRoutes);
 app.use('/payment', paymentRoutes);
 
 // Route to serve HTML file
