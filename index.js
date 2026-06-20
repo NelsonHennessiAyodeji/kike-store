@@ -24,6 +24,38 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get("/product", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "product.html"));
+});
+
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "about.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "contact.html"));
+});
+
+app.get("/shoping-cart", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "shoping-cart.html"));
+});
+
+app.get("/custom-order", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "custom-order.html"));
+});
+
+app.get("/terms", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "terms.html"));
+});
+
+app.get("/store-policy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "store-policy.html"));
+});
+
+app.get("/return-policy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "return-policy.html"));
+});
+
 // Route to serve Admin HTML file - PROTECTED
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));

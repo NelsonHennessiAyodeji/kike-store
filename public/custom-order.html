@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="images/icons/favicon.png" />
-    <!-- Stylesheets -->
     <link
       rel="stylesheet"
       type="text/css"
@@ -57,7 +56,7 @@
     />
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <!-- WhatsApp & modal styles (same as other pages) -->
+    <!-- WhatsApp & modal styles -->
     <style>
       /* WhatsApp Floating Button Styles */
       .whatsapp-float {
@@ -254,7 +253,7 @@
   </head>
 
   <body class="animsition custom-page">
-    <!-- Header (consistent with other pages, added Custom Order link) -->
+    <!-- Header -->
     <header class="header-v4">
       <!-- Header desktop -->
       <div class="container-menu-desktop">
@@ -271,13 +270,21 @@
             <!-- Menu desktop -->
             <div class="menu-desktop">
               <ul class="main-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="product.html">Shop</a></li>
-                <!-- <li class="active-menu">
-                  <a href="custom-order.html">Custom Order</a>
-                </li> -->
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li>
+                  <a href="/">Home</a>
+                </li>
+
+                <li>
+                  <a href="/product">Shop</a>
+                </li>
+
+                <li>
+                  <a href="/about">About Us</a>
+                </li>
+
+                <li>
+                  <a href="/contact">Contact Us</a>
+                </li>
               </ul>
             </div>
 
@@ -285,10 +292,18 @@
             <div class="wrap-icon-header flex-w flex-r-m">
               <div
                 class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-                data-notify="0"
+                data-notify="8"
               >
                 <i class="zmdi zmdi-shopping-cart"></i>
               </div>
+
+              <!-- <a
+                href="#"
+                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                data-notify="0"
+              >
+                <i class="zmdi zmdi-favorite-outline"></i>
+              </a> -->
             </div>
           </nav>
         </div>
@@ -296,23 +311,21 @@
 
       <!-- Header Mobile -->
       <div class="wrap-header-mobile">
-        <!-- Logo mobile -->
+        <!-- Logo moblie -->
         <div class="logo-mobile">
-          <a href="/"
-            ><img
-              src="images/Linaben/logo/Lina Ben Logo (secondary).png"
-              alt="LinaBen-LOGO"
-          /></a>
+          <a href="/"><img src="images/Linaben/logo/Lina Ben Logo (secondary).png" alt="LinaBen-LOGO" /></a>
         </div>
+
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
           <div
             class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
-            data-notify="0"
+            data-notify="2"
           >
             <i class="zmdi zmdi-shopping-cart"></i>
           </div>
         </div>
+
         <!-- Button show menu -->
         <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
           <span class="hamburger-box">
@@ -324,39 +337,102 @@
       <!-- Menu Mobile -->
       <div class="menu-mobile">
         <ul class="main-menu-m">
-          <li><a href="/">Home</a></li>
-          <li><a href="product.html">Shop</a></li>
-          <!-- <li><a href="custom-order.html">Custom Order</a></li> -->
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
+          <li>
+            <a href="/">Home</a>
+          </li>
+
+          <li>
+            <a href="/product">Shop</a>
+          </li>
+
+          <li>
+            <a href="/about">About Us</a>
+          </li>
+
+          <li>
+            <a href="/contact">Contact Us</a>
+          </li>
         </ul>
       </div>
 
-      <!-- Modal Search (hidden but needed for structure) -->
+      <!-- Modal Search -->
       <div
         class="modal-search-header flex-c-m trans-04 js-hide-modal-search"
       ></div>
     </header>
 
-    <!-- Cart sidebar (same structure) -->
+    <!-- Cart -->
     <div class="wrap-header-cart js-panel-cart">
       <div class="s-full js-hide-cart"></div>
+
       <div class="header-cart flex-col-l p-l-65 p-r-25">
         <div class="header-cart-title flex-w flex-sb-m p-b-8">
           <span class="mtext-103 cl2"> Your Cart </span>
+
           <div
             class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart"
           >
             <i class="zmdi zmdi-close"></i>
           </div>
         </div>
+
         <div class="header-cart-content flex-w js-pscroll">
           <ul class="header-cart-wrapitem w-full">
-            <!-- Cart items dynamically added -->
+            <li class="header-cart-item flex-w flex-t m-b-12">
+              <div class="header-cart-item-img">
+                <img src="images/item-cart-01.jpg" alt="IMG" />
+              </div>
+
+              <div class="header-cart-item-txt p-t-8">
+                <a
+                  href="#"
+                  class="header-cart-item-name m-b-18 hov-cl1 trans-04"
+                >
+                  White Shirt Pleat
+                </a>
+
+                <span class="header-cart-item-info"> 1 x $19.00 </span>
+              </div>
+            </li>
+
+            <li class="header-cart-item flex-w flex-t m-b-12">
+              <div class="header-cart-item-img">
+                <img src="images/item-cart-02.jpg" alt="IMG" />
+              </div>
+
+              <div class="header-cart-item-txt p-t-8">
+                <a
+                  href="#"
+                  class="header-cart-item-name m-b-18 hov-cl1 trans-04"
+                >
+                  Converse All Star
+                </a>
+
+                <span class="header-cart-item-info"> 1 x $39.00 </span>
+              </div>
+            </li>
+
+            <li class="header-cart-item flex-w flex-t m-b-12">
+              <div class="header-cart-item-img">
+                <img src="images/item-cart-03.jpg" alt="IMG" />
+              </div>
+
+              <div class="header-cart-item-txt p-t-8">
+                <a
+                  href="#"
+                  class="header-cart-item-name m-b-18 hov-cl1 trans-04"
+                >
+                  Nixon Porter Leather
+                </a>
+
+                <span class="header-cart-item-info"> 1 x $17.00 </span>
+              </div>
+            </li>
           </ul>
 
           <div class="w-full">
             <div class="header-cart-total w-full p-tb-40">Total: $75.00</div>
+
             <div class="header-cart-buttons flex-w w-full">
               <!-- "Send to WhatsApp" with new ID -->
               <a
@@ -368,7 +444,7 @@
               </a>
 
               <a
-                href="./shoping-cart.html"
+                href="/shoping-cart"
                 class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10"
               >
                 Check Out
@@ -607,87 +683,51 @@
             <h4 class="stext-301 cl0 p-b-30">Categories</h4>
             <ul>
               <li class="p-b-10">
-                <a
-                  href="product.html?category=men"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Men
-                </a>
+                <a href="/product?category=men" class="stext-107 cl7 hov-cl1 trans-04"> Men </a>
               </li>
               <li class="p-b-10">
-                <a
-                  href="product.html?category=women"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Women
-                </a>
+                <a href="/product?category=women" class="stext-107 cl7 hov-cl1 trans-04"> Women </a>
               </li>
               <li class="p-b-10">
-                <a
-                  href="product.html?category=adireinfusion"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Adire Infusion
-                </a>
+                <a href="/product?category=adireinfusion" class="stext-107 cl7 hov-cl1 trans-04"> Adire Infusion </a>
               </li>
               <li class="p-b-10">
-                <a
-                  href="product.html?category=ankara"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Ankara Infusion
-                </a>
+                <a href="/product?category=ankara" class="stext-107 cl7 hov-cl1 trans-04"> Ankara Infusion </a>
               </li>
               <li class="p-b-10">
-                <a
-                  href="custom-order.html"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Custom Order
-                </a>
+                <a href="/custom-order" class="stext-107 cl7 hov-cl1 trans-04"> Custom Order </a>
               </li>
             </ul>
           </div>
+    
           <div class="col-sm-6 col-lg-3 p-b-50">
             <h4 class="stext-301 cl0 p-b-30">Help</h4>
             <ul>
+              <!-- <li class="p-b-10">
+                <a href="#" class="stext-107 cl7 hov-cl1 trans-04"> Track Order </a>
+              </li> -->
               <li class="p-b-10">
-                <a href="./terms.html" class="stext-107 cl7 hov-cl1 trans-04">
-                  Terms & Conditions
-                </a>
+                <a href="/terms" class="stext-107 cl7 hov-cl1 trans-04"> Terms & Conditions </a>
               </li>
               <li class="p-b-10">
-                <a
-                  href="./store-policy.html"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Store Policy
-                </a>
+                <a href="/store-policy" class="stext-107 cl7 hov-cl1 trans-04"> Store Policy </a>
               </li>
               <li class="p-b-10">
-                <a
-                  href="./return-policy.html"
-                  class="stext-107 cl7 hov-cl1 trans-04"
-                >
-                  Return Policy
-                </a>
+                <a href="/return-policy" class="stext-107 cl7 hov-cl1 trans-04"> Return Policy </a>
               </li>
             </ul>
           </div>
+    
           <div class="col-sm-6 col-lg-3 p-b-50">
             <h4 class="stext-301 cl0 p-b-30">GET IN TOUCH</h4>
             <p class="stext-107 cl7 size-201">
-              Any questions? Let us know in store at 10 Balogun Street, Ajao
-              Estate, Anthony, Lagos. Or call us on (+234)810-7157-640
+              Any questions? Let us know in store at 10 Balogun Street, Ajao Estate, Anthony, Lagos. Or call us on (+234)810-7157-640
             </p>
             <div class="p-t-27">
               <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
                 <i class="fa-brands fa-facebook-f"></i>
               </a>
-              <a
-                href="https://www.instagram.com/linabenstores/"
-                class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
-              >
+              <a href="https://www.instagram.com/linabenstores/" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
                 <i class="fa-brands fa-instagram"></i>
               </a>
               <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
@@ -696,12 +736,9 @@
             </div>
           </div>
         </div>
+    
         <p class="stext-107 cl6 txt-center">
-          Copyright &copy;
-          <script>
-            document.write(new Date().getFullYear());
-          </script>
-          , LinaBen All rights reserved
+          Copyright &copy; <script>document.write(new Date().getFullYear());</script>, LinaBen All rights reserved
         </p>
       </div>
     </footer>
@@ -764,7 +801,7 @@
       </div>
     </div>
 
-    <!-- Scripts (same order as other pages) -->
+    <!-- Scripts -->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
     <script src="vendor/animsition/js/animsition.min.js"></script>
     <script src="vendor/bootstrap/js/popper.js"></script>
