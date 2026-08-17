@@ -857,5 +857,24 @@
         }
       });
     </script>
+    <script>
+      (async function loadGenericBanner() {
+        try {
+          const response = await fetch('/admin-api/content/page/generic');
+          if (!response.ok) throw new Error('Failed to fetch banner content');
+          const content = await response.json();
+          // content = { page_banner: { image_url: '...' } }
+          const bannerData = content.page_banner;
+          if (bannerData && bannerData.image_url) {
+            const bannerSection = document.querySelector('.bg-img1');
+            if (bannerSection) {
+              bannerSection.style.backgroundImage = `url('${bannerData.image_url}')`;
+            }
+          }
+        } catch (error) {
+          console.warn('Could not load banner content, using static fallback.', error);
+        }
+      })();
+    </script>
   </body>
 </html>

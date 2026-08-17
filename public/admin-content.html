@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Manage Content</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    /* reuse admin styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Poppins", sans-serif; color: #333; background-color: #f5f7fb; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+    header { background: linear-gradient(to right, #4a6fa5, #3c5a8a); padding: 20px 0; color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header-container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: "Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 1px; }
+    .nav-links { display: flex; gap: 25px; }
+    .nav-links a { color: white; text-decoration: none; font-weight: 500; padding: 8px 15px; border-radius: 5px; transition: background 0.3s; }
+    .nav-links a.active { background: rgba(255,255,255,0.2); }
+    .nav-links a:hover { background: rgba(255,255,255,0.15); }
+    .page-title { text-align: center; padding: 40px 0; background: #fff; margin: 20px 0; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .page-title h1 { font-family: "Montserrat", sans-serif; font-size: 36px; font-weight: 700; color: #333; }
+    .content-section { background: #fff; border-radius: 10px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+    .content-section h2 { font-family: "Montserrat", sans-serif; font-size: 22px; margin-bottom: 15px; border-bottom: 2px solid #4a6fa5; padding-bottom: 10px; }
+    .section-group { margin-bottom: 30px; border: 1px solid #eee; border-radius: 8px; padding: 20px; }
+    .section-group h3 { font-size: 18px; font-weight: 600; color: #4a6fa5; margin-bottom: 15px; }
+    .form-row { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 15px; }
+    .form-group { flex: 1 1 200px; min-width: 180px; }
+    .form-group label { display: block; font-weight: 500; margin-bottom: 5px; font-size: 14px; color: #555; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; font-family: "Poppins", sans-serif; transition: border-color 0.3s; }
+    .form-group input:focus, .form-group textarea:focus { border-color: #4a6fa5; outline: none; box-shadow: 0 0 0 2px rgba(74,111,165,0.2); }
+    .image-upload { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; }
+    .image-preview { max-width: 150px; max-height: 150px; border-radius: 5px; overflow: hidden; border: 1px solid #ddd; }
+    .image-preview img { width: 100%; height: auto; display: block; }
+    .image-url-input { flex: 1 1 200px; min-width: 150px; }
+    .image-url-input input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+    .upload-btn { background: #f8f9fa; border: 1px dashed #4a6fa5; padding: 8px 16px; border-radius: 5px; cursor: pointer; transition: background 0.3s; font-size: 14px; }
+    .upload-btn:hover { background: #e9ecef; }
+    .size-recommendation { font-size: 12px; color: #888; margin-top: 5px; }
+    .btn-save { background: #4a6fa5; color: white; border: none; padding: 10px 25px; border-radius: 5px; font-weight: 500; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
+    .btn-save:hover { background: #3c5a8a; }
+    .btn-save:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-danger { background: #ff4d4f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+    .btn-danger:hover { background: #ff7875; }
+    .slide-item { background: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #4a6fa5; }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .slide-header h4 { font-size: 16px; color: #333; }
+    .slide-actions { display: flex; gap: 10px; }
+    .add-slide-btn { background: #28a745; color: white; border: none; padding: 8px 18px; border-radius: 5px; cursor: pointer; }
+    .add-slide-btn:hover { background: #218838; }
+    .toast { position: fixed; bottom: 30px; right: 30px; background: #333; color: white; padding: 15px 25px; border-radius: 5px; opacity: 0; transition: opacity 0.5s; z-index: 999; }
+    .toast.show { opacity: 1; }
+    .generic-note { background: #f0f8ff; border-left: 4px solid #4a6fa5; padding: 10px 15px; margin-bottom: 20px; border-radius: 4px; font-size: 14px; color: #555; }
+    @media (max-width: 768px) { .header-container { flex-direction: column; gap: 15px; } .nav-links { flex-wrap: wrap; justify-content: center; } .form-row { flex-direction: column; } }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid #fff; animation: spin 1s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .login-container { max-width: 400px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: none; }
+    .login-container.active { display: block; }
+    .login-form .form-group { margin-bottom: 20px; }
+    .login-form label { display: block; font-weight: 500; margin-bottom: 8px; }
+    .login-form input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+    .login-btn { width: 100%; padding: 12px; background: #4a6fa5; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    .login-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .login-error { color: #ff4d4f; text-align: center; margin-top: 10px; display: none; }
+    .admin-content { display: none; }
+    .admin-content.active { display: block; }
+  </style>
+</head>
+<body>
+  <!-- Login Container -->
+  <div class="container">
+    <div id="loginContainer" class="login-container">
+      <h2 style="text-align: center; margin-bottom: 30px;">Admin Login</h2>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="adminEmail">Email</label>
+          <input type="email" id="adminEmail" required placeholder="Enter admin email" />
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" required placeholder="Enter admin password" />
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <div id="loginError" class="login-error">Invalid credentials. Please try again.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Content -->
+  <div id="adminContent" class="admin-content">
+    <header>
+      <div class="container header-container">
+        <div class="logo">CONTENT MANAGER</div>
+        <div class="nav-links">
+          <a href="./admin.html">Add Product</a>
+          <a href="./admin-products.html">View Products</a>
+          <a href="#" class="active">Manage Content</a>
+          <a href="#" id="logoutBtn" style="background: rgba(255,255,255,0.1);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="page-title">
+        <h1>Manage Site Content</h1>
+        <p>Edit text, images, and banners across the website</p>
+      </div>
+
+      <div id="contentArea">
+        <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Loading content...</p>
+      </div>
+    </div>
+
+    <div id="toast" class="toast">Saved successfully!</div>
+  </div>
+
+  <script>
+    // Supabase & auth (same as before)
+    const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4YmFxb3l1c2Rzb3FweWtza3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNTM5MjgsImV4cCI6MjA3MDkyOTkyOH0.mm83Jogz8OrQZNoOC3qkOvnmiATf_eeOoZ1JfObkne0";
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const token = localStorage.getItem("adminToken");
+      if (token) {
+        supabaseClient.auth.getUser(token).then(({ data, error }) => {
+          if (error || !data.user) {
+            localStorage.removeItem("adminToken");
+            showLogin();
+          } else {
+            showAdminContent();
+            loadAllContent();
+          }
+        });
+      } else {
+        showLogin();
+      }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value;
+      const password = document.getElementById("adminPassword").value;
+      const loginBtn = document.getElementById("loginBtn");
+      const errorDiv = document.getElementById("loginError");
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+      errorDiv.style.display = "none";
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        if (data.user) {
+          localStorage.setItem("adminToken", data.session.access_token);
+          showAdminContent();
+          loadAllContent();
+        }
+      } catch (error) {
+        errorDiv.style.display = "block";
+        errorDiv.textContent = error.message || "Invalid credentials.";
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      localStorage.removeItem("adminToken");
+      showLogin();
+      document.getElementById("loginForm").reset();
+    });
+
+    function showLogin() {
+      document.getElementById("loginContainer").classList.add("active");
+      document.getElementById("adminContent").classList.remove("active");
+    }
+    function showAdminContent() {
+      document.getElementById("loginContainer").classList.remove("active");
+      document.getElementById("adminContent").classList.add("active");
+    }
+
+    // ----- Size recommendations mapping -----
+    function getSizeRecommendation(page, section, field) {
+      const key = `${page}_${section}_${field}`;
+      const map = {
+        'home_hero_slides_image_url': 'Recommended: 1920x800px (wide banner)',
+        'home_banner_women_image_url': 'Recommended: 600x400px',
+        'home_banner_men_image_url': 'Recommended: 600x400px',
+        'home_banner_adire_image_url': 'Recommended: 600x400px',
+        'home_custom_order_image_url': 'Recommended: 1200x600px',
+        'about_our_story_image_image_url': 'Recommended: 600x400px',
+        'about_our_mission_image_image_url': 'Recommended: 600x400px',
+        'generic_page_banner_image_url': 'Recommended: 1920x600px (full-width banner)'
+      };
+      return map[key] || '';
+    }
+
+    async function loadAllContent() {
+      const area = document.getElementById("contentArea");
+      const token = localStorage.getItem("adminToken");
+      try {
+        const response = await fetch("/admin-api/content", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error("Failed to fetch content");
+        const contentItems = await response.json();
+        renderContentEditor(contentItems);
+      } catch (error) {
+        area.innerHTML = `<p style="color: #ff4d4f;">Error loading content: ${error.message}</p>`;
+      }
+    }
+
+    function renderContentEditor(items) {
+      const area = document.getElementById("contentArea");
+      if (!items || items.length === 0) {
+        area.innerHTML = "<p>No content sections found. Please add content via the database.</p>";
+        return;
+      }
+      const pages = {};
+      items.forEach(item => {
+        if (!pages[item.page]) pages[item.page] = [];
+        pages[item.page].push(item);
+      });
+
+      let html = "";
+      for (const [page, sections] of Object.entries(pages)) {
+        html += `<div class="content-section"><h2>${page.charAt(0).toUpperCase() + page.slice(1)} Page</h2>`;
+        sections.forEach(section => {
+          html += renderSectionEditor(page, section);
+        });
+        html += `</div>`;
+      }
+      area.innerHTML = html;
+
+      // Attach events
+      document.querySelectorAll(".btn-save").forEach(btn => {
+        btn.addEventListener("click", saveSection);
+      });
+      document.querySelectorAll(".add-slide-btn").forEach(btn => {
+        btn.addEventListener("click", addSlide);
+      });
+      document.querySelectorAll(".remove-slide-btn").forEach(btn => {
+        btn.addEventListener("click", removeSlide);
+      });
+      document.querySelectorAll(".image-upload-input").forEach(input => {
+        input.addEventListener("change", handleImageUpload);
+      });
+      document.querySelectorAll(".image-url-input input").forEach(input => {
+        input.addEventListener("input", updatePreviewFromUrl);
+      });
+    }
+
+    function renderSectionEditor(page, section) {
+      const content = section.content;
+      const sectionId = `${page}-${section.section}`;
+      let html = `<div class="section-group" data-page="${page}" data-section="${section.section}">`;
+      html += `<h3>${section.section.replace(/_/g, ' ').toUpperCase()}</h3>`;
+
+      // Special: generic page banner - only image field
+      if (page === 'generic' && section.section === 'page_banner') {
+        html += `<div class="generic-note"><i class="fas fa-info-circle"></i> This banner applies to: <strong>About, Contact, Terms, Store Policy, Return Policy</strong> pages.</div>`;
+        const val = content && content.image_url ? content.image_url : '';
+        html += `<div class="form-group"><label>Banner Image</label>`;
+        html += `<div class="image-upload">`;
+        html += `<div class="image-preview"><img src="${val}" alt="banner preview" id="preview-${sectionId}-image_url"></div>`;
+        html += `<div class="image-url-input"><input type="text" value="${val}" data-preview="preview-${sectionId}-image_url" placeholder="Image URL"></div>`;
+        html += `<button class="upload-btn" onclick="document.getElementById('file-${sectionId}-image_url').click()"><i class="fas fa-cloud-upload-alt"></i> Upload</button>`;
+        html += `<input type="file" accept="image/*" id="file-${sectionId}-image_url" class="image-upload-input" data-preview="preview-${sectionId}-image_url" data-hidden="hidden-${sectionId}-image_url" style="display:none;">`;
+        html += `<input type="hidden" id="hidden-${sectionId}-image_url" name="image_url" value="${val}">`;
+        html += `</div>`;
+        const rec = getSizeRecommendation(page, section.section, 'image_url');
+        if (rec) html += `<div class="size-recommendation">${rec}</div>`;
+        html += `</div>`;
+        html += `<button class="btn-save" data-page="${page}" data-section="${section.section}"><i class="fas fa-save"></i> Save</button>`;
+        html += `</div>`;
+        return html;
+      }
+
+      // Hero slides
+      if (section.section === 'hero_slides') {
+        html += `<div class="slides-container" id="slides-${sectionId}">`;
+        if (Array.isArray(content) && content.length > 0) {
+          content.forEach((slide, index) => {
+            html += renderSlideForm(sectionId, index, slide);
+          });
+        } else {
+          html += `<p>No slides yet. Add a slide below.</p>`;
+        }
+        html += `</div>`;
+        html += `<button class="add-slide-btn" data-target="slides-${sectionId}"><i class="fas fa-plus"></i> Add Slide</button>`;
+        html += `<button class="btn-save" data-page="${page}" data-section="${section.section}">Save All Slides</button>`;
+        return html;
+      }
+
+      // Other sections
+      if (typeof content === 'object' && content !== null) {
+        for (const [key, value] of Object.entries(content)) {
+          const isImage = key.includes('image') || key.includes('img') || key === 'image_url';
+          if (isImage && typeof value === 'string') {
+            html += `<div class="form-group"><label>${key}</label>`;
+            html += `<div class="image-upload">`;
+            html += `<div class="image-preview"><img src="${value}" alt="preview" id="preview-${sectionId}-${key}"></div>`;
+            html += `<div class="image-url-input"><input type="text" value="${value}" data-preview="preview-${sectionId}-${key}" placeholder="Image URL"></div>`;
+            html += `<button class="upload-btn" onclick="document.getElementById('file-${sectionId}-${key}').click()"><i class="fas fa-cloud-upload-alt"></i> Upload</button>`;
+            html += `<input type="file" accept="image/*" id="file-${sectionId}-${key}" class="image-upload-input" data-preview="preview-${sectionId}-${key}" data-hidden="hidden-${sectionId}-${key}" style="display:none;">`;
+            html += `<input type="hidden" id="hidden-${sectionId}-${key}" name="${key}" value="${value}">`;
+            html += `</div>`;
+            const rec = getSizeRecommendation(page, section.section, key);
+            if (rec) html += `<div class="size-recommendation">${rec}</div>`;
+            html += `</div>`;
+          } else if (typeof value === 'string') {
+            html += `<div class="form-group"><label>${key}</label>`;
+            if (value.length > 100) {
+              html += `<textarea class="content-field" data-field="${key}" rows="3">${value}</textarea>`;
+            } else {
+              html += `<input type="text" class="content-field" data-field="${key}" value="${value}">`;
+            }
+            html += `</div>`;
+          } else if (typeof value === 'number') {
+            html += `<div class="form-group"><label>${key}</label><input type="number" class="content-field" data-field="${key}" value="${value}"></div>`;
+          }
+        }
+      } else if (typeof content === 'string') {
+        html += `<div class="form-group"><label>Content</label><textarea class="content-field" data-field="content" rows="3">${content}</textarea></div>`;
+      }
+
+      html += `<button class="btn-save" data-page="${page}" data-section="${section.section}"><i class="fas fa-save"></i> Save</button>`;
+      html += `</div>`;
+      return html;
+    }
+
+    function renderSlideForm(containerId, index, slide) {
+      let html = `<div class="slide-item" data-index="${index}">`;
+      html += `<div class="slide-header"><h4>Slide ${index+1}</h4><div class="slide-actions"><button class="btn-danger remove-slide-btn" data-container="${containerId}" data-index="${index}"><i class="fas fa-trash"></i></button></div></div>`;
+      const fields = ['image_url', 'title', 'subtitle', 'button_text', 'button_link'];
+      fields.forEach(field => {
+        const value = slide[field] || '';
+        if (field === 'image_url') {
+          html += `<div class="form-group"><label>Image</label>`;
+          html += `<div class="image-upload">`;
+          html += `<div class="image-preview"><img src="${value}" alt="slide image" id="preview-${containerId}-${index}-${field}"></div>`;
+          html += `<div class="image-url-input"><input type="text" value="${value}" data-preview="preview-${containerId}-${index}-${field}" placeholder="Image URL"></div>`;
+          html += `<button class="upload-btn" onclick="document.getElementById('file-${containerId}-${index}-${field}').click()"><i class="fas fa-cloud-upload-alt"></i> Upload</button>`;
+          html += `<input type="file" accept="image/*" id="file-${containerId}-${index}-${field}" class="image-upload-input" data-preview="preview-${containerId}-${index}-${field}" data-hidden="hidden-${containerId}-${index}-${field}" style="display:none;">`;
+          html += `<input type="hidden" id="hidden-${containerId}-${index}-${field}" name="${field}" value="${value}" class="slide-field" data-field="${field}" data-index="${index}">`;
+          html += `</div>`;
+          const rec = getSizeRecommendation('home', 'hero_slides', field);
+          if (rec) html += `<div class="size-recommendation">${rec}</div>`;
+          html += `</div>`;
+        } else {
+          html += `<div class="form-group"><label>${field}</label><input type="text" class="slide-field" data-field="${field}" data-index="${index}" value="${value}"></div>`;
+        }
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    // ----- Event handlers -----
+    function addSlide(e) {
+      const targetId = this.dataset.target;
+      const container = document.getElementById(targetId);
+      if (!container) return;
+      const slides = container.querySelectorAll('.slide-item');
+      const newIndex = slides.length;
+      const emptySlide = { image_url: '', title: '', subtitle: '', button_text: '', button_link: '' };
+      const slideHtml = renderSlideForm(targetId, newIndex, emptySlide);
+      container.insertAdjacentHTML('beforeend', slideHtml);
+      // Re-attach remove listeners
+      container.querySelectorAll('.remove-slide-btn').forEach(btn => {
+        btn.removeEventListener('click', removeSlide);
+        btn.addEventListener('click', removeSlide);
+      });
+      container.querySelectorAll('.image-upload-input').forEach(input => {
+        input.removeEventListener('change', handleImageUpload);
+        input.addEventListener('change', handleImageUpload);
+      });
+      container.querySelectorAll('.image-url-input input').forEach(input => {
+        input.removeEventListener('input', updatePreviewFromUrl);
+        input.addEventListener('input', updatePreviewFromUrl);
+      });
+    }
+
+    function removeSlide(e) {
+      const btn = this;
+      const containerId = btn.dataset.container;
+      const index = parseInt(btn.dataset.index);
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const slideItems = container.querySelectorAll('.slide-item');
+      if (slideItems.length <= 1) {
+        alert('Cannot remove the last slide. Add more slides first.');
+        return;
+      }
+      const slide = container.querySelector(`.slide-item[data-index="${index}"]`);
+      if (slide) slide.remove();
+      container.querySelectorAll('.slide-item').forEach((el, i) => {
+        el.dataset.index = i;
+        el.querySelector('.slide-header h4').textContent = `Slide ${i+1}`;
+        el.querySelectorAll('.slide-field, .image-upload-input, .remove-slide-btn').forEach(field => {
+          field.dataset.index = i;
+        });
+        el.querySelectorAll('.image-upload-input').forEach(input => {
+          const oldTarget = input.dataset.preview;
+          const parts = oldTarget.split('-');
+          parts[parts.length - 2] = i;
+          input.dataset.preview = parts.join('-');
+          const hidden = input.dataset.hidden;
+          if (hidden) {
+            const hParts = hidden.split('-');
+            hParts[hParts.length - 2] = i;
+            input.dataset.hidden = hParts.join('-');
+          }
+        });
+        el.querySelectorAll('.image-url-input input').forEach(input => {
+          const oldPreview = input.dataset.preview;
+          const parts = oldPreview.split('-');
+          parts[parts.length - 2] = i;
+          input.dataset.preview = parts.join('-');
+        });
+      });
+    }
+
+    function updatePreviewFromUrl(e) {
+      const input = e.target;
+      const previewId = input.dataset.preview;
+      const preview = document.getElementById(previewId);
+      if (preview) preview.src = input.value;
+      const container = input.closest('.image-upload');
+      const hidden = container.querySelector('input[type="hidden"]');
+      if (hidden) hidden.value = input.value;
+    }
+
+    async function handleImageUpload(e) {
+      const input = e.target;
+      const file = input.files[0];
+      if (!file) return;
+      const previewId = input.dataset.preview;
+      const preview = document.getElementById(previewId);
+      if (!preview) return;
+
+      preview.src = '';
+      const formData = new FormData();
+      formData.append('image', file);
+      const token = localStorage.getItem("adminToken");
+      try {
+        const response = await fetch('/admin-api/content/upload-image', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData
+        });
+        if (!response.ok) throw new Error('Upload failed');
+        const result = await response.json();
+        const imageUrl = result.url;
+        preview.src = imageUrl;
+        const urlInput = input.closest('.image-upload').querySelector('.image-url-input input');
+        if (urlInput) urlInput.value = imageUrl;
+        const hidden = input.closest('.image-upload').querySelector('input[type="hidden"]');
+        if (hidden) hidden.value = imageUrl;
+        const slideField = input.closest('.slide-item')?.querySelector(`.slide-field[data-field="${input.dataset.field}"]`);
+        if (slideField) slideField.value = imageUrl;
+        showToast('Image uploaded successfully');
+      } catch (error) {
+        alert('Error uploading image: ' + error.message);
+        const currentUrl = input.closest('.image-upload').querySelector('.image-url-input input')?.value || '';
+        if (preview) preview.src = currentUrl;
+      }
+      input.value = '';
+    }
+
+    async function saveSection(e) {
+      const btn = e.currentTarget;
+      const page = btn.dataset.page;
+      const section = btn.dataset.section;
+      const group = btn.closest('.section-group');
+      if (!group) return;
+
+      let content = {};
+      if (section === 'hero_slides') {
+        const slideItems = group.querySelectorAll('.slide-item');
+        const slides = [];
+        slideItems.forEach(item => {
+          const slide = {};
+          const fields = ['image_url', 'title', 'subtitle', 'button_text', 'button_link'];
+          fields.forEach(field => {
+            const input = item.querySelector(`.slide-field[data-field="${field}"]`);
+            slide[field] = input ? input.value : '';
+          });
+          slides.push(slide);
+        });
+        content = slides;
+      } else {
+        const fields = group.querySelectorAll('.content-field');
+        fields.forEach(field => {
+          const key = field.dataset.field;
+          content[key] = field.value;
+        });
+        const hiddenImgs = group.querySelectorAll('input[type="hidden"]');
+        hiddenImgs.forEach(input => {
+          const key = input.name;
+          if (key && !content.hasOwnProperty(key)) {
+            content[key] = input.value;
+          }
+        });
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      const token = localStorage.getItem("adminToken");
+      try {
+        const response = await fetch(`/admin-api/content/${page}/${section}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(content)
+        });
+        if (!response.ok) throw new Error('Failed to save');
+        const result = await response.json();
+        showToast('Content saved successfully!');
+      } catch (error) {
+        alert('Error saving: ' + error.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Save';
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>

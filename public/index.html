@@ -790,7 +790,7 @@
         <div class="row">
           <div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
             <!-- Block1 -->
-            <div class="block1 wrap-pic-w">
+            <div class="block1 wrap-pic-w" data-target="women">
               <img src="images/Linaben/banner-05.png" alt="IMG-BANNER" />
 
               <a
@@ -816,7 +816,7 @@
 
           <div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
             <!-- Block1 -->
-            <div class="block1 wrap-pic-w">
+            <div class="block1 wrap-pic-w" data-target="men">
               <img src="images/Linaben/banner-06.png" alt="IMG-BANNER" />
 
               <a
@@ -842,7 +842,7 @@
 
           <div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
             <!-- Block1 -->
-            <div class="block1 wrap-pic-w">
+            <div class="block1 wrap-pic-w" data-target="adire">
               <img src="images/Linaben/banner-07.png" alt="IMG-BANNER" />
 
               <a
@@ -1534,6 +1534,95 @@
           });
         }
       });
+    </script>
+    <script>
+      (async function loadHomeContent() {
+        try {
+          const response = await fetch('/admin-api/content/page/home');
+          if (!response.ok) throw new Error('Failed to fetch content');
+          const content = await response.json();
+
+          // 1. Hero Slides - update existing slides
+          const heroSlides = content.hero_slides;
+          if (heroSlides && Array.isArray(heroSlides) && heroSlides.length > 0) {
+            const slideItems = document.querySelectorAll('.item-slick1');
+            if (slideItems.length > 0) {
+              slideItems.forEach((slide, index) => {
+                const data = heroSlides[index] || heroSlides[0]; // fallback
+                // Update background image
+                if (data.image_url) {
+                  slide.style.backgroundImage = `url('${data.image_url}')`;
+                }
+                // Update text elements inside .layer-slick1
+                const layers = slide.querySelectorAll('.layer-slick1');
+                if (layers.length >= 3) {
+                  // First layer: subtitle
+                  const subtitleSpan = layers[0].querySelector('.ltext-101');
+                  if (subtitleSpan && data.subtitle) subtitleSpan.textContent = data.subtitle;
+                  // Second layer: title
+                  const titleEl = layers[1].querySelector('.ltext-201');
+                  if (titleEl && data.title) titleEl.textContent = data.title;
+                  // Third layer: button
+                  const linkBtn = layers[2].querySelector('a');
+                  if (linkBtn) {
+                    if (data.button_text) linkBtn.textContent = data.button_text;
+                    if (data.button_link) linkBtn.href = data.button_link;
+                  }
+                }
+              });
+            } else {
+              // Fallback: if no slides exist, create them (but we keep static)
+              console.warn('No .item-slick1 found, static slides remain.');
+            }
+          }
+
+          // 2. Banners
+          const bannerMapping = {
+            'banner_women': '.block1[data-target="women"]',
+            'banner_men': '.block1[data-target="men"]',
+            'banner_adire': '.block1[data-target="adire"]'
+          };
+          for (const [section, selector] of Object.entries(bannerMapping)) {
+            const data = content[section];
+            if (data) {
+              const block = document.querySelector(selector);
+              if (block) {
+                const img = block.querySelector('img');
+                if (img && data.image_url) img.src = data.image_url;
+                const title = block.querySelector('.block1-name');
+                if (title && data.title) title.textContent = data.title;
+                const info = block.querySelector('.block1-info');
+                if (info && data.subtitle) info.textContent = data.subtitle;
+                const link = block.querySelector('a.block1-txt');
+                if (link && data.link) link.href = data.link;
+              }
+            }
+          }
+
+          // 3. Custom Order
+          const customData = content.custom_order;
+          if (customData) {
+            const customSection = document.querySelector('.swiper-slide');
+            if (customSection) {
+              if (customData.image_url) {
+                customSection.style.backgroundImage = `url('${customData.image_url}')`;
+              }
+              const titleEl = customSection.querySelector('h1');
+              if (titleEl && customData.title) titleEl.textContent = customData.title;
+              const descEl = customSection.querySelector('p');
+              if (descEl && customData.description) descEl.textContent = customData.description;
+              const btn = customSection.querySelector('.btn');
+              if (btn) {
+                if (customData.button_text) btn.textContent = customData.button_text;
+                if (customData.button_link) btn.href = customData.button_link;
+              }
+            }
+          }
+
+        } catch (error) {
+          console.warn('Could not load dynamic content, using static fallback.', error);
+        }
+      })();
     </script>
   </body>
 </html>

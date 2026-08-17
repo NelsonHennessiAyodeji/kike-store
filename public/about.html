@@ -803,5 +803,51 @@
         }
       });
     </script>
+    <script>
+      (async function loadGenericBanner() {
+        try {
+          const response = await fetch('/admin-api/content/page/generic');
+          if (!response.ok) throw new Error('Failed to fetch banner content');
+          const content = await response.json();
+          // content = { page_banner: { image_url: '...' } }
+          const bannerData = content.page_banner;
+          if (bannerData && bannerData.image_url) {
+            const bannerSection = document.querySelector('.bg-img1');
+            if (bannerSection) {
+              bannerSection.style.backgroundImage = `url('${bannerData.image_url}')`;
+            }
+          }
+        } catch (error) {
+          console.warn('Could not load banner content, using static fallback.', error);
+        }
+      })();
+    </script>
+    <script>
+      (async function loadAboutContent() {
+        try {
+          const response = await fetch('/admin-api/content/page/about');
+          if (!response.ok) throw new Error('Failed to fetch about content');
+          const content = await response.json();
+
+          // Our Story image
+          const storyImg = content.our_story_image;
+          if (storyImg && storyImg.image_url) {
+            const imgElement = document.querySelector('.how-bor1 .hov-img0 img');
+            if (imgElement) imgElement.src = storyImg.image_url;
+          }
+
+          // Our Mission image
+          const missionImg = content.our_mission_image;
+          if (missionImg && missionImg.image_url) {
+            const imgElement = document.querySelector('.how-bor2 .hov-img0 img');
+            if (imgElement) imgElement.src = missionImg.image_url;
+          }
+
+        } catch (error) {
+          console.warn('Could not load about content, using static fallback.', error);
+        }
+      })();
+    </script>
+
   </body>
 </html>
