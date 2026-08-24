@@ -274,6 +274,15 @@
         }
       }
     </style>
+    <style>
+      .dynamic-content {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .dynamic-content.loaded {
+        opacity: 1;
+      }
+    </style>
   </head>
 
   <body class="animsition">
@@ -471,103 +480,105 @@
       </div>
     </div>
 
-    <!-- Title page -->
-    <section
-      class="bg-img1 txt-center p-lr-15 p-tb-92"
-      style="background-image: url('images/bg-01.jpg')"
-    >
-      <h2 class="ltext-105 cl0 txt-center">Return Policy</h2>
-    </section>
+    <div id="dynamic-content" class="dynamic-content">
+      <!-- Title page -->
+      <section
+        class="bg-img1 txt-center p-lr-15 p-tb-92"
+        style="background-image: url('images/bg-01.jpg')"
+      >
+        <h2 class="ltext-105 cl0 txt-center">Return Policy</h2>
+      </section>
 
-    <!-- Return Policy Content -->
-    <section class="bg0 p-t-50 p-b-100">
-      <div class="container">
-        <div class="policy-content">
-          <p class="last-updated">
-            Last updated:
-            <script>
-              document.write(new Date().getFullYear());
-            </script>
-          </p>
+      <!-- Return Policy Content -->
+      <section class="bg0 p-t-50 p-b-100">
+        <div class="container">
+          <div class="policy-content">
+            <p class="last-updated">
+              Last updated:
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+            </p>
 
-          <h2>Return Policy</h2>
-          <p>
-            We have a 30-day return policy, which means you have 30 days after
-            receiving your item to request a return.
-          </p>
-          <p>
-            To be eligible for a return, your item must be in the same condition
-            that you received it, unworn or unused, with tags, and in its
-            original packaging. You'll also need the receipt or proof of
-            purchase.
-          </p>
-          <p>
-            To start a return, you can contact us at
-            <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a
-            >. Please note that returns will need to be sent to our address:
-            <strong>[kindly contact us for the address]</strong>.
-          </p>
-          <p>
-            If your return is accepted, we'll send you a return shipping
-            confirmation message, as well as instructions on how and where to
-            send your package. Items sent back to us without first requesting a
-            return will not be accepted.
-          </p>
-          <p>
-            You can always contact us for any return questions at
-            <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a
-            >.
-          </p>
-
-          <div class="highlight-box">
-            <h3>Damages and issues</h3>
+            <h2>Return Policy</h2>
             <p>
-              Please inspect your order upon reception and contact us
-              immediately if the item is defective, or damaged or if you receive
-              the wrong item so that we can evaluate the issue and make it
-              right.
+              We have a 30-day return policy, which means you have 30 days after
+              receiving your item to request a return.
+            </p>
+            <p>
+              To be eligible for a return, your item must be in the same condition
+              that you received it, unworn or unused, with tags, and in its
+              original packaging. You'll also need the receipt or proof of
+              purchase.
+            </p>
+            <p>
+              To start a return, you can contact us at
+              <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a
+              >. Please note that returns will need to be sent to our address:
+              <strong>[kindly contact us for the address]</strong>.
+            </p>
+            <p>
+              If your return is accepted, we'll send you a return shipping
+              confirmation message, as well as instructions on how and where to
+              send your package. Items sent back to us without first requesting a
+              return will not be accepted.
+            </p>
+            <p>
+              You can always contact us for any return questions at
+              <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a
+              >.
+            </p>
+
+            <div class="highlight-box">
+              <h3>Damages and issues</h3>
+              <p>
+                Please inspect your order upon reception and contact us
+                immediately if the item is defective, or damaged or if you receive
+                the wrong item so that we can evaluate the issue and make it
+                right.
+              </p>
+            </div>
+
+            <h3>Exceptions / non-returnable items</h3>
+            <p>
+              Certain types of items cannot be returned, like perishable goods
+              (such as food, flowers, or plants), custom products (such as special
+              orders or personalized items), and personal care goods (such as
+              beauty products). We also do not accept returns for hazardous
+              materials, flammable liquids, or gases. Please get in touch if you
+              have questions or concerns about your specific item.
+            </p>
+            <p>
+              Unfortunately, we cannot accept returns on sale items or gift cards.
+            </p>
+
+            <div class="highlight-box">
+              <h3>Exchanges</h3>
+              <p>
+                The fastest way to ensure you get what you want is to return the
+                item you have, and once the return is accepted, make a separate
+                purchase for the new item.
+              </p>
+            </div>
+
+            <h3>Refunds</h3>
+            <p>
+              We will notify you once we've received and inspected your return,
+              and let you know the refund was approved. If approved, you'll be
+              automatically refunded on your original payment method within 10
+              business days. Please remember it can take some time for your bank
+              or credit card company to process and post the refund too.
+            </p>
+            <p>
+              If more than 15 business days have passed since we've approved your
+              return, please contact us at
+              <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a
+              >.
             </p>
           </div>
-
-          <h3>Exceptions / non-returnable items</h3>
-          <p>
-            Certain types of items cannot be returned, like perishable goods
-            (such as food, flowers, or plants), custom products (such as special
-            orders or personalized items), and personal care goods (such as
-            beauty products). We also do not accept returns for hazardous
-            materials, flammable liquids, or gases. Please get in touch if you
-            have questions or concerns about your specific item.
-          </p>
-          <p>
-            Unfortunately, we cannot accept returns on sale items or gift cards.
-          </p>
-
-          <div class="highlight-box">
-            <h3>Exchanges</h3>
-            <p>
-              The fastest way to ensure you get what you want is to return the
-              item you have, and once the return is accepted, make a separate
-              purchase for the new item.
-            </p>
-          </div>
-
-          <h3>Refunds</h3>
-          <p>
-            We will notify you once we've received and inspected your return,
-            and let you know the refund was approved. If approved, you'll be
-            automatically refunded on your original payment method within 10
-            business days. Please remember it can take some time for your bank
-            or credit card company to process and post the refund too.
-          </p>
-          <p>
-            If more than 15 business days have passed since we've approved your
-            return, please contact us at
-            <a href="mailto:linabenstores@gmail.com">linabenstores@gmail.com</a
-            >.
-          </p>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">
@@ -863,7 +874,6 @@
           const response = await fetch('/admin-api/content/page/generic');
           if (!response.ok) throw new Error('Failed to fetch banner content');
           const content = await response.json();
-          // content = { page_banner: { image_url: '...' } }
           const bannerData = content.page_banner;
           if (bannerData && bannerData.image_url) {
             const bannerSection = document.querySelector('.bg-img1');
@@ -874,6 +884,8 @@
         } catch (error) {
           console.warn('Could not load banner content, using static fallback.', error);
         }
+        // Reveal the content after the update (or after fallback)
+        document.getElementById('dynamic-content').classList.add('loaded');
       })();
     </script>
   </body>

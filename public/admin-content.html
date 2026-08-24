@@ -116,7 +116,6 @@
   </div>
 
   <script>
-    // Supabase & auth (same as before)
     const supabaseUrl = "https://bxbaqoyusdsoqpykskrz.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4YmFxb3l1c2Rzb3FweWtza3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNTM5MjgsImV4cCI6MjA3MDkyOTkyOH0.mm83Jogz8OrQZNoOC3qkOvnmiATf_eeOoZ1JfObkne0";
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -182,14 +181,14 @@
     function getSizeRecommendation(page, section, field) {
       const key = `${page}_${section}_${field}`;
       const map = {
-        'home_hero_slides_image_url': 'Recommended: 1920x800px (wide banner)',
-        'home_banner_women_image_url': 'Recommended: 600x400px',
-        'home_banner_men_image_url': 'Recommended: 600x400px',
-        'home_banner_adire_image_url': 'Recommended: 600x400px',
-        'home_custom_order_image_url': 'Recommended: 1200x600px',
-        'about_our_story_image_image_url': 'Recommended: 600x400px',
-        'about_our_mission_image_image_url': 'Recommended: 600x400px',
-        'generic_page_banner_image_url': 'Recommended: 1920x600px (full-width banner)'
+        'home_hero_slides_image_url': 'Recommended: 1920x800px/3250x1580px (wide banner)',
+        'home_banner_women_image_url': 'Recommended: 600x400px/3260x2200px',
+        'home_banner_men_image_url': 'Recommended: 600x400px/3260x2200px',
+        'home_banner_adire_image_url': 'Recommended: 600x400px/3260x2200px',
+        'home_custom_order_image_url': 'Recommended: 1700x610px',
+        'about_our_story_image_image_url': 'Recommended: 1200x1200px',
+        'about_our_mission_image_image_url': 'Recommended: 1200x1200px',
+        'generic_page_banner_image_url': 'Recommended: 1920x240px (full-width banner)'
       };
       return map[key] || '';
     }

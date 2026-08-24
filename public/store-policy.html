@@ -269,6 +269,15 @@
         }
       }
     </style>
+    <style>
+      .dynamic-content {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .dynamic-content.loaded {
+        opacity: 1;
+      }
+    </style>
   </head>
 
   <body class="animsition">
@@ -465,134 +474,135 @@
         </div>
       </div>
     </div>
+    <div id="dynamic-content" class="dynamic-content">
+      <!-- Title page -->
+      <section
+        class="bg-img1 txt-center p-lr-15 p-tb-92"
+        style="background-image: url('images/bg-01.jpg')"
+      >
+        <h2 class="ltext-105 cl0 txt-center">Shipping Policy</h2>
+      </section>
 
-    <!-- Title page -->
-    <section
-      class="bg-img1 txt-center p-lr-15 p-tb-92"
-      style="background-image: url('images/bg-01.jpg')"
-    >
-      <h2 class="ltext-105 cl0 txt-center">Shipping Policy</h2>
-    </section>
-
-    <!-- Shipping Policy Content -->
-    <section class="bg0 p-t-50 p-b-100">
-      <div class="container">
-        <div class="policy-content">
-          <p class="last-updated">
-            Last updated:
-            <script>
-              document.write(new Date().getFullYear());
-            </script>
-          </p>
-
-          <h2>Shipping Information</h2>
-          <p>
-            All orders are processed within
-            <strong>7 to 10 business days</strong> (excluding weekends and
-            holidays) after receiving your order confirmation email. You will
-            receive another notification when your order has shipped.
-          </p>
-
-          <div class="highlight-box">
-            <h3>Processing Time</h3>
-            <p>
-              Please allow <strong>7-10 business days</strong> for order
-              processing before shipment.
+      <!-- Shipping Policy Content -->
+      <section class="bg0 p-t-50 p-b-100">
+        <div class="container">
+          <div class="policy-content">
+            <p class="last-updated">
+              Last updated:
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
             </p>
-          </div>
 
-          <h3>Shipping Rates and Estimates</h3>
-          <p>
-            Shipping charges for your order will be calculated and displayed at
-            checkout, or a confirmation of the shipping fee will be sent to you
-            after you request to place the order, ideally between
-            <strong>2 to 8 business days</strong>.
-          </p>
+            <h2>Shipping Information</h2>
+            <p>
+              All orders are processed within
+              <strong>7 to 10 business days</strong> (excluding weekends and
+              holidays) after receiving your order confirmation email. You will
+              receive another notification when your order has shipped.
+            </p>
 
-          <h3>In-Store Pickup</h3>
-          <p>
-            We do not offer in-store pickup. All orders will be shipped directly
-            to your provided address.
-          </p>
+            <div class="highlight-box">
+              <h3>Processing Time</h3>
+              <p>
+                Please allow <strong>7-10 business days</strong> for order
+                processing before shipment.
+              </p>
+            </div>
 
-          <h3>International Shipping</h3>
-          <p>We offer international shipping to the following countries:</p>
+            <h3>Shipping Rates and Estimates</h3>
+            <p>
+              Shipping charges for your order will be calculated and displayed at
+              checkout, or a confirmation of the shipping fee will be sent to you
+              after you request to place the order, ideally between
+              <strong>2 to 8 business days</strong>.
+            </p>
 
-          <div class="highlight-box">
-            <h4>International Destinations</h4>
+            <h3>In-Store Pickup</h3>
+            <p>
+              We do not offer in-store pickup. All orders will be shipped directly
+              to your provided address.
+            </p>
+
+            <h3>International Shipping</h3>
+            <p>We offer international shipping to the following countries:</p>
+
+            <div class="highlight-box">
+              <h4>International Destinations</h4>
+              <ul>
+                <li>United States (USA)</li>
+                <li>United Kingdom (UK)</li>
+                <li>Canada</li>
+                <li>Ghana</li>
+                <li>Ireland</li>
+              </ul>
+              <p><strong>Delivery Time:</strong> 4 to 10 business days</p>
+            </div>
+
+            <p>
+              Shipping charges for your international order will be calculated and
+              displayed at checkout, or a confirmation of the shipping fee will be
+              sent to you after you request to place the order.
+            </p>
+
+            <div class="highlight-box">
+              <h4>Important Note for International Customers</h4>
+              <p>
+                Your order may be subject to import duties and taxes (including
+                VAT), incurred once a shipment reaches your destination country.
+                <strong>LinaBen is not responsible for these charges</strong> if
+                they are applied and are your responsibility as the customer.
+              </p>
+            </div>
+
+            <h3>How do I check the status of my order?</h3>
+            <p>
+              When your order has shipped, you will receive an Email/WhatsApp
+              notification from us which will include an order number you can use
+              to check its status.
+            </p>
+
+            <p>You can check your order status by:</p>
             <ul>
-              <li>United States (USA)</li>
-              <li>United Kingdom (UK)</li>
-              <li>Canada</li>
-              <li>Ghana</li>
-              <li>Ireland</li>
+              <li>Heading over to "find my order" at the footer of our site</li>
+              <li>
+                If you have created an account, you can check your user account
+                under "Orders" to see the status of your order
+              </li>
             </ul>
-            <p><strong>Delivery Time:</strong> 4 to 10 business days</p>
-          </div>
 
-          <p>
-            Shipping charges for your international order will be calculated and
-            displayed at checkout, or a confirmation of the shipping fee will be
-            sent to you after you request to place the order.
-          </p>
+            <div class="highlight-box">
+              <h4>Haven't Received Your Order?</h4>
+              <p>
+                If you haven't received your order within
+                <strong>10 days</strong> of receiving your shipping confirmation
+                Email/WhatsApp message, please contact us at
+                <a href="mailto:linabenstores@gmail.com"
+                  >linabenstores@gmail.com</a
+                >
+                with your name and order number, and we will look into it for you.
+              </p>
+            </div>
 
-          <div class="highlight-box">
-            <h4>Important Note for International Customers</h4>
+            <h3>Contact Us</h3>
             <p>
-              Your order may be subject to import duties and taxes (including
-              VAT), incurred once a shipment reaches your destination country.
-              <strong>LinaBen is not responsible for these charges</strong> if
-              they are applied and are your responsibility as the customer.
+              If you have any questions about our shipping policy, please contact
+              us:
             </p>
+            <ul>
+              <li>
+                Email:
+                <a href="mailto:linabenstores@gmail.com"
+                  >linabenstores@gmail.com</a
+                >
+              </li>
+              <li>Phone: (+234) 706-0558-584</li>
+              <li>Address: 10 Balogun Street, Ajao Estate, Anthony, Lagos</li>
+            </ul>
           </div>
-
-          <h3>How do I check the status of my order?</h3>
-          <p>
-            When your order has shipped, you will receive an Email/WhatsApp
-            notification from us which will include an order number you can use
-            to check its status.
-          </p>
-
-          <p>You can check your order status by:</p>
-          <ul>
-            <li>Heading over to "find my order" at the footer of our site</li>
-            <li>
-              If you have created an account, you can check your user account
-              under "Orders" to see the status of your order
-            </li>
-          </ul>
-
-          <div class="highlight-box">
-            <h4>Haven't Received Your Order?</h4>
-            <p>
-              If you haven't received your order within
-              <strong>10 days</strong> of receiving your shipping confirmation
-              Email/WhatsApp message, please contact us at
-              <a href="mailto:linabenstores@gmail.com"
-                >linabenstores@gmail.com</a
-              >
-              with your name and order number, and we will look into it for you.
-            </p>
-          </div>
-
-          <h3>Contact Us</h3>
-          <p>
-            If you have any questions about our shipping policy, please contact
-            us:
-          </p>
-          <ul>
-            <li>
-              Email:
-              <a href="mailto:linabenstores@gmail.com"
-                >linabenstores@gmail.com</a
-              >
-            </li>
-            <li>Phone: (+234) 706-0558-584</li>
-            <li>Address: 10 Balogun Street, Ajao Estate, Anthony, Lagos</li>
-          </ul>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">
@@ -888,7 +898,6 @@
           const response = await fetch('/admin-api/content/page/generic');
           if (!response.ok) throw new Error('Failed to fetch banner content');
           const content = await response.json();
-          // content = { page_banner: { image_url: '...' } }
           const bannerData = content.page_banner;
           if (bannerData && bannerData.image_url) {
             const bannerSection = document.querySelector('.bg-img1');
@@ -899,6 +908,8 @@
         } catch (error) {
           console.warn('Could not load banner content, using static fallback.', error);
         }
+        // Reveal the content after the update (or after fallback)
+        document.getElementById('dynamic-content').classList.add('loaded');
       })();
     </script>
   </body>

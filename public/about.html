@@ -218,6 +218,15 @@
         }
       }
     </style>
+    <style>
+      .dynamic-content {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .dynamic-content.loaded {
+        opacity: 1;
+      }
+    </style>
   </head>
 
   <body class="animsition">
@@ -431,89 +440,91 @@
       </div>
     </div>
 
-    <!-- Title page -->
-    <section
-      class="bg-img1 txt-center p-lr-15 p-tb-92"
-      style="background-image: url('images/bg-01.jpg')"
-    >
-      <h2 class="ltext-105 cl0 txt-center">About</h2>
-    </section>
+    <div id="dynamic-content" class="dynamic-content">
+      <!-- Title page -->
+      <section
+        class="bg-img1 txt-center p-lr-15 p-tb-92"
+        style="background-image: url('images/bg-01.jpg')"
+      >
+        <h2 class="ltext-105 cl0 txt-center">About</h2>
+      </section>
 
-    <!-- Content page -->
-    <section class="bg0 p-t-75 p-b-120">
-      <div class="container">
-        <div class="row p-b-148">
-          <div class="col-md-7 col-lg-8">
-            <div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
-              <h3 class="mtext-111 cl2 p-b-16">Our Story</h3>
+      <!-- Content page -->
+      <section class="bg0 p-t-75 p-b-120">
+        <div class="container">
+          <div class="row p-b-148">
+            <div class="col-md-7 col-lg-8">
+              <div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
+                <h3 class="mtext-111 cl2 p-b-16">Our Story</h3>
 
-              <p class="stext-113 cl6 p-b-26">
-                Welcome to LinaBen, where vibrant fusion meets limitless
-                self-expression. Our collections are crafted from 100% cotton
-                and blended cotton fabrics, empowering you to embody beauty and
-                elegance in every stitch.
-              </p>
-
-              <p class="stext-113 cl6 p-b-26">
-                At LinaBen, we believe that what you wear is more than just
-                clothing—it's a declaration of who you are. We are a haven for
-                those who see style as a language, a vibrant medium for telling
-                their unique story to the world. Welcome to a space where
-                vibrant fusion meets limitless self-expression.
-              </p>
-
-              <p class="stext-113 cl6 p-b-26">
-                Any questions? Let us know in store at 10 Balogun Street, Ajao
-                Estate, Anthony, Lagos. Or call us on (+234) 706-0558-584
-              </p>
-            </div>
-          </div>
-
-          <div class="col-11 col-md-5 col-lg-4 m-lr-auto">
-            <div class="how-bor1">
-              <div class="hov-img0">
-                <img src="images/about-01.jpg" alt="IMG" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="order-md-2 col-md-7 col-lg-8 p-b-30">
-            <div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
-              <h3 class="mtext-111 cl2 p-b-16">Our Mission</h3>
-
-              <p class="stext-113 cl6 p-b-26">
-                At LinaBen, we're driven by a passion for
-                <b>unconventional design</b>, crafting one-of-a-kind pieces that
-                reflect your individuality. Inspired by
-                <b>Eastern sensibilities</b> and <b>bold color combinations</b>,
-                our creations are designed to make a statement. With LinaBen,
-                you'll stand out in any crowd, exuding confidence and style.
-                Join us on this journey of self-expression, where
-                <b>fashion knows no bounds</b>.
-              </p>
-
-              <!-- <div class="bor16 p-l-29 p-b-9 m-t-22">
-                <p class="stext-114 cl6 p-r-40 p-b-11">
-                  Join us on this journey of self-expression, where fashion knows no bounds.
+                <p class="stext-113 cl6 p-b-26">
+                  Welcome to LinaBen, where vibrant fusion meets limitless
+                  self-expression. Our collections are crafted from 100% cotton
+                  and blended cotton fabrics, empowering you to embody beauty and
+                  elegance in every stitch.
                 </p>
 
-                <span class="stext-111 cl8"> - Steve Job’s </span>
-              </div> -->
+                <p class="stext-113 cl6 p-b-26">
+                  At LinaBen, we believe that what you wear is more than just
+                  clothing—it's a declaration of who you are. We are a haven for
+                  those who see style as a language, a vibrant medium for telling
+                  their unique story to the world. Welcome to a space where
+                  vibrant fusion meets limitless self-expression.
+                </p>
+
+                <p class="stext-113 cl6 p-b-26">
+                  Any questions? Let us know in store at 10 Balogun Street, Ajao
+                  Estate, Anthony, Lagos. Or call us on (+234) 706-0558-584
+                </p>
+              </div>
+            </div>
+
+            <div class="col-11 col-md-5 col-lg-4 m-lr-auto">
+              <div class="how-bor1">
+                <div class="hov-img0">
+                  <img src="images/about-01.jpg" alt="IMG" />
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
-            <div class="how-bor2">
-              <div class="hov-img0">
-                <img src="images/about-02.jpg" alt="IMG" />
+          <div class="row">
+            <div class="order-md-2 col-md-7 col-lg-8 p-b-30">
+              <div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
+                <h3 class="mtext-111 cl2 p-b-16">Our Mission</h3>
+
+                <p class="stext-113 cl6 p-b-26">
+                  At LinaBen, we're driven by a passion for
+                  <b>unconventional design</b>, crafting one-of-a-kind pieces that
+                  reflect your individuality. Inspired by
+                  <b>Eastern sensibilities</b> and <b>bold color combinations</b>,
+                  our creations are designed to make a statement. With LinaBen,
+                  you'll stand out in any crowd, exuding confidence and style.
+                  Join us on this journey of self-expression, where
+                  <b>fashion knows no bounds</b>.
+                </p>
+
+                <!-- <div class="bor16 p-l-29 p-b-9 m-t-22">
+                  <p class="stext-114 cl6 p-r-40 p-b-11">
+                    Join us on this journey of self-expression, where fashion knows no bounds.
+                  </p>
+
+                  <span class="stext-111 cl8"> - Steve Job’s </span>
+                </div> -->
+              </div>
+            </div>
+
+            <div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
+              <div class="how-bor2">
+                <div class="hov-img0">
+                  <img src="images/about-02.jpg" alt="IMG" />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">
@@ -842,12 +853,12 @@
             const imgElement = document.querySelector('.how-bor2 .hov-img0 img');
             if (imgElement) imgElement.src = missionImg.image_url;
           }
-
         } catch (error) {
           console.warn('Could not load about content, using static fallback.', error);
         }
+        // Reveal the content after the update (or after fallback)
+        document.getElementById('dynamic-content').classList.add('loaded');
       })();
     </script>
-
   </body>
 </html>
